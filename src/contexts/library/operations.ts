@@ -5,18 +5,19 @@ import crypt from "@/lib/crypt";
 import { setCookie } from "cookies-next";
 import { uuid } from "@/lib/utils";
 import { libraryCacheLimiter } from "@/lib/short";
+import { Config } from "@/config";
 
 function useOps(data: LibraryCache) {
     const [libraryData, setLibraryData] = React.useState<LibraryCache>(data);
 
     React.useEffect(() => {
         const data = libraryCacheLimiter.limit(libraryData);
-        setCookie("aPlD", crypt.encrypt(data), {
-            maxAge: 60 * 60 * 24 * 365 * 100,
+        setCookie(Config.cookies.keys.library, crypt.encrypt(data), {
+            maxAge: Config.cookies.maxAge,
         });
 
-        setCookie("aPlDvD", data, {
-            maxAge: 60 * 60 * 24 * 365 * 100,
+        setCookie(`${Config.cookies.keys.library}.dev`, data, {
+            maxAge: Config.cookies.maxAge,
         });
     }, [libraryData]);
 

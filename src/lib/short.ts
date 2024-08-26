@@ -30,7 +30,9 @@ class LibraryCacheLimiter {
                         [song.id, Math.floor(song.date / 1000)].join(":")
                     )
                     .join(";"),
-            ].join(","),
+            ]
+                .filter((f) => typeof f === "string" && f.length > 0)
+                .join(","),
             p: data.playlists
                 .map((playlist) =>
                     [
@@ -77,14 +79,15 @@ class LibraryCacheLimiter {
             }),
             favorites: {
                 date: Number(data.f.split(",")[0]) * 1000,
-                songs: data.f
-                    .split(",")[1]
-                    .split(";")
-                    .map((s) => {
-                        const [id, date] = s.split(":");
+                songs:
+                    data.f
+                        .split(",")[1]
+                        ?.split(";")
+                        .map((s) => {
+                            const [id, date] = s.split(":");
 
-                        return { id, date: Number(date) * 1000 };
-                    }),
+                            return { id, date: Number(date) * 1000 };
+                        }) ?? [],
             },
             playlists: data.p
                 .split(",")

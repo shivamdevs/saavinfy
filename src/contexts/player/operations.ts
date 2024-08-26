@@ -7,6 +7,7 @@ import { PlayerCache, PlayerCachePush, PlayerOptions } from "@/types/opts";
 import { shuffleArray } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { playerCacheLimiter } from "@/lib/short";
+import { Config } from "@/config";
 
 function useOps(data: PlayerCache) {
     const pathname = usePathname();
@@ -121,11 +122,11 @@ function useOps(data: PlayerCache) {
             options,
         } as PlayerCachePush);
 
-        setCookie("aPqL", crypt.encrypt(data), {
-            maxAge: 60 * 60 * 24 * 365 * 100,
+        setCookie(Config.cookies.keys.player, crypt.encrypt(data), {
+            maxAge: Config.cookies.maxAge,
         });
-        setCookie("aPqLvD", data, {
-            maxAge: 60 * 60 * 24 * 365 * 100,
+        setCookie(`${Config.cookies.keys.player}.dev`, data, {
+            maxAge: Config.cookies.maxAge,
         });
     }, [current, currentTime, queue, volume, options]);
 
