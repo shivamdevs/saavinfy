@@ -1,7 +1,13 @@
 export type LibraryCache = {
     searches: LibrarySearchHistory[];
-    favorites: LibraryFavorite[];
+    favorites: LibraryFavorite;
     playlists: LibraryPlaylist[];
+};
+
+export type LibraryCacheLimited = {
+    s: string;
+    f: string;
+    p: string;
 };
 
 export type LibrarySearchHistory = {
@@ -12,13 +18,18 @@ export type LibrarySearchHistory = {
 };
 
 export type LibraryFavorite = {
-    id: string;
     date: number;
+    songs: LibrarySong[];
 };
 
 export type LibraryPlaylist = {
     id: string;
     name: string;
     date: number;
-    songs: string[];
+    songs: LibrarySong[];
+};
+
+export type LibrarySong = {
+    id: string;
+    date: number;
 };

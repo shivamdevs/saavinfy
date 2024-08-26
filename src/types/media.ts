@@ -99,3 +99,9 @@ export type MediaAlbum = {
     image: MediaImage[];
     songs: MediaSong[];
 };
+
+export type MediaLyrics = {
+    lyrics: string;
+    copyright: string;
+    snippet: string;
+};

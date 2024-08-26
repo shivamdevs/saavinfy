@@ -11,12 +11,13 @@ import { CallResponse } from "@/modules/call";
 import { PlayerCachePush } from "@/types/opts";
 import { LibraryCache } from "@/types/library";
 import { LibraryProvider } from "@/contexts/library";
+import { libraryCacheLimiter, playerCacheLimiter } from "@/lib/short";
 
 async function ServerLayout({ children }: React.PropsWithChildren) {
     const playerData = getPlayerData();
     const libraryData = getLibraryData();
 
-    const songsData = await getSongs(playerData?.queue);
+    const songsData = await getSongs(playerData?.queue as string[]);
 
     return (
         <ErrorBox data={songsData}>
@@ -45,38 +46,32 @@ function getPlayerData() {
     const bucket = getCookie("aPqL", { cookies });
 
     if (!bucket) {
-        return null;
+        return playerCacheLimiter.fallback;
     }
 
     const decrypted = crypt.decrypt(bucket);
 
     if (!decrypted) {
-        return null;
+        return playerCacheLimiter.fallback;
     }
 
-    return decrypted as PlayerCachePush;
+    return playerCacheLimiter.parse(decrypted) as PlayerCachePush;
 }
 
 function getLibraryData() {
     const bucket = getCookie("aPlD", { cookies });
 
-    const fallback: LibraryCache = {
-        searches: [],
-        favorites: [],
-        playlists: [],
-    };
-
     if (!bucket) {
-        return fallback;
+        return libraryCacheLimiter.fallback;
     }
 
     const decrypted = crypt.decrypt(bucket);
 
     if (!decrypted) {
-        return fallback;
+        return libraryCacheLimiter.fallback;
     }
 
-    return decrypted as LibraryCache;
+    return libraryCacheLimiter.parse(decrypted) as LibraryCache;
 }
 
 async function getSongs(queue?: string[]) {

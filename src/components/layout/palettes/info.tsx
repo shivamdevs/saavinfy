@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import PalettesHeader from "./header";
 import usePlayer from "@/contexts/player";
 import PalettesBox from "./box";
-import { usePlayerOptions } from "@/contexts/player/hooks";
 import Entity from "@/components/tokens/entity";
 import useColors from "@/contexts/hooks/use-colors";
 import { calculateFileSize, cn } from "@/lib/utils";
@@ -17,10 +16,11 @@ import downloadFromLink from "@/lib/download";
 import RoundButton from "@/components/tokens/button";
 import LucideCirclePlus from "@/components/lucide/circle-plus";
 import LucideHeart from "@/components/lucide/heart";
+import useLibrary from "@/contexts/library";
 
 function InfoPalette() {
     const player = usePlayer();
-    const [, updateOptions] = usePlayerOptions();
+    const library = useLibrary();
 
     const { currentSong } = player;
 
@@ -28,9 +28,10 @@ function InfoPalette() {
 
     useEffect(() => {
         if (!currentSong) {
-            updateOptions({ panel: undefined });
+            player.updateOptions({ panel: undefined });
         }
-    }, [currentSong, updateOptions]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentSong]);
 
     if (!currentSong) return null;
 
@@ -69,8 +70,25 @@ function InfoPalette() {
                 </div>
                 <ScreenOffset className="p-5 flex flex-col gap-3">
                     <div className="absolute right-2 -top-6 gap-2 flex">
-                        <RoundButton size={48}>
-                            <LucideHeart size={24} />
+                        <RoundButton
+                            size={48}
+                            onClick={() => {
+                                library.toggleFavorite(currentSong.id);
+                            }}
+                        >
+                            <LucideHeart
+                                size={24}
+                                className={cn({
+                                    "text-primary": library.isFavorite(
+                                        currentSong.id
+                                    ),
+                                })}
+                                fill={
+                                    library.isFavorite(currentSong.id)
+                                        ? "currentColor"
+                                        : "none"
+                                }
+                            />
                         </RoundButton>
                         <RoundButton size={48}>
                             <LucideCirclePlus size={24} />

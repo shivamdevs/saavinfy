@@ -6,6 +6,7 @@ import { ContextType } from "./context";
 import { PlayerCache, PlayerCachePush, PlayerOptions } from "@/types/opts";
 import { shuffleArray } from "@/lib/utils";
 import { usePathname } from "next/navigation";
+import { playerCacheLimiter } from "@/lib/short";
 
 function useOps(data: PlayerCache) {
     const pathname = usePathname();
@@ -112,15 +113,18 @@ function useOps(data: PlayerCache) {
 
     // Update the cookies whenever the player state changes
     const updateStorage = React.useCallback(() => {
-        const data = {
+        const data = playerCacheLimiter.limit({
             queue: Array.from(queue).map((song) => song.id),
             current: current,
             time: currentTime,
             volume: volume,
             options,
-        } as PlayerCachePush;
+        } as PlayerCachePush);
 
         setCookie("aPqL", crypt.encrypt(data), {
+            maxAge: 60 * 60 * 24 * 365 * 100,
+        });
+        setCookie("aPqLvD", data, {
             maxAge: 60 * 60 * 24 * 365 * 100,
         });
     }, [current, currentTime, queue, volume, options]);
@@ -128,7 +132,8 @@ function useOps(data: PlayerCache) {
     // Update the cookies whenever the player state changes
     React.useEffect(() => {
         updateStorage();
-    }, [current, currentTime, queue, volume, options, updateStorage]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [current, currentTime, queue, volume, options]);
 
     // Update the current entry in the queue
     const updateCurrent = React.useCallback(async (song: MediaSong) => {
@@ -298,8 +303,7 @@ function useOps(data: PlayerCache) {
         [current]
     );
 
-    // Whenever the song ends, play the next song based on the loop options
-    React.useEffect(() => {
+    const autoPlayNext = React.useCallback(() => {
         if (ended) {
             const currentIndex = queue.findIndex(
                 (track) => track.id === current
@@ -319,6 +323,12 @@ function useOps(data: PlayerCache) {
             }
         }
     }, [current, ended, options.loop, play, queue]);
+
+    // Whenever the song ends, play the next song based on the loop options
+    React.useEffect(() => {
+        autoPlayNext();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ended]);
 
     React.useEffect(() => {
         if (fullScreen) {

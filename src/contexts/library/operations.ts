@@ -4,16 +4,18 @@ import { LibraryCache } from "@/types/library";
 import crypt from "@/lib/crypt";
 import { setCookie } from "cookies-next";
 import { uuid } from "@/lib/utils";
+import { libraryCacheLimiter } from "@/lib/short";
 
 function useOps(data: LibraryCache) {
     const [libraryData, setLibraryData] = React.useState<LibraryCache>(data);
 
     React.useEffect(() => {
-        setCookie("aPlD", crypt.encrypt(libraryData), {
+        const data = libraryCacheLimiter.limit(libraryData);
+        setCookie("aPlD", crypt.encrypt(data), {
             maxAge: 60 * 60 * 24 * 365 * 100,
         });
 
-        setCookie("aPlDvD", libraryData, {
+        setCookie("aPlDvD", data, {
             maxAge: 60 * 60 * 24 * 365 * 100,
         });
     }, [libraryData]);
@@ -40,7 +42,7 @@ function useOps(data: LibraryCache) {
                     searches: [
                         ...prev.searches,
                         {
-                            id: uuid(),
+                            id: uuid(6),
                             query,
                             type,
                             date: Date.now(),
@@ -59,12 +61,157 @@ function useOps(data: LibraryCache) {
         }));
     }, []);
 
+    const addFavorite = React.useCallback((ids: string | string[]) => {
+        if (typeof ids === "string") {
+            ids = [ids];
+        }
+
+        setLibraryData((prev) => ({
+            ...prev,
+            favorites: {
+                date: Date.now(),
+                songs: [
+                    ...prev.favorites.songs,
+                    ...ids.map((id) => ({ id, date: Date.now() })),
+                ],
+            },
+        }));
+    }, []);
+
+    const removeFavorite = React.useCallback((ids: string | string[]) => {
+        if (typeof ids === "string") {
+            ids = [ids];
+        }
+
+        setLibraryData((prev) => ({
+            ...prev,
+            favorites: {
+                date: Date.now(),
+                songs: prev.favorites.songs.filter(
+                    (song) => !ids.includes(song.id)
+                ),
+            },
+        }));
+    }, []);
+
+    const isFavorite = React.useCallback(
+        (id: string) => {
+            return libraryData.favorites.songs.some((song) => song.id === id);
+        },
+        [libraryData.favorites]
+    );
+
+    const toggleFavorite = React.useCallback(
+        (id: string) => {
+            if (isFavorite(id)) {
+                removeFavorite(id);
+            } else {
+                addFavorite(id);
+            }
+        },
+        [isFavorite, addFavorite, removeFavorite]
+    );
+
+    const createPlaylist = React.useCallback((name: string) => {
+        setLibraryData((prev) => ({
+            ...prev,
+            playlists: [
+                ...prev.playlists,
+                {
+                    id: uuid(6),
+                    name,
+                    date: Date.now(),
+                    songs: [],
+                },
+            ],
+        }));
+    }, []);
+
+    const removePlaylist = React.useCallback((id: string) => {
+        setLibraryData((prev) => ({
+            ...prev,
+            playlists: prev.playlists.filter((playlist) => playlist.id !== id),
+        }));
+    }, []);
+
+    const renamePlaylist = React.useCallback((id: string, name: string) => {
+        setLibraryData((prev) => ({
+            ...prev,
+            playlists: prev.playlists.map((playlist) =>
+                playlist.id === id ? { ...playlist, name } : playlist
+            ),
+        }));
+    }, []);
+
+    const addSongsToPlaylist = React.useCallback(
+        (id: string, songs: string | string[]) => {
+            if (typeof songs === "string") {
+                songs = [songs];
+            }
+
+            setLibraryData((prev) => ({
+                ...prev,
+                playlists: prev.playlists.map((playlist) =>
+                    playlist.id === id
+                        ? {
+                              ...playlist,
+                              songs: [
+                                  ...playlist.songs,
+                                  ...songs.map((song) => ({
+                                      id: song,
+                                      date: Date.now(),
+                                  })),
+                              ],
+                          }
+                        : playlist
+                ),
+            }));
+        },
+        []
+    );
+
+    const removeSongsFromPlaylist = React.useCallback(
+        (id: string, songs: string | string[]) => {
+            if (typeof songs === "string") {
+                songs = [songs];
+            }
+
+            setLibraryData((prev) => ({
+                ...prev,
+                playlists: prev.playlists.map((playlist) =>
+                    playlist.id === id
+                        ? {
+                              ...playlist,
+                              songs: playlist.songs.filter(
+                                  (song) => !songs.includes(song.id)
+                              ),
+                          }
+                        : playlist
+                ),
+            }));
+        },
+        []
+    );
+
     return {
         log: libraryData,
 
         searches: libraryData.searches,
         addSearch,
         removeSearch,
+
+        favorites: libraryData.favorites,
+        addFavorite,
+        removeFavorite,
+        toggleFavorite,
+        isFavorite,
+
+        playlists: libraryData.playlists,
+        createPlaylist,
+        removePlaylist,
+        renamePlaylist,
+        addSongsToPlaylist,
+        removeSongsFromPlaylist,
     } as ContextType;
 }
 

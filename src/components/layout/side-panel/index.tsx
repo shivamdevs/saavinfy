@@ -1,6 +1,6 @@
 import React from "react";
 import SidePanelNavigation from "./navigation";
-import FavoritesAndPlaylists from "./favorites";
+import FavoritesAndPlaylists from "./library";
 
 function SidePanel() {
     return (
