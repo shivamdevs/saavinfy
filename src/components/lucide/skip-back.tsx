@@ -13,12 +13,14 @@ import { LucideElement, LucideProps } from './.lucide';
  * @returns {React.Component} LucideSkipBack component
  *
  * @example
- * <LucideSkipBack color="orange" size={50} />
+ * <LucideSkipBack color="purple" size={41} />
  *
  * @see https://lucide.dev/icons/skip-back
  */
 const LucideSkipBack: LucideElement = React.forwardRef<SVGSVGElement, LucideProps>(({ className, color, size, ...props }, ref) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size ?? 24} height={size ?? 24} viewBox="0 0 24 24" fill="none" stroke={color ?? "currentColor"} strokeWidth={2.25} strokeLinecap="round" strokeLinejoin="round" {...props} className={`lucide lucide-skip-back ${className ? className : ""}`} ref={ref}><polygon points="19 20 9 12 19 4 19 20" /><line x1="5" x2="5" y1="19" y2="5" /></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width={size ?? 24} height={size ?? 24} viewBox="0 0 24 24" fill="none" stroke={color ?? "currentColor"} strokeWidth={2.25} strokeLinecap="round" strokeLinejoin="round" {...props} className={`lucide lucide-skip-back${className ? ` ${className}` : ""}`} ref={ref}><polygon points="19 20 9 12 19 4 19 20" /><line x1="5" x2="5" y1="19" y2="5" /></svg>
 ));
+
+LucideSkipBack.displayName = "LucideSkipBack";
 
 export default LucideSkipBack;

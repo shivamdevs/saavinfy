@@ -12,7 +12,6 @@ import LucideClock from "../lucide/clock";
 import LucideHash from "../lucide/hash";
 import SongListButton from "./list-button";
 import PlayingTitle from "./title";
-import RoundButton from "./button";
 import AddToQueue from "./queue";
 import ListImage from "./list-image";
 import Entity from "./entity";

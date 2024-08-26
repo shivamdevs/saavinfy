@@ -13,7 +13,7 @@ import { MediaSong } from "@/types/media";
 function FullscreenView({ children }: React.PropsWithChildren) {
     const player = usePlayer();
 
-    const currentSong = player.currentSong;
+    const { currentSong } = player;
     const currentIndex = player.queue.findIndex(
         (song) => song.id === currentSong?.id
     );
@@ -74,6 +74,7 @@ function SongInfo({ song, current }: SongInfoProps) {
                         })}
                         onClick={() => {
                             if (current) return;
+
                             // play song
 
                             player.play(song);

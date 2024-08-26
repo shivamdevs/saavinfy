@@ -13,12 +13,14 @@ import { LucideElement, LucideProps } from './.lucide';
  * @returns {React.Component} LucideRepeat component
  *
  * @example
- * <LucideRepeat color="red" size={71} />
+ * <LucideRepeat color="green" size={42} />
  *
  * @see https://lucide.dev/icons/repeat
  */
 const LucideRepeat: LucideElement = React.forwardRef<SVGSVGElement, LucideProps>(({ className, color, size, ...props }, ref) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size ?? 24} height={size ?? 24} viewBox="0 0 24 24" fill="none" stroke={color ?? "currentColor"} strokeWidth={2.25} strokeLinecap="round" strokeLinejoin="round" {...props} className={`lucide lucide-repeat ${className ? className : ""}`} ref={ref}><path d="m17 2 4 4-4 4" /><path d="M3 11v-1a4 4 0 0 1 4-4h14" /><path d="m7 22-4-4 4-4" /><path d="M21 13v1a4 4 0 0 1-4 4H3" /></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width={size ?? 24} height={size ?? 24} viewBox="0 0 24 24" fill="none" stroke={color ?? "currentColor"} strokeWidth={2.25} strokeLinecap="round" strokeLinejoin="round" {...props} className={`lucide lucide-repeat${className ? ` ${className}` : ""}`} ref={ref}><path d="m17 2 4 4-4 4" /><path d="M3 11v-1a4 4 0 0 1 4-4h14" /><path d="m7 22-4-4 4-4" /><path d="M21 13v1a4 4 0 0 1-4 4H3" /></svg>
 ));
+
+LucideRepeat.displayName = "LucideRepeat";
 
 export default LucideRepeat;

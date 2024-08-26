@@ -8,13 +8,13 @@ import { Heading, MonoSpan, Text } from "@/components/tokens/typography";
 import useLibrary from "@/contexts/library";
 import { cn, formatDateAndTime } from "@/lib/utils";
 import { LibrarySearchHistory } from "@/types/library";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { useInterval } from "react-unique-hooks";
 
 function StartSearch() {
     const library = useLibrary();
+
     return (
         <SafeArea className="flex absolute inset-0">
             <div className="flex-[3] flex-center flex-col gap-5">

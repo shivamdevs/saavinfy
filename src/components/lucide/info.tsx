@@ -13,12 +13,14 @@ import { LucideElement, LucideProps } from './.lucide';
  * @returns {React.Component} LucideInfo component
  *
  * @example
- * <LucideInfo color="yellow" size={29} />
+ * <LucideInfo color="blue" size={71} />
  *
  * @see https://lucide.dev/icons/info
  */
 const LucideInfo: LucideElement = React.forwardRef<SVGSVGElement, LucideProps>(({ className, color, size, ...props }, ref) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size ?? 24} height={size ?? 24} viewBox="0 0 24 24" fill="none" stroke={color ?? "currentColor"} strokeWidth={2.25} strokeLinecap="round" strokeLinejoin="round" {...props} className={`lucide lucide-info ${className ? className : ""}`} ref={ref}><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width={size ?? 24} height={size ?? 24} viewBox="0 0 24 24" fill="none" stroke={color ?? "currentColor"} strokeWidth={2.25} strokeLinecap="round" strokeLinejoin="round" {...props} className={`lucide lucide-info${className ? ` ${className}` : ""}`} ref={ref}><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
 ));
+
+LucideInfo.displayName = "LucideInfo";
 
 export default LucideInfo;

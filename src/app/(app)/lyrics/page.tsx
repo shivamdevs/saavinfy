@@ -10,9 +10,7 @@ export default function Page() {
 
     const song = player.currentSong;
 
-    const { data } = useSWR(() => (song ? Endpoints.lyrics(song.id) : null));
-
-    console.log(data);
+    useSWR(() => (song ? Endpoints.lyrics(song.id) : null));
 
     if (!song) return null;
 

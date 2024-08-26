@@ -3,10 +3,8 @@
 import ItemCard from "@/components/tokens/card";
 import ErrorBox from "@/components/layout/error";
 import ItemsGrid from "@/components/tokens/grid";
-import SafeArea from "@/components/layout/safe-area";
 import { Endpoints } from "@/config/endpoints";
 import { CallResponse } from "@/lib/call";
-import { cn } from "@/lib/utils";
 import {
     SearchAlbum,
     SearchArtist,
@@ -29,7 +27,9 @@ export type SearchResultsProps = {
 };
 
 function SearchResults({ query, type }: SearchResultsProps) {
+    // eslint-disable-next-line no-unused-vars
     const [page, setPage] = React.useState(1);
+    // eslint-disable-next-line no-unused-vars
     const [limit, setLimit] = React.useState(30);
 
     const res = useSWR<CallResponse>(

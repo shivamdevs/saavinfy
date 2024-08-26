@@ -37,7 +37,7 @@ function VolumeQueueFullscreen() {
 
     React.useEffect(() => {
         router.prefetch("/lyrics");
-    }, []);
+    }, [router]);
 
     return (
         <>

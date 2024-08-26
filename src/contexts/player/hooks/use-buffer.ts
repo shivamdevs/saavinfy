@@ -17,7 +17,7 @@ export default function usePlayerBuffer() {
                 audioPlayer.buffered &&
                 audioPlayer.buffered.length > 0
             ) {
-                const currentTime = audioPlayer.currentTime;
+                const { currentTime } = audioPlayer;
                 const bufferedEnd = audioPlayer.buffered.end(
                     audioPlayer.buffered.length - 1
                 );

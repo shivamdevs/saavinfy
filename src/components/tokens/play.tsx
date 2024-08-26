@@ -5,9 +5,7 @@ import React from "react";
 import LucidePause from "../lucide/pause";
 import LucidePlay from "../lucide/play";
 import { MediaSong } from "@/types/media";
-import { useEventListener } from "react-unique-hooks";
 import usePlayer from "@/contexts/player";
-import LucideAudioLines from "../lucide/audio-lines";
 import useFetchAndPlay from "@/contexts/hooks/use-play";
 
 export type PlayButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -16,7 +14,10 @@ export type PlayButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     song?: MediaSong;
     songId?: string;
     asQueue?: boolean;
-    onClickNext?: (...args: unknown[]) => Promise<void> | void;
+    onClickNext?: () => Promise<void> | void;
+
+    className?: string;
+    style?: React.CSSProperties;
 };
 
 function PlayButton({
@@ -37,6 +38,7 @@ function PlayButton({
     const isPlaying = player.playing;
 
     const Icon = playingThisSong && isPlaying ? LucidePause : LucidePlay;
+
     return (
         <button
             className={cn(
@@ -80,7 +82,7 @@ function PlayButton({
                     }
                 }
 
-                onClickNext?.(song, songId);
+                onClickNext?.();
             }}
             style={{
                 width: size,

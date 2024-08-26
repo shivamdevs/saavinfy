@@ -6,14 +6,6 @@ export default function usePlayerNavigation() {
     const [hasPrevious, setHasPrevious] = React.useState(false);
     const [hasNext, setHasNext] = React.useState(false);
 
-    React.useEffect(() => {
-        const hasPrevious = getPrevious();
-        const hasNext = getNext();
-
-        setHasPrevious(hasPrevious);
-        setHasNext(hasNext);
-    }, [player.queue, player.current]);
-
     const getNext = React.useCallback(() => {
         if (!player.queue.length) return false;
 
@@ -22,7 +14,7 @@ export default function usePlayerNavigation() {
         );
 
         return currentIndex < player.queue.length - 1;
-    }, [player.queue, player.current]);
+    }, [player]);
 
     const getPrevious = React.useCallback(() => {
         if (!player.queue.length) return false;
@@ -32,7 +24,7 @@ export default function usePlayerNavigation() {
         );
 
         return currentIndex > 0;
-    }, [player.queue, player.current]);
+    }, [player]);
 
     const next = React.useCallback(() => {
         if (!hasNext) return;
@@ -42,7 +34,7 @@ export default function usePlayerNavigation() {
         );
 
         player.play(player.queue[currentIndex + 1]);
-    }, [player.queue, player.current, hasNext]);
+    }, [hasNext, player]);
 
     const previous = React.useCallback(() => {
         if (!hasPrevious) return;
@@ -52,7 +44,15 @@ export default function usePlayerNavigation() {
         );
 
         player.play(player.queue[currentIndex - 1]);
-    }, [player.queue, player.current, hasPrevious]);
+    }, [hasPrevious, player]);
+
+    React.useEffect(() => {
+        const hasPrevious = getPrevious();
+        const hasNext = getNext();
+
+        setHasPrevious(hasPrevious);
+        setHasNext(hasNext);
+    }, [player.queue, getPrevious, getNext]);
 
     return {
         play: player.play,

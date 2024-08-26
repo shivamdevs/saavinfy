@@ -1,12 +1,13 @@
 "use client";
 
 import React from "react";
-import useLibrary from "@/contexts/library";
 import LucideLibrary from "@/components/lucide/library";
 import { Heading } from "@/components/tokens/typography";
 
+// import useLibrary from "@/contexts/library";
+
 export default function FavoritesAndPlaylists() {
-    const library = useLibrary();
+    // const library = useLibrary();
 
     return (
         <section className="layout-card flex-1">

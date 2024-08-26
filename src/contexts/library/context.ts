@@ -10,17 +10,25 @@ export type ContextType = {
     log: LibraryCache;
 
     searches: LibrarySearchHistory[];
+    // eslint-disable-next-line no-unused-vars
     addSearch: (query: string, type: string) => void;
+    // eslint-disable-next-line no-unused-vars
     removeSearch: (id: string) => void;
 
     favorites: LibraryFavorite[];
+    // eslint-disable-next-line no-unused-vars
     addFavorite: (id: string) => void;
+    // eslint-disable-next-line no-unused-vars
     removeFavorite: (id: string) => void;
 
     playlists: LibraryPlaylist[];
+    // eslint-disable-next-line no-unused-vars
     createPlaylist: (name: string) => void;
+    // eslint-disable-next-line no-unused-vars
     removePlaylist: (id: string) => void;
+    // eslint-disable-next-line no-unused-vars
     renamePlaylist: (id: string, name: string) => void;
+    // eslint-disable-next-line no-unused-vars
     addSongsToPlaylist: (id: string, songs: string[] | string) => void;
 };
 

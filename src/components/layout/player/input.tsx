@@ -6,9 +6,9 @@ export interface InputRangeProps {
     value?: number | null;
     disabled?: boolean;
     divisor?: number;
-    onChange?:
-        | ((val: number, eve: React.ChangeEvent<HTMLInputElement>) => void)
-        | null;
+    onChange?: // eslint-disable-next-line no-unused-vars
+    ((val: number, eve: React.ChangeEvent<HTMLInputElement>) => void) | null;
+    // eslint-disable-next-line no-unused-vars
     onMouseDown?: ((eve: React.MouseEvent<HTMLInputElement>) => void) | null;
 }
 
@@ -40,7 +40,6 @@ function InputRange({
             max={max}
             step={step}
             disabled={disabled || false}
-            onError={(error) => console.error(error)}
             value={value}
             style={
                 {

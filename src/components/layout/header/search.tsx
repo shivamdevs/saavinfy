@@ -32,6 +32,7 @@ function Search() {
         if (params.slug?.[0] && !query) {
             setQuery(decodeURIComponent(params.slug[0]).replace(/\+/g, " "));
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params.slug]);
 
     useDebounce(

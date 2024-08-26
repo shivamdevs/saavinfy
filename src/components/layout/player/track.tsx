@@ -2,7 +2,7 @@ import InputRange from "./input";
 import { TimeSpan } from "@/components/tokens/typography";
 import usePlayer from "@/contexts/player";
 import { usePlayerBuffer, usePlayerTiming } from "@/contexts/player/hooks";
-import { useEffect } from "react";
+import React from "react";
 
 export default function TrackSeeker() {
     const player = usePlayer();

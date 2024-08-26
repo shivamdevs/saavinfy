@@ -9,8 +9,6 @@ function useOps(data: LibraryCache) {
     const [libraryData, setLibraryData] = React.useState<LibraryCache>(data);
 
     React.useEffect(() => {
-        console.log("Library Data updated", libraryData);
-
         setCookie("aPlD", crypt.encrypt(libraryData), {
             maxAge: 60 * 60 * 24 * 365 * 100,
         });
@@ -54,15 +52,12 @@ function useOps(data: LibraryCache) {
         [libraryData]
     );
 
-    const removeSearch = React.useCallback(
-        (id: string) => {
-            setLibraryData((prev) => ({
-                ...prev,
-                searches: prev.searches.filter((search) => search.id !== id),
-            }));
-        },
-        [libraryData]
-    );
+    const removeSearch = React.useCallback((id: string) => {
+        setLibraryData((prev) => ({
+            ...prev,
+            searches: prev.searches.filter((search) => search.id !== id),
+        }));
+    }, []);
 
     return {
         log: libraryData,

@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Entity from "@/components/tokens/entity";
 import { getSongArtists } from "@/components/tokens/list";
 import { Text } from "@/components/tokens/typography";

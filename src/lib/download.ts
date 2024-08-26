@@ -48,12 +48,15 @@ export default function downloadFromLink(
                         const { done, value } = await reader.read();
                         if (done) {
                             controller.close();
+
                             return;
                         }
                         controller.enqueue(value);
                         progressCallback(value);
+
                         return pump();
                     }
+
                     return pump();
                 },
             });

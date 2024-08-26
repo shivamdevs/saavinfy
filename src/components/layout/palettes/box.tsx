@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import React from "react";
 
 export type PalettesBoxProps = React.HTMLAttributes<HTMLDivElement>;
 export default function PalettesBox({

@@ -1,13 +1,10 @@
 import crypt from "@/lib/crypt";
-import { MediaArtistSongs, MediaPlaylist, MediaSong } from "@/types/media";
+import { MediaSong } from "@/types/media";
 import { setCookie } from "cookies-next";
 import React from "react";
 import { ContextType } from "./context";
 import { PlayerCache, PlayerCachePush, PlayerOptions } from "@/types/opts";
 import { shuffleArray } from "@/lib/utils";
-import { serverCall } from "@/lib/call";
-import { Endpoints } from "@/config/endpoints";
-import { SearchArtistFilters } from "@/types/search";
 import { usePathname } from "next/navigation";
 
 function useOps(data: PlayerCache) {
@@ -15,8 +12,6 @@ function useOps(data: PlayerCache) {
 
     const [options, setOptions] = React.useState<PlayerOptions>(() => {
         const opts = data.options ?? {};
-
-        console.log(data);
 
         return {
             loop: opts.loop ?? 0,
@@ -51,15 +46,12 @@ function useOps(data: PlayerCache) {
     const [fullScreen, setFullScreen] = React.useState(false);
 
     // Update the player options
-    const updateOptions = React.useCallback(
-        (opts: Partial<PlayerOptions>) => {
-            setOptions((prev) => ({
-                ...prev,
-                ...opts,
-            }));
-        },
-        [options]
-    );
+    const updateOptions = React.useCallback((opts: Partial<PlayerOptions>) => {
+        setOptions((prev) => ({
+            ...prev,
+            ...opts,
+        }));
+    }, []);
 
     // Initialize the audio element
     React.useEffect(() => {
@@ -115,6 +107,7 @@ function useOps(data: PlayerCache) {
             audio.removeEventListener("loadeddata", timeupdate);
             audio.removeEventListener("ended", timeupdate);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Update the cookies whenever the player state changes
@@ -135,7 +128,7 @@ function useOps(data: PlayerCache) {
     // Update the cookies whenever the player state changes
     React.useEffect(() => {
         updateStorage();
-    }, [current, currentTime, queue, volume, options]);
+    }, [current, currentTime, queue, volume, options, updateStorage]);
 
     // Update the current entry in the queue
     const updateCurrent = React.useCallback(async (song: MediaSong) => {
@@ -170,7 +163,7 @@ function useOps(data: PlayerCache) {
 
             return q;
         });
-    }, [current, queue]);
+    }, [current]);
 
     // Trigger the play function
     const play = React.useCallback(
@@ -188,7 +181,7 @@ function useOps(data: PlayerCache) {
 
             element.current?.play();
         },
-        [current, queue]
+        [queue, updateCurrent]
     );
 
     // Trigger the pause function
@@ -203,7 +196,7 @@ function useOps(data: PlayerCache) {
         } else {
             play();
         }
-    }, [playing]);
+    }, [pause, play, playing]);
 
     // Add a song to the queue
     const addSong = React.useCallback(
@@ -231,7 +224,7 @@ function useOps(data: PlayerCache) {
                 play(song);
             }
         },
-        [current, queue]
+        [current, play, queue, updateCurrent]
     );
 
     // Add multiple songs to the queue
@@ -263,7 +256,7 @@ function useOps(data: PlayerCache) {
                 play(songs[0]);
             }
         },
-        [current, queue]
+        [current, play, queue, updateCurrent]
     );
 
     // Check if a song is in the queue
@@ -287,16 +280,13 @@ function useOps(data: PlayerCache) {
     );
 
     // Remove a song from the queue
-    const removeSong = React.useCallback(
-        (song: MediaSong | string) => {
-            setQueue((prev) =>
-                prev.filter(
-                    (s) => s.id !== (typeof song === "string" ? song : song.id)
-                )
-            );
-        },
-        [queue]
-    );
+    const removeSong = React.useCallback((song: MediaSong | string) => {
+        setQueue((prev) =>
+            prev.filter(
+                (s) => s.id !== (typeof song === "string" ? song : song.id)
+            )
+        );
+    }, []);
 
     // Check if a song is currently playing
     const playingSong = React.useCallback(
@@ -328,18 +318,7 @@ function useOps(data: PlayerCache) {
                 }
             }
         }
-    }, [ended, options.loop]);
-
-    React.useEffect(() => {
-        console.log(
-            "Currently playing",
-            queue.find((s) => s.id === current)
-        );
-    }, [current]);
-
-    React.useEffect(() => {
-        console.log("Options updated", options);
-    }, [options]);
+    }, [current, ended, options.loop, play, queue]);
 
     React.useEffect(() => {
         if (fullScreen) {

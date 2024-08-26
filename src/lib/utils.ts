@@ -24,6 +24,7 @@ export function convertHTMLEntities(html: string = ""): string {
     }
 
     const doc = new DOMParser().parseFromString(html, "text/html");
+
     return doc.documentElement.textContent || "";
 }
 
@@ -71,7 +72,7 @@ export function formatBytes(bytes: number, decimals = 2) {
 
     const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 }
 
 export function calculateFileSize(duration: number, kbps: number | string) {
@@ -83,6 +84,7 @@ export function calculateFileSize(duration: number, kbps: number | string) {
     }
 
     const size = (duration / 8) * kbps * 1000;
+
     return formatBytes(size);
 }
 
@@ -134,21 +136,25 @@ export function formatDateAndTime(date: number, noNumber: boolean = false) {
 
     if (diff < 60 * 1000) {
         const seconds = Math.floor(diff / 1000);
+
         return `${seconds} ${formatPlural(seconds, "second")} ago`;
     }
 
     if (diff < 60 * 60 * 1000) {
         const minutes = Math.floor(diff / (60 * 1000));
+
         return `${minutes} ${formatPlural(minutes, "minute")} ago`;
     }
 
     if (diff < 24 * 60 * 60 * 1000) {
         const hours = Math.floor(diff / (60 * 60 * 1000));
+
         return `${hours} ${formatPlural(hours, "hour")} ago`;
     }
 
     if (diff < 7 * 24 * 60 * 60 * 1000) {
         const days = Math.floor(diff / (24 * 60 * 60 * 1000));
+
         return `${days} ${formatPlural(days, "day")} ago`;
     }
 

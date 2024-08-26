@@ -1,3 +1,4 @@
+import React from "react";
 import LucideX from "@/components/lucide/x";
 import RoundButton from "@/components/tokens/button";
 import { Heading } from "@/components/tokens/typography";

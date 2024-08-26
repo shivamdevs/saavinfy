@@ -22,7 +22,7 @@ function InfoPalette() {
     const player = usePlayer();
     const [, updateOptions] = usePlayerOptions();
 
-    const currentSong = player.currentSong;
+    const { currentSong } = player;
 
     const colors = useColors(currentSong?.image);
 
@@ -30,7 +30,7 @@ function InfoPalette() {
         if (!currentSong) {
             updateOptions({ panel: undefined });
         }
-    }, [currentSong]);
+    }, [currentSong, updateOptions]);
 
     if (!currentSong) return null;
 

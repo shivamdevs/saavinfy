@@ -50,7 +50,6 @@ function Item({ icon, className, children, ...props }: ItemProps) {
                 {
                     "bg-accent":
                         props.href === pathname ||
-                        // props.href.includes(pathname) ||
                         (props.href !== "/" && pathname.includes(props.href)),
                 },
                 className

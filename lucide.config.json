@@ -1,7 +1,7 @@
 {
   "name": "Lucide CLI",
   "aliases": "lucide-cli",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "framework": "React",
   "typescript": true,
   "iconsDirectory": "src/components/lucide",

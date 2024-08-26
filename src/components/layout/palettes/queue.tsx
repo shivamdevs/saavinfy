@@ -8,7 +8,7 @@ import PalettesBox from "./box";
 function QueuePalette() {
     const player = usePlayer();
 
-    const currentSong = player.currentSong;
+    const { currentSong } = player;
 
     const upNextSongs = currentSong
         ? player.queue.slice(

@@ -3,6 +3,9 @@ import React from "react";
 
 export type RoundButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     size?: number;
+    className?: string;
+    style?: React.CSSProperties;
+    disabled?: boolean;
 };
 
 function RoundButton({

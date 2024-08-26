@@ -1,5 +1,7 @@
-import ErrorBox from "@/components/layout/error";
+import React from "react";
+
 import call from "@/lib/call";
+import ErrorBox from "@/components/layout/error";
 
 export default async function Page() {
     const response = await call("GET", "/feed");

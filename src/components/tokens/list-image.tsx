@@ -26,6 +26,7 @@ export default function ListImage({
     addToSearch,
 }: ListImageProps) {
     const library = useLibrary();
+
     return (
         <div className="w-12 h-12 relative overflow-hidden rounded-lg min-w-12">
             <Image

@@ -1,4 +1,3 @@
-import React from "react";
 import usePlayer from "..";
 
 export default function usePlayerOptions() {
