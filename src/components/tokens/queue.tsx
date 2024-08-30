@@ -49,7 +49,7 @@ function AddToQueue({ song, asQueue, asId, addToSearch }: QueueProps) {
                 }
             }}
         >
-            <Icon />
+            <Icon size={16} />
         </RoundButton>
     );
 }

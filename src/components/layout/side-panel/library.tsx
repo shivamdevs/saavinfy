@@ -9,6 +9,8 @@ import Entity from "@/components/tokens/entity";
 import Link from "next/link";
 
 import useLibrary from "@/contexts/library";
+import { usePathname } from "next/navigation";
+import AddToPlaylist from "@/components/tokens/playlist";
 
 export default function FavoritesAndPlaylists() {
     const library = useLibrary();
@@ -23,13 +25,14 @@ export default function FavoritesAndPlaylists() {
                 >
                     Your Library
                 </Heading>
+                <AddToPlaylist />
             </header>
             <div className="relative flex-1">
                 <div className="absolute inset-0 overflow-auto p-2">
                     <Tab
                         name="Favorites"
-                        id=""
-                        image="/images/favorites.png"
+                        href="/library"
+                        image="/images/favorites.jpg"
                         count={library.favorites.songs.length}
                         date={library.favorites.date}
                     />
@@ -40,19 +43,24 @@ export default function FavoritesAndPlaylists() {
 }
 
 export type TabProps = {
-    id: string;
+    href: string;
     count: number;
     name: string;
     date: number;
     image: string;
 };
-function Tab({ id, name, count, image, date }: TabProps) {
+function Tab({ href, name, count, image, date }: TabProps) {
+    const pathname = usePathname();
+
     return (
         <div
             className={cn(
                 "flex items-center p-2 relative",
                 "hover:bg-accent focus-within:bg-accent rounded-md",
-                "transition-all group gap-4"
+                "transition-all group gap-4",
+                {
+                    "bg-accent": pathname === href || pathname.includes(href),
+                }
             )}
         >
             <div className="w-10 h-10 rounded-lg flex-center">
@@ -73,7 +81,7 @@ function Tab({ id, name, count, image, date }: TabProps) {
                     {formatDateAndTime(date)}
                 </Text>
             </div>
-            <Link href={`/library/${id}`} className="absolute inset-0" />
+            <Link href={href} className="absolute inset-0" />
         </div>
     );
 }

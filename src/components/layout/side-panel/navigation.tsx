@@ -10,6 +10,7 @@ import { LucideElement } from "@/components/lucide/.lucide";
 import { LinkProps } from "@/types/link";
 import LucideHouse from "@/components/lucide/house";
 import LucideSearch from "@/components/lucide/search";
+import LucideSettings from "@/components/lucide/settings";
 
 function SidePanelNavigation() {
     return (
@@ -25,6 +26,9 @@ function SidePanelNavigation() {
             </Item>
             <Item href="/search" icon={LucideSearch}>
                 Search
+            </Item>
+            <Item href="/settings" icon={LucideSettings}>
+                Settings
             </Item>
         </section>
     );

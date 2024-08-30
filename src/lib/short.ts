@@ -24,7 +24,7 @@ class LibraryCacheLimiter {
                 )
                 .join(","),
             f: [
-                Math.floor(data.favorites.date / 1000),
+                Math.floor(data.favorites.date / 1000).toString(),
                 data.favorites.songs
                     .map((song) =>
                         [song.id, Math.floor(song.date / 1000)].join(":")
@@ -57,32 +57,36 @@ class LibraryCacheLimiter {
 
         if (!this.validate(data)) return this.fallback;
 
-        return {
-            searches: data.s.split(",").map((s) => {
-                const [id, query, date, type] = s.split(":");
+        const [fD, fS] = data.f.split(",");
 
-                return {
-                    id,
-                    query: decodeURIComponent(query),
-                    date: Number(date) * 1000,
-                    type:
-                        type === "s"
-                            ? "songs"
-                            : type === "l"
-                              ? "albums"
-                              : type === "r"
-                                ? "artists"
-                                : type === "p"
-                                  ? "playlists"
-                                  : "",
-                };
-            }),
+        return {
+            searches: data.s
+                .split(",")
+                .filter((s) => s.length > 0)
+                .map((s) => {
+                    const [id, query, date, type] = s.split(":");
+
+                    return {
+                        id,
+                        query: decodeURIComponent(query),
+                        date: Number(date) * 1000,
+                        type:
+                            type === "s"
+                                ? "songs"
+                                : type === "l"
+                                  ? "albums"
+                                  : type === "r"
+                                    ? "artists"
+                                    : type === "p"
+                                      ? "playlists"
+                                      : "",
+                    };
+                }),
             favorites: {
-                date: Number(data.f.split(",")[0]) * 1000,
+                date: fD ? Number(fD) * 1000 : Date.now(),
                 songs:
-                    data.f
-                        .split(",")[1]
-                        ?.split(";")
+                    ((fS ?? "").split(";") ?? [])
+                        .filter((s) => s.length > 0)
                         .map((s) => {
                             const [id, date] = s.split(":");
 
@@ -156,8 +160,19 @@ class PlayerCacheLimiter {
         if (!this.validate(data)) return this.fallback;
 
         return {
-            queue: data.q.split(",") as unknown as MediaSong[],
-            current: data.c !== undefined ? data.q.split(",")[data.c] : null,
+            queue: data.q
+                .split(",")
+                .filter(
+                    (s) => typeof s === "string" && s.length > 0
+                ) as unknown as MediaSong[],
+            current:
+                data.c !== undefined
+                    ? data.q
+                          .split(",")
+                          .filter((s) => typeof s === "string" && s.length > 0)[
+                          data.c
+                      ]
+                    : null,
             time: data.t,
             volume: data.v,
             options: {

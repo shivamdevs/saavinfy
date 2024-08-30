@@ -22,7 +22,7 @@ export default function FilterButton({
             href={`/search/${query}${value}`}
             type="button"
             className={cn(
-                "border border-accent px-8 py-2",
+                "border border-accent px-6 py-2 text-sm truncate",
                 "rounded-full hover:bg-accent transition-all",
                 {
                     "bg-secondary border-secondary-foreground":

@@ -12,6 +12,14 @@ function useOps(data: LibraryCache) {
 
     React.useEffect(() => {
         const data = libraryCacheLimiter.limit(libraryData);
+
+        console.log(
+            "Library data updated",
+            libraryData,
+            data,
+            libraryCacheLimiter.parse(data)
+        );
+
         setCookie(Config.cookies.keys.library, crypt.encrypt(data), {
             maxAge: Config.cookies.maxAge,
         });

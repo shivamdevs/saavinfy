@@ -3,8 +3,8 @@
 import React, { useEffect, useMemo } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import LucideSearch from "../../lucide/search";
-import LucideX from "../../lucide/x";
+import LucideSearch from "../../../components/lucide/search";
+import LucideX from "../../../components/lucide/x";
 import { useDebounce } from "react-unique-hooks";
 
 function Search() {

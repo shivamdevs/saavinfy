@@ -1,9 +1,9 @@
 import React from "react";
-import SearchResults from "./results";
-import StartSearch from "./start";
-import SafeArea from "@/components/layout/safe-area";
-import FilterButton from "./filter";
+import SearchResults from "../results";
+import StartSearch from "../start";
+import FilterButton from "../filter";
 import { getSearchFilter } from "@/lib/utils";
+import Search from "../search";
 
 function Page({
     params,
@@ -18,8 +18,9 @@ function Page({
 
     return (
         <div className="flex-1">
-            <SafeArea className="p-5">
-                <div className="sticky top-16 flex flex-wrap gap-2 p-2 layout-card z-20 rounded-none">
+            <div className="sticky top-0 flex gap-5 p-2 layout-card z-20 rounded-none">
+                <Search />
+                <div className="flex flex-nowrap gap-2 overflow-hidden items-center">
                     <FilterButton
                         query={query}
                         type={type}
@@ -51,11 +52,11 @@ function Page({
                         value="/playlists"
                     />
                 </div>
-                <SearchResults
-                    query={decodeURIComponent(query)}
-                    type={getSearchFilter(type)}
-                />
-            </SafeArea>
+            </div>
+            <SearchResults
+                query={decodeURIComponent(query)}
+                type={getSearchFilter(type)}
+            />
         </div>
     );
 }

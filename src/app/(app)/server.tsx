@@ -12,6 +12,7 @@ import { PlayerCachePush } from "@/types/opts";
 import { LibraryCache } from "@/types/library";
 import { LibraryProvider } from "@/contexts/library";
 import { libraryCacheLimiter, playerCacheLimiter } from "@/lib/short";
+import { Config } from "@/config";
 
 async function ServerLayout({ children }: React.PropsWithChildren) {
     const playerData = getPlayerData();
@@ -43,7 +44,7 @@ async function ServerLayout({ children }: React.PropsWithChildren) {
 export default ServerLayout;
 
 function getPlayerData() {
-    const bucket = getCookie("aPqL", { cookies });
+    const bucket = getCookie(Config.cookies.keys.player, { cookies });
 
     if (!bucket) {
         return playerCacheLimiter.fallback;
@@ -58,8 +59,8 @@ function getPlayerData() {
     return playerCacheLimiter.parse(decrypted) as PlayerCachePush;
 }
 
-function getLibraryData() {
-    const bucket = getCookie("aPlD", { cookies });
+export function getLibraryData() {
+    const bucket = getCookie(Config.cookies.keys.library, { cookies });
 
     if (!bucket) {
         return libraryCacheLimiter.fallback;

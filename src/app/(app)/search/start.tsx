@@ -1,6 +1,5 @@
 "use client";
 
-import SafeArea from "@/components/layout/safe-area";
 import LucideSearch from "@/components/lucide/search";
 import LucideX from "@/components/lucide/x";
 import RoundButton from "@/components/tokens/button";
@@ -16,7 +15,7 @@ function StartSearch() {
     const library = useLibrary();
 
     return (
-        <SafeArea className="flex absolute inset-0">
+        <div className="flex h-full w-full">
             <div className="flex-[3] flex-center flex-col gap-5">
                 <Heading
                     level={2}
@@ -58,7 +57,7 @@ function StartSearch() {
                     </div>
                 </div>
             )}
-        </SafeArea>
+        </div>
     );
 }
 
