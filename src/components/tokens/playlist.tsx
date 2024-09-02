@@ -10,8 +10,8 @@ import {
     DialogTrigger,
 } from "../ui/dialog";
 import RoundButton from "./button";
-import LucideCirclePlus from "../lucide/circle-plus";
 import { Button } from "../ui/button";
+import Lucide from "../lucide";
 
 export default function AddToPlaylist({
     songs,
@@ -26,7 +26,7 @@ export default function AddToPlaylist({
         <Dialog>
             <DialogTrigger asChild>
                 <RoundButton size={40} className="p-0">
-                    <LucideCirclePlus size={20} />
+                    <Lucide.CirclePlus size={20} />
                 </RoundButton>
             </DialogTrigger>
             <DialogContent>

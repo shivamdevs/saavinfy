@@ -1,9 +1,9 @@
 import React from "react";
-import LucideX from "@/components/lucide/x";
 import RoundButton from "@/components/tokens/button";
 import { Heading } from "@/components/tokens/typography";
 import { usePlayerOptions } from "@/contexts/player/hooks";
 import { cn } from "@/lib/utils";
+import Lucide from "@/components/lucide";
 
 export type PalettesHeaderProps = React.HTMLAttributes<HTMLDivElement>;
 export default function PalettesHeader({
@@ -33,7 +33,7 @@ export default function PalettesHeader({
                     })
                 }
             >
-                <LucideX />
+                <Lucide.X />
             </RoundButton>
         </header>
     );

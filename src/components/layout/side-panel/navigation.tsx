@@ -8,9 +8,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LucideElement } from "@/components/lucide/.lucide";
 import { LinkProps } from "@/types/link";
-import LucideHouse from "@/components/lucide/house";
-import LucideSearch from "@/components/lucide/search";
-import LucideSettings from "@/components/lucide/settings";
+import Lucide from "@/components/lucide";
 
 function SidePanelNavigation() {
     return (
@@ -21,13 +19,13 @@ function SidePanelNavigation() {
                     Saavinfy
                 </h1>
             </header>
-            <Item href="/" icon={LucideHouse}>
+            <Item href="/" icon={Lucide.House}>
                 Home
             </Item>
-            <Item href="/search" icon={LucideSearch}>
+            <Item href="/search" icon={Lucide.Search}>
                 Search
             </Item>
-            <Item href="/settings" icon={LucideSettings}>
+            <Item href="/settings" icon={Lucide.Settings}>
                 Settings
             </Item>
         </section>

@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import LibraryContext, { useHook as useLibrary } from "./context";
+import React, { useEffect } from "react";
+import LibraryContext, { ContextType, useHook as useLibrary } from "./context";
 import useLibraryOps from "./operations";
 import { LibraryCache } from "@/types/library";
 
@@ -12,7 +12,19 @@ export type LibraryProviderProps = React.PropsWithChildren<{
 }>;
 
 export function LibraryProvider({ children, data }: LibraryProviderProps) {
+    // TODO: This is a hack to expose the library operations to the window object
+    // TODO: so that it can be used in the browser console. This is useful for debugging
+    // TODO: and
+    // TODO: testing. This should be removed in production.
     const operations = useLibraryOps(data);
+
+    useEffect(() => {
+        if (typeof window === "undefined") {
+            return;
+        }
+
+        (window as unknown as { library: ContextType }).library = operations;
+    }, [operations]);
 
     return (
         <LibraryContext.Provider value={operations}>

@@ -1,35 +1,33 @@
-import InputRange from "./input";
-import { TimeSpan } from "@/components/tokens/typography";
+"use client";
+
+import { Slider } from "@/components/ui/slider";
 import usePlayer from "@/contexts/player";
 import { usePlayerBuffer, usePlayerTiming } from "@/contexts/player/hooks";
 import React from "react";
 
-export default function TrackSeeker() {
+export default function PlayerTrack() {
     const player = usePlayer();
     const [currentTime, totalDuration] = usePlayerTiming();
-
     const bufferPercent = usePlayerBuffer();
 
     return (
-        <div className="flex flex-nowrap w-full items-center text-secondary-foreground group-[.exp]:text-white font-black text-sm tracking-widest min-h-[16px]">
-            <TimeSpan className="min-w-[60px]" time={currentTime} />
-            <div className="range-box">
-                <div
-                    className="buffer"
-                    style={{ right: `${100 - bufferPercent}%` }}
-                ></div>
-                <InputRange
-                    max={totalDuration}
-                    value={currentTime}
-                    onChange={(seek: number) => {
-                        player.element!.currentTime = seek;
-                        player.setCurrentTime(seek);
-                    }}
-                />
-            </div>
-            <TimeSpan
-                className="min-w-[60px] text-right"
-                time={totalDuration}
+        <div className="absolute inset-0 bottom-auto h-1">
+            <span
+                className="absolute inset-0 h-1 bg-primary/20 transition-all"
+                style={{
+                    right: `${100 - bufferPercent}%`,
+                }}
+            />
+            <Slider
+                className="absolute inset-0"
+                min={0}
+                max={totalDuration}
+                value={[currentTime]}
+                buffer
+                onValueChange={([seek]: number[]) => {
+                    player.element!.currentTime = seek;
+                    player.setCurrentTime(seek);
+                }}
             />
         </div>
     );

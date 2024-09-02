@@ -18,7 +18,10 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={cn(Fonts.text.className, "dark")}>{children}</body>
+            <body className={cn(Fonts.text.className, "dark")}>
+                {children}
+                <div id="portal"></div>
+            </body>
         </html>
     );
 }

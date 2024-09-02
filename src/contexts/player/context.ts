@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { MediaSong } from "@/types/media";
 import { PlayerOptions } from "@/types/opts";
 import React from "react";
@@ -7,34 +8,32 @@ export type ContextType = {
 
     current: string | null;
     currentSong: MediaSong | undefined;
-    // eslint-disable-next-line no-unused-vars
     updateCurrent: (song: MediaSong) => Promise<void>;
 
     queue: Array<MediaSong>;
     shuffleQueue: () => void;
 
-    // eslint-disable-next-line no-unused-vars
     play: (song?: MediaSong) => Promise<void>;
     pause: () => void;
     toggle: () => void;
 
-    // eslint-disable-next-line no-unused-vars
     addSong: (song: MediaSong, start?: boolean, clear?: boolean) => void;
-    // eslint-disable-next-line no-unused-vars
     getSong: (song: MediaSong | string) => MediaSong | undefined;
-    // eslint-disable-next-line no-unused-vars
     hasSong: (song: MediaSong | string) => boolean;
-    // eslint-disable-next-line no-unused-vars
+
+    /**
+     * Remove a song from the queue.
+     * @param song The song to remove.
+     * @returns void
+     */
     removeSong: (song: MediaSong | string) => void;
     addSongs: (
-        // eslint-disable-next-line no-unused-vars
         songs: MediaSong[],
-        // eslint-disable-next-line no-unused-vars
+
         start?: boolean,
-        // eslint-disable-next-line no-unused-vars
+
         clear?: boolean
     ) => Promise<void>;
-    // eslint-disable-next-line no-unused-vars
     playingSong: (song?: MediaSong | string) => boolean;
 
     ended: boolean;
@@ -48,8 +47,11 @@ export type ContextType = {
     setVolume: React.Dispatch<React.SetStateAction<number>>;
 
     options: PlayerOptions;
-    // eslint-disable-next-line no-unused-vars
-    updateOptions: (opts: Partial<PlayerOptions>) => void;
+    updateOptions: (
+        opts:
+            | Partial<PlayerOptions>
+            | ((prev: PlayerOptions) => Partial<PlayerOptions>)
+    ) => void;
 
     fullScreen: boolean;
     setFullScreen: React.Dispatch<React.SetStateAction<boolean>>;

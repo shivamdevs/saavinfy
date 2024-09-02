@@ -1,32 +1,18 @@
-"use client";
-
-import usePlayer from "@/contexts/player";
 import React from "react";
-import TrackSeeker from "./track";
-import SongCard from "./song";
-import Controller from "./controller";
-import { cn } from "@/lib/utils";
+import PlayerTrack from "./track";
+import PlayerName from "./name";
+import PlayerControls from "./controls";
+import PlayerOptions from "./options";
 
-function FooterPlayer() {
-    const player = usePlayer();
-
-    if (player.queue.length === 0 || !player.current) {
-        return null;
-    }
-
+export default function Player() {
     return (
-        <footer
-            className={cn("layout-card py-2 px-5 flex flex-col gap-4", {
-                "bg-black/50": player.fullScreen,
-            })}
-        >
-            <TrackSeeker />
-            <div className="grid grid-cols-3 gap-10">
-                <SongCard />
-                <Controller />
+        <footer className="relative h-20" id="fullscreen">
+            <PlayerTrack />
+            <div className="grid grid-cols-3 p-4">
+                <PlayerName />
+                <PlayerControls />
+                <PlayerOptions />
             </div>
         </footer>
     );
 }
-
-export default FooterPlayer;

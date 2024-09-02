@@ -4,8 +4,8 @@ import { MediaSong } from "@/types/media";
 import React from "react";
 import RoundButton from "./button";
 import useLibrary from "@/contexts/library";
-import LucideHeart from "../lucide/heart";
 import { cn } from "@/lib/utils";
+import Lucide from "../lucide";
 
 export type FavoriteProps = {
     song: MediaSong;
@@ -24,7 +24,7 @@ export default function ToggleFavorite({ song }: FavoriteProps) {
                 library.toggleFavorite(song.id);
             }}
         >
-            <LucideHeart
+            <Lucide.Heart
                 size={16}
                 className={cn({
                     "text-primary": inFav,

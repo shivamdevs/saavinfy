@@ -3,6 +3,15 @@ export type MediaImage = {
     url: string;
 };
 
+export type MediaItem = {
+    id: string;
+    name?: string;
+    title?: string;
+    type?: string;
+    image: MediaImage[];
+    description?: string;
+};
+
 export type MediaImageQuality = "50x50" | "150x150" | "500x500";
 
 export type MediaDownloadURL = {

@@ -1,5 +1,7 @@
 import type { Config } from "tailwindcss";
 
+import plugin from "tailwindcss/plugin";
+
 const config = {
     darkMode: ["class"],
     content: [
@@ -76,7 +78,12 @@ const config = {
             },
         },
     },
-    plugins: [require("tailwindcss-animate")],
+    plugins: [
+        require("tailwindcss-animate"),
+        plugin(({ addVariant }) => {
+            addVariant("player", ":is(:where(body>section.has-player)) &");
+        }),
+    ],
 } satisfies Config;
 
 export default config;

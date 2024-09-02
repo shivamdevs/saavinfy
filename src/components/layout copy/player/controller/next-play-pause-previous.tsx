@@ -1,11 +1,4 @@
-import LucidePause from "@/components/lucide/pause";
-import LucidePlay from "@/components/lucide/play";
-import LucideRepeat from "@/components/lucide/repeat";
-import LucideRepeat1 from "@/components/lucide/repeat-1";
-import LucideRotateCcw from "@/components/lucide/rotate-ccw";
-import LucideShuffle from "@/components/lucide/shuffle";
-import LucideSkipBack from "@/components/lucide/skip-back";
-import LucideSkipForward from "@/components/lucide/skip-forward";
+import Lucide from "@/components/lucide";
 import RoundButton from "@/components/tokens/button";
 import usePlayer from "@/contexts/player";
 import { usePlayerNavigation, usePlayerState } from "@/contexts/player/hooks";
@@ -17,9 +10,13 @@ export default function NextPlayPausePrevious() {
     const [playing, ended] = usePlayerState();
     const states = usePlayerNavigation();
 
-    const Icon = ended ? LucideRotateCcw : playing ? LucidePause : LucidePlay;
+    const Icon = ended
+        ? Lucide.RotateCcw
+        : playing
+          ? Lucide.Pause
+          : Lucide.Play;
 
-    const LoopIcon = player.options.loop === 1 ? LucideRepeat1 : LucideRepeat;
+    const LoopIcon = player.options.loop === 1 ? Lucide.Repeat1 : Lucide.Repeat;
 
     return (
         <>
@@ -29,7 +26,7 @@ export default function NextPlayPausePrevious() {
                 disabled={player.queue.length < 2}
                 onClick={() => player.shuffleQueue()}
             >
-                <LucideShuffle />
+                <Lucide.Shuffle />
             </RoundButton>
             <RoundButton
                 size={45}
@@ -37,7 +34,7 @@ export default function NextPlayPausePrevious() {
                 disabled={!states.hasPrevious}
                 onClick={() => states.previous()}
             >
-                <LucideSkipBack />
+                <Lucide.SkipBack />
             </RoundButton>
             <RoundButton
                 size={55}
@@ -52,7 +49,7 @@ export default function NextPlayPausePrevious() {
                 disabled={!states.hasNext}
                 onClick={() => states.next()}
             >
-                <LucideSkipForward />
+                <Lucide.SkipForward />
             </RoundButton>
             <RoundButton
                 size={35}

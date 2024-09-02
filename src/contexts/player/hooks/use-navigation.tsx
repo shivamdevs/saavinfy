@@ -46,13 +46,24 @@ export default function usePlayerNavigation() {
         player.play(player.queue[currentIndex - 1]);
     }, [hasPrevious, player]);
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         const hasPrevious = getPrevious();
         const hasNext = getNext();
 
         setHasPrevious(hasPrevious);
         setHasNext(hasNext);
     }, [getNext, getPrevious, player.queue]);
+
+    const toggleLoop = React.useCallback(() => {
+        player.updateOptions({
+            loop:
+                player.options.loop === 0
+                    ? 2
+                    : player.options.loop === 2
+                      ? 1
+                      : 0,
+        });
+    }, [player]);
 
     return {
         play: player.play,
@@ -64,5 +75,7 @@ export default function usePlayerNavigation() {
 
         next,
         previous,
+
+        toggleLoop,
     } as const;
 }

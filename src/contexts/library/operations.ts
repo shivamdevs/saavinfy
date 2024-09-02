@@ -10,9 +10,10 @@ import { Config } from "@/config";
 function useOps(data: LibraryCache) {
     const [libraryData, setLibraryData] = React.useState<LibraryCache>(data);
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         const data = libraryCacheLimiter.limit(libraryData);
 
+        // eslint-disable-next-line no-console
         console.log(
             "Library data updated",
             libraryData,
@@ -67,6 +68,13 @@ function useOps(data: LibraryCache) {
         setLibraryData((prev) => ({
             ...prev,
             searches: prev.searches.filter((search) => search.id !== id),
+        }));
+    }, []);
+
+    const clearSearches = React.useCallback(() => {
+        setLibraryData((prev) => ({
+            ...prev,
+            searches: [],
         }));
     }, []);
 
@@ -208,6 +216,7 @@ function useOps(data: LibraryCache) {
         searches: libraryData.searches,
         addSearch,
         removeSearch,
+        clearSearches,
 
         favorites: libraryData.favorites,
         addFavorite,

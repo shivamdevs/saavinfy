@@ -8,14 +8,13 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Text, TimeSpan } from "./typography";
-import LucideClock from "../lucide/clock";
-import LucideHash from "../lucide/hash";
 import SongListButton from "./list-button";
 import PlayingTitle from "./title";
 import AddToQueue from "./queue";
 import ListImage from "./list-image";
 import Entity from "./entity";
 import ToggleFavorite from "./favorite";
+import Lucide from "../lucide";
 
 export type SongListProps = {
     items: MediaSong[];
@@ -58,7 +57,7 @@ function SongList({
                 >
                     {!noIndex && (
                         <Text className="text-secondary-foreground text-right w-11">
-                            <LucideHash className="ml-auto" size={16} />
+                            <Lucide.Hash className="ml-auto" size={16} />
                         </Text>
                     )}
                     <Text className="text-secondary-foreground text-sm font-semibold flex-1">
@@ -72,7 +71,7 @@ function SongList({
                     <span className="text-secondary-foreground w-8 flex-center"></span>
                     {!noDuration && (
                         <span className="text-secondary-foreground w-16 flex-center">
-                            <LucideClock size={16} />
+                            <Lucide.Clock size={16} />
                         </span>
                     )}
                 </header>

@@ -14,6 +14,7 @@ export type ContextType = {
     addSearch: (query: string, type: string) => void;
     // eslint-disable-next-line no-unused-vars
     removeSearch: (id: string) => void;
+    clearSearches: () => void;
 
     favorites: LibraryFavorite;
     // eslint-disable-next-line no-unused-vars
@@ -51,6 +52,7 @@ export const contextDefaultValue: ContextType = {
     searches: [],
     addSearch: () => {},
     removeSearch: () => {},
+    clearSearches: () => {},
 
     favorites: {
         date: Date.now(),

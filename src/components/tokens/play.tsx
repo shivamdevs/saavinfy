@@ -2,11 +2,10 @@
 
 import { cn } from "@/lib/utils";
 import React from "react";
-import LucidePause from "../lucide/pause";
-import LucidePlay from "../lucide/play";
 import { MediaSong } from "@/types/media";
 import usePlayer from "@/contexts/player";
 import useFetchAndPlay from "@/contexts/hooks/use-play";
+import Lucide from "../lucide";
 
 export type PlayButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     size?: number;
@@ -37,7 +36,7 @@ function PlayButton({
     const playingThisSong = player.playingSong(songId ?? song?.id ?? "");
     const isPlaying = player.playing;
 
-    const Icon = playingThisSong && isPlaying ? LucidePause : LucidePlay;
+    const Icon = playingThisSong && isPlaying ? Lucide.Pause : Lucide.Play;
 
     return (
         <button

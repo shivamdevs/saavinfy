@@ -2,7 +2,7 @@ export type SearchParams = {
     [key: string]: string | string[] | undefined;
 };
 
-export type PageProps = {
-    params: SearchParams;
+export type PageProps<P = SearchParams> = {
+    params: P;
     searchParams?: SearchParams;
 };

@@ -3,9 +3,8 @@
 import React, { useEffect, useMemo } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import LucideSearch from "../../../components/lucide/search";
-import LucideX from "../../../components/lucide/x";
 import { useDebounce } from "react-unique-hooks";
+import Lucide from "@/components/lucide";
 
 function Search() {
     const router = useRouter();
@@ -80,7 +79,7 @@ function Search() {
                 onChange={(e) => updateQuery(e.target.value)}
             />
 
-            <LucideSearch
+            <Lucide.Search
                 className="absolute top-1/2 left-3 transform -translate-y-1/2 pointer-events-none text-secondary-foreground"
                 size={20}
             />
@@ -96,7 +95,7 @@ function Search() {
                         router.replace("/search");
                     }}
                 >
-                    <LucideX size={20} />
+                    <Lucide.X size={20} />
                 </button>
             )}
         </form>

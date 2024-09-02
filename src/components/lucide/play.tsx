@@ -13,12 +13,12 @@ import { LucideElement, LucideProps } from './.lucide';
  * @returns {React.Component} LucidePlay component
  *
  * @example
- * <LucidePlay color="orange" size={77} />
+ * <LucidePlay color="blue" size={81} />
  *
  * @see https://lucide.dev/icons/play
  */
 const LucidePlay: LucideElement = React.forwardRef<SVGSVGElement, LucideProps>(({ className, color, size, ...props }, ref) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size ?? 24} height={size ?? 24} viewBox="0 0 24 24" fill="none" stroke={color ?? "currentColor"} strokeWidth={2.25} strokeLinecap="round" strokeLinejoin="round" {...props} className={`lucide lucide-play${className ? ` ${className}` : ""}`} ref={ref}><polygon points="6 3 20 12 6 21 6 3" /></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width={size ?? 20} height={size ?? 20} viewBox="0 0 24 24" fill="none" stroke={color ?? "currentColor"} strokeWidth={2.25} strokeLinecap="round" strokeLinejoin="round" {...props} className={`lucide lucide-play${className ? ` ${className}` : ""}`} ref={ref}><polygon points="6 3 20 12 6 21 6 3" /></svg>
 ));
 
 LucidePlay.displayName = "LucidePlay";

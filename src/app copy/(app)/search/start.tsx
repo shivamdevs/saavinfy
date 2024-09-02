@@ -1,7 +1,6 @@
 "use client";
 
-import LucideSearch from "@/components/lucide/search";
-import LucideX from "@/components/lucide/x";
+import Lucide from "@/components/lucide";
 import RoundButton from "@/components/tokens/button";
 import { Heading, MonoSpan, Text } from "@/components/tokens/typography";
 import useLibrary from "@/contexts/library";
@@ -26,7 +25,7 @@ function StartSearch() {
                 <Heading level={3} className="text-lg font-medium">
                     Search for a song, artist, album, or playlist
                 </Heading>
-                <LucideSearch
+                <Lucide.Search
                     size={320}
                     className="text-secondary-foreground"
                 />
@@ -101,7 +100,7 @@ function HistoryTab({
                         library.removeSearch(id);
                     }}
                 >
-                    <LucideX size={16} />
+                    <Lucide.X size={16} />
                 </RoundButton>
             </div>
             <Link

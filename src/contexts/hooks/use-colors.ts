@@ -15,7 +15,7 @@ export default function useColors(image?: MediaImage[] | string): ColorsHook {
         isDark: false,
     });
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         if (image) {
             const source = Array.isArray(image) ? image.at(-1)?.url : image;
             if (source) {

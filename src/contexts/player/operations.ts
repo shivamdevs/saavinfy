@@ -39,7 +39,16 @@ function useOps(data: PlayerCache) {
     const element = React.useRef<HTMLAudioElement>();
 
     const [currentTime, setCurrentTime] = React.useState(data.time ?? 0);
-    const [duration, setDuration] = React.useState(0);
+    const [duration, setDuration] = React.useState(() => {
+        if (current) {
+            const song = queue.find((s) => s.id === current);
+            if (song) {
+                return song.duration ?? 0;
+            }
+        }
+
+        return 0;
+    });
     const [volume, setVolume] = React.useState(data.volume ?? 1);
 
     const [playing, setPlaying] = React.useState(false);
@@ -48,15 +57,25 @@ function useOps(data: PlayerCache) {
     const [fullScreen, setFullScreen] = React.useState(false);
 
     // Update the player options
-    const updateOptions = React.useCallback((opts: Partial<PlayerOptions>) => {
-        setOptions((prev) => ({
-            ...prev,
-            ...opts,
-        }));
-    }, []);
+    const updateOptions = React.useCallback(
+        (
+            opts:
+                | Partial<PlayerOptions>
+                // eslint-disable-next-line no-unused-vars
+                | ((prev: PlayerOptions) => Partial<PlayerOptions>)
+        ) => {
+            setOptions((prev) => ({
+                ...prev,
+                ...(typeof opts === "function"
+                    ? opts(prev)
+                    : (opts as Partial<PlayerOptions>)),
+            }));
+        },
+        []
+    );
 
     // Initialize the audio element
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         const audio = new Audio();
 
         audio.preload = "metadata";
@@ -131,7 +150,7 @@ function useOps(data: PlayerCache) {
     }, [current, currentTime, queue, volume, options]);
 
     // Update the cookies whenever the player state changes
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         updateStorage();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [current, currentTime, queue, volume, options]);
@@ -140,7 +159,7 @@ function useOps(data: PlayerCache) {
     const updateCurrent = React.useCallback(async (song: MediaSong) => {
         const audio = element.current!;
         setCurrent(song.id);
-        setDuration(0);
+        setDuration(song.duration ?? 0);
         audio.pause();
         audio.currentTime = 0;
         audio.src = song.downloadUrl.at(-1)?.url!;
@@ -326,12 +345,12 @@ function useOps(data: PlayerCache) {
     }, [current, ended, options.loop, play, queue]);
 
     // Whenever the song ends, play the next song based on the loop options
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         autoPlayNext();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ended]);
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         if (fullScreen) {
             const element = document.getElementById("fullscreen");
             if (element) {
@@ -345,7 +364,7 @@ function useOps(data: PlayerCache) {
     }, [fullScreen]);
 
     // if user exits fullscreen, set the fullScreen state to false
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         document.onfullscreenchange = () => {
             if (!document.fullscreenElement) {
                 setFullScreen(false);
@@ -354,9 +373,19 @@ function useOps(data: PlayerCache) {
     }, []);
 
     // if pathname changes, set the fullScreen state to false
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         setFullScreen(false);
     }, [pathname]);
+
+    // if options.muted changes, update the audio element
+    React.useLayoutEffect(() => {
+        element.current!.muted = options.muted;
+    }, [options.muted]);
+
+    // if volume changes, update the audio element
+    React.useLayoutEffect(() => {
+        element.current!.volume = volume;
+    }, [volume]);
 
     return {
         element: element.current,

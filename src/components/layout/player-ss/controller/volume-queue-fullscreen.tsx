@@ -3,39 +3,31 @@ import VolumeSeeker from "../volume";
 import RoundButton from "@/components/tokens/button";
 import usePlayer from "@/contexts/player";
 import { usePlayerOptions, usePlayerVolume } from "@/contexts/player/hooks";
-import LucideVolumeX from "@/components/lucide/volume-x";
-import LucideVolume from "@/components/lucide/volume";
-import LucideVolume1 from "@/components/lucide/volume-1";
-import LucideVolume2 from "@/components/lucide/volume-2";
-import LucideListMusic from "@/components/lucide/list-music";
-import LucideInfo from "@/components/lucide/info";
-import LucideMaximize2 from "@/components/lucide/maximize-2";
 import { cn } from "@/lib/utils";
-import LucideMicVocal from "@/components/lucide/mic-vocal";
 import { usePathname, useRouter } from "next/navigation";
-import LucideMinimize2 from "@/components/lucide/minimize-2";
+import Lucide from "@/components/lucide";
 
 function VolumeQueueFullscreen() {
     const player = usePlayer();
-    const [options, updateOptions] = usePlayerOptions();
+    const { update: updateOptions, ...options } = usePlayerOptions();
     const [volValue, , volMuted] = usePlayerVolume();
 
     const router = useRouter();
     const pathname = usePathname();
 
     const VolumeIcon = volMuted
-        ? LucideVolumeX
+        ? Lucide.VolumeX
         : volValue === 0
-          ? LucideVolume
+          ? Lucide.Volume
           : volValue < 0.5
-            ? LucideVolume1
-            : LucideVolume2;
+            ? Lucide.Volume1
+            : Lucide.Volume2;
 
     const FullScreenIcon = player.fullScreen
-        ? LucideMinimize2
-        : LucideMaximize2;
+        ? Lucide.Minimize2
+        : Lucide.Maximize2;
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         router.prefetch("/lyrics");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -58,7 +50,7 @@ function VolumeQueueFullscreen() {
                             });
                         }}
                     >
-                        <LucideInfo />
+                        <Lucide.Info />
                     </RoundButton>
                     <RoundButton
                         size={35}
@@ -80,7 +72,7 @@ function VolumeQueueFullscreen() {
                             }
                         }}
                     >
-                        <LucideMicVocal />
+                        <Lucide.MicVocal />
                     </RoundButton>
                     <RoundButton
                         size={35}
@@ -96,7 +88,7 @@ function VolumeQueueFullscreen() {
                             });
                         }}
                     >
-                        <LucideListMusic />
+                        <Lucide.ListMusic />
                     </RoundButton>
                 </>
             )}

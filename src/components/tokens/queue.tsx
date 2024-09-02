@@ -3,11 +3,10 @@
 import { MediaSong } from "@/types/media";
 import React from "react";
 import RoundButton from "./button";
-import LucideListPlus from "../lucide/list-plus";
 import usePlayer from "@/contexts/player";
-import LucideX from "../lucide/x";
 import useFetchAndPlay from "@/contexts/hooks/use-play";
 import useLibrary from "@/contexts/library";
+import Lucide from "../lucide";
 
 export type QueueProps = {
     song: MediaSong;
@@ -24,7 +23,7 @@ function AddToQueue({ song, asQueue, asId, addToSearch }: QueueProps) {
     const library = useLibrary();
     const fetchPlay = useFetchAndPlay();
 
-    const Icon = asQueue ? LucideX : LucideListPlus;
+    const Icon = asQueue ? Lucide.X : Lucide.ListPlus;
 
     const inQueue = player.queue.some((s) => s.id === song.id);
 
