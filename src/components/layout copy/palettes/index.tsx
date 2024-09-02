@@ -6,7 +6,7 @@ import QueuePalette from "./queue";
 import InfoPalette from "./info";
 
 function Palettes() {
-    const [options] = usePlayerOptions();
+    const { ...options } = usePlayerOptions();
 
     if (!options.panel) return null;
 
