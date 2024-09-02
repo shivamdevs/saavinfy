@@ -11,7 +11,7 @@ export default function PalettesHeader({
     children,
     ...props
 }: PalettesHeaderProps) {
-    const [, updateOptions] = usePlayerOptions();
+    const { update: updateOptions } = usePlayerOptions();
 
     return (
         <header
