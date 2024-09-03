@@ -10,12 +10,14 @@ import { LibrarySearchHistory } from "@/types/library";
 import Link from "next/link";
 import React from "react";
 import { useInterval } from "react-unique-hooks";
+import Search from "./search";
 
 function StartSearch() {
     const library = useLibrary();
 
     return (
         <div className="flex h-full w-full">
+            <Search />
             <div className="flex-[3] flex-center flex-col gap-5">
                 <Heading
                     level={2}
