@@ -1,5 +1,10 @@
 import { ServerError, ServerResponse } from "@/modules/server";
-import { MediaSong } from "@/types/media";
+import {
+    MediaAlbum,
+    MediaArtistSongs,
+    MediaPlaylist,
+    MediaSong,
+} from "@/types/media";
 import {
     SearchAlbum,
     SearchArtist,
@@ -173,5 +178,25 @@ export default class Saavn {
         return this.get<SearchResultFor<SearchPlaylist>>(
             SaavnEndpoints.search(query, "/playlists", page, limit)
         );
+    }
+
+    public static playlist(id: string, page: number = 1, limit: number = 10) {
+        return this.get<MediaPlaylist>(
+            SaavnEndpoints.playlist(id, page, limit)
+        );
+    }
+
+    public static artistSongs(
+        id: string,
+        page: number = 1,
+        limit: number = 10
+    ) {
+        return this.get<MediaArtistSongs>(
+            SaavnEndpoints.artistSongs(id, page, limit)
+        );
+    }
+
+    public static album(id: string) {
+        return this.get<MediaAlbum>(SaavnEndpoints.album(id));
     }
 }

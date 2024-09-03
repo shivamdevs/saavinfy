@@ -16,7 +16,7 @@ export const List = React.memo(
         const childrenArray = React.Children.toArray(children);
 
         return (
-            <div className={`flex flex-col items-center gap-4 ${className}`}>
+            <div className={cn(`flex flex-col items-center gap-4`, className)}>
                 <AnimatePresence initial={initial} mode={mode}>
                     {childrenArray.map((item) => (
                         <ListItem key={(item as ReactElement).key}>

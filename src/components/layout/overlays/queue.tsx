@@ -61,7 +61,7 @@ export default function OverlayQueue() {
                 {song ? (
                     <>
                         <h4 className="font-medium my-4 px-4">Playing now</h4>
-                        <List className="px-2" mode="wait">
+                        <List className="px-2">
                             <QueueItem key={song.id} item={song} />
                         </List>
                         {upcoming.length > 0 && (
@@ -69,7 +69,7 @@ export default function OverlayQueue() {
                                 Up next
                             </h4>
                         )}
-                        <List className="px-2" mode="wait">
+                        <List className="px-2 gap-0" mode="sync">
                             {upcoming.map((item) => (
                                 <QueueItem key={item.id} item={item} />
                             ))}
@@ -87,6 +87,7 @@ export default function OverlayQueue() {
                         />
                     </>
                 )}
+                <span className="block h-16" />
             </OverlayContent>
         </>
     );

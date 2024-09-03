@@ -192,9 +192,9 @@ function useOps(data: PlayerCache) {
 
     // Trigger the play function
     const play = React.useCallback(
-        async (song?: MediaSong) => {
+        async (song?: MediaSong, q: MediaSong[] = queue) => {
             if (song) {
-                if (!queue.some((s) => s.id === song.id)) {
+                if (!q.some((s) => s.id === song.id)) {
                     setQueue([song]);
                 }
 
@@ -246,7 +246,7 @@ function useOps(data: PlayerCache) {
             }
 
             if (start) {
-                play(song);
+                play(song, q);
             }
         },
         [current, play, queue, updateCurrent]
@@ -278,7 +278,7 @@ function useOps(data: PlayerCache) {
             }
 
             if (start) {
-                play(songs[0]);
+                play(songs[0], q);
             }
         },
         [current, play, queue, updateCurrent]

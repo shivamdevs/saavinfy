@@ -38,7 +38,7 @@ function Result({
         <>
             <Log log={data} />
 
-            <SongList items={data.results} />
+            <SongList items={data.results} className="py-10" />
 
             <span className="block h-8" />
 

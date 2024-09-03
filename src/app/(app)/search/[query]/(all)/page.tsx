@@ -2,9 +2,9 @@ import ErrorBox from "@/components/layout/error";
 import Saavn from "@/helpers/saavn";
 import { PageProps } from "@/types/args";
 import React from "react";
-import TopResult from "../_components/top";
+import TopResult from "../../_components/top";
 import { SearchResult } from "@/types/search";
-import GridList from "../_components/grid";
+import GridList from "../../_components/grid";
 import Log from "@/components/log";
 
 export default async function Page({ params }: PageProps<{ query?: string }>) {

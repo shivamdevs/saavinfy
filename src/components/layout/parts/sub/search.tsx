@@ -14,7 +14,6 @@ export default function PartSearch() {
     const router = useRouter();
     const params = useParams<{
         query?: string;
-        type?: string;
     }>();
     const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -29,10 +28,9 @@ export default function PartSearch() {
             if (value.length === 0) {
                 router.replace("/search");
             } else {
+                const [, , , type] = pathname.split("/");
                 router.replace(
-                    `/search/${Searcher.encode(value)}/${
-                        params.type ? params.type : ""
-                    }`
+                    `/search/${Searcher.encode(value)}/${type ? type : ""}`
                 );
             }
         },

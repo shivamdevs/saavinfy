@@ -5,7 +5,6 @@ import { Card } from "@/components/ui/card";
 import { SearchResult } from "@/types/search";
 import Link from "next/link";
 import React from "react";
-import { cn } from "@/lib/utils";
 import Parser from "@/helpers/parser";
 import PullPlay from "@/components/blocks/play";
 
@@ -21,7 +20,7 @@ export default function TopResult({
     }
 
     return (
-        <div className="flex flex-row gap-10">
+        <div className="flex flex-row gap-10 mt-5">
             {top && <Top item={top} />}
             <div className="flex flex-col flex-[2]">
                 <h3 className="capitalize text-2xl my-5 px-4 font-semibold">

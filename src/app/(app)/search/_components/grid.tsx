@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import BlockDescription from "@/components/blocks/description";
 import BlockImage from "@/components/blocks/image";
 import BlockTitle from "@/components/blocks/title";
@@ -9,9 +9,13 @@ import { cn } from "@/lib/utils";
 import { SearchResultType } from "@/types/search";
 import Link from "next/link";
 import ScreenReader from "../../../../components/blocks/screen-reader";
-import BlockMenu from "@/components/blocks/menu";
+import BlockMenu, { BlockMenuContent } from "@/components/blocks/menu";
 import IconSleeping from "@/components/icons/sleeping";
 import PullPlay from "@/components/blocks/play";
+import useFetchAndPlay from "@/contexts/hooks/use-play";
+import Lucide from "@/components/lucide";
+import { useRouter } from "next/navigation";
+import useLibrary from "@/contexts/library";
 
 export type GridListProps = {
     title?: string;
@@ -37,8 +41,71 @@ export default function GridList({ title, items }: GridListProps) {
 }
 
 function GridItem({ item }: { item: SearchResultType }) {
+    const router = useRouter();
+    const fetchPlay = useFetchAndPlay();
+    const library = useLibrary();
+
+    const play = useCallback(
+        (addToQueue: boolean = false) => {
+            if (item.type === "album") {
+                fetchPlay.album(item, addToQueue);
+            } else if (item.type === "playlist") {
+                fetchPlay.playlist(item, addToQueue);
+            } else if (item.type === "artist") {
+                fetchPlay.artistSongs(item, addToQueue);
+            }
+        },
+        [item, fetchPlay]
+    );
+
+    const menuItems = useMemo<BlockMenuContent[]>(
+        () => [
+            {
+                name: "Play now",
+                icon: Lucide.Play,
+                onClick: () => play(),
+            },
+            {
+                name: "Add to queue",
+                icon: Lucide.Plus,
+                onClick: () => play(true),
+            },
+            true,
+            {
+                name: "Add to playlist",
+                icon: Lucide.CirclePlus,
+                sub: [
+                    {
+                        name: "New playlist",
+                        icon: Lucide.Plus,
+                    },
+                    (library.playlists || []).length > 0 && true,
+                    ...library.playlists.map((playlist) => ({
+                        name: playlist.name,
+                        onClick: () =>
+                            library.addSongsToPlaylist(playlist.id, item.id),
+                    })),
+                ],
+            },
+            true,
+            {
+                name: `View ${item.type}`,
+                icon:
+                    item.type === "album"
+                        ? Lucide.Disc3
+                        : item.type === "playlist"
+                          ? Lucide.ListMusic
+                          : item.type === "artist"
+                            ? Lucide.MicVocal
+                            : Lucide.Info,
+                onClick: () => router.push(`/${item.type}/${item.id}`),
+            },
+        ],
+        [item, library, play, router]
+    );
+
     return (
-        <BlockMenu items={[]}>
+        <BlockMenu items={menuItems}>
             <Card
                 {...Object.entries(item).reduce(
                     (acc, [key, value]) =>
@@ -65,7 +132,7 @@ function GridItem({ item }: { item: SearchResultType }) {
                     size={192}
                     className={cn(item.type === "artist" && "rounded-full")}
                 >
-                    <PullPlay item={item} />
+                    <PullPlay item={item} onClick={() => play()} />
                 </BlockImage>
                 <BlockTitle item={item} className="text-lg line-clamp-2" />
                 <BlockDescription

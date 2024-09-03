@@ -16,6 +16,8 @@ export type PullPlayProps = {
     noPull?: boolean;
     inQueue?: boolean;
     inset?: boolean;
+
+    onClick?: () => void;
 };
 export default function PullPlay({
     item,
@@ -23,6 +25,7 @@ export default function PullPlay({
     noPull,
     inset,
     inQueue,
+    onClick,
 }: PullPlayProps) {
     const player = usePlayer();
     const fetchPlay = useFetchAndPlay();
@@ -50,6 +53,10 @@ export default function PullPlay({
             onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
+
+                if (onClick) {
+                    onClick();
+                }
 
                 if (item.type === "song") {
                     const song = item as MediaSong;

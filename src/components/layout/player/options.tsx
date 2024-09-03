@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import Tippy from "@/components/ui/tooltip";
 import PlayerVolume from "./volume";
 import Lucide from "@/components/lucide";
+import PlayerTime from "./time";
 
 export default function PlayerOptions() {
     const player = usePlayer();
@@ -20,6 +21,7 @@ export default function PlayerOptions() {
 
     return (
         <div className="flex-center justify-end gap-4">
+            <PlayerTime />
             {!player.fullScreen && (
                 <>
                     <Tippy

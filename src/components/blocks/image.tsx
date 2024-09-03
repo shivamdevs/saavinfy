@@ -37,7 +37,10 @@ export default function BlockImage({
 
     return (
         <div
-            className={cn("flex-center relative rounded-lg", className)}
+            className={cn(
+                "flex-center inline-flex flex-grow-0 relative rounded-lg",
+                className
+            )}
             style={{
                 width: size,
                 height: size,
