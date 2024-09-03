@@ -10,7 +10,17 @@ export type PlayerCache = {
 };
 
 export type PlayerCachePush = PlayerCache & {
-    queue: string[];
+    queue: MediaSong[] | string[];
+};
+
+export type PlayerCacheLimited = {
+    q: string;
+    c?: number;
+    t: number;
+    v: number;
+    _l?: 1 | 2;
+    _m?: 1;
+    _p?: "q" | "s" | "i";
 };
 
 export type PlayerOptions = {
@@ -19,4 +29,4 @@ export type PlayerOptions = {
     panel: PlayerPanel;
 };
 
-export type PlayerPanel = "queue" | "lyrics" | "settings" | "info" | undefined;
+export type PlayerPanel = "queue" | "settings" | "info" | undefined;

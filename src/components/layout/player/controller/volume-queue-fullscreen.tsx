@@ -37,7 +37,8 @@ function VolumeQueueFullscreen() {
 
     React.useEffect(() => {
         router.prefetch("/lyrics");
-    }, [router]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <>

@@ -52,7 +52,7 @@ export default function usePlayerNavigation() {
 
         setHasPrevious(hasPrevious);
         setHasNext(hasNext);
-    }, [player.queue, getPrevious, getNext]);
+    }, [getNext, getPrevious, player.queue]);
 
     return {
         play: player.play,

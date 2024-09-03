@@ -9,7 +9,7 @@ export type ColorsHook = {
     result?: FastAverageColorResult;
 };
 
-export default function useColors(image?: MediaImage[]): ColorsHook {
+export default function useColors(image?: MediaImage[] | string): ColorsHook {
     const [color, setColor] = React.useState<ColorsHook>({
         background: "",
         isDark: false,
@@ -17,7 +17,7 @@ export default function useColors(image?: MediaImage[]): ColorsHook {
 
     React.useEffect(() => {
         if (image) {
-            const source = image.at(-1)?.url;
+            const source = Array.isArray(image) ? image.at(-1)?.url : image;
             if (source) {
                 const fac = new FastAverageColor();
 

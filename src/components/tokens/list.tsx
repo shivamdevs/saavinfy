@@ -15,6 +15,7 @@ import PlayingTitle from "./title";
 import AddToQueue from "./queue";
 import ListImage from "./list-image";
 import Entity from "./entity";
+import ToggleFavorite from "./favorite";
 
 export type SongListProps = {
     items: MediaSong[];
@@ -25,6 +26,8 @@ export type SongListProps = {
     noDuration?: boolean;
     asId?: boolean;
     asQueue?: boolean;
+    // eslint-disable-next-line no-unused-vars
+    replaceAlbum?: (song: MediaSong) => React.ReactNode;
     addToSearch?: {
         query: string;
         type: string;
@@ -40,6 +43,7 @@ function SongList({
     noIndex,
     asId,
     asQueue,
+    replaceAlbum,
     addToSearch,
 }: SongListProps) {
     return (
@@ -47,7 +51,7 @@ function SongList({
             {!noHeader && (
                 <header
                     className={cn(
-                        "my-4 border-b border-b-border sticky top-[7.5rem] py-2",
+                        "my-4 border-b border-b-border sticky top-0 py-2",
                         "z-20 layout-card rounded-none flex items-center gap-4",
                         className
                     )}
@@ -122,17 +126,19 @@ function SongList({
                     {!noAlbum && (
                         <div className="flex-1">
                             <Text className="text-sm text-secondary-foreground">
-                                {getSongAlbum(song.album)}
+                                {replaceAlbum?.(song) ??
+                                    getSongAlbum(song.album)}
                             </Text>
                         </div>
                     )}
-                    <div>
+                    <div className="inline-flex gap-1">
                         <AddToQueue
                             song={song}
                             asId={asId}
                             asQueue={asQueue}
                             addToSearch={addToSearch}
                         />
+                        <ToggleFavorite song={song} />
                     </div>
                     {!noDuration && (
                         <div className="items-center gap-2 w-16 text-right">

@@ -1,13 +1,30 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
-import { v4 as uuid } from "uuid";
+import { v4 as uuidV4 } from "uuid";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-export { uuid };
+export const uuid = (length?: number, replaceHyphens?: boolean) => {
+    let res = uuidV4();
+    if (!length) return res;
+
+    if (replaceHyphens) {
+        res = res.replace(/-/g, "");
+    }
+
+    while (res.length < length) {
+        res += uuidV4();
+
+        if (replaceHyphens) {
+            res = res.replace(/-/g, "");
+        }
+    }
+
+    return res.slice(0, length);
+};
 
 export function getServerPathname(head: ReadonlyHeaders) {
     const url = new URL(
@@ -96,7 +113,7 @@ export function formatPlural(
     return count === 1 ? singular : plural;
 }
 
-export function formatDateAndTime(date: number, noNumber: boolean = false) {
+export function formatDateAndTime(date: number, noNumber: boolean = true) {
     // if within 10 seconds => "Just now"
     // if within 1 minute => "x seconds ago"
     // if within 1 hour => "x minutes ago"

@@ -44,7 +44,9 @@ function SearchResults({ query, type }: SearchResultsProps) {
 
     return (
         <ErrorBox data={data}>
-            <Response data={data.data} type={type.replace("/", "")} />
+            <div className="p-5">
+                <Response data={data.data} type={type.replace("/", "")} />
+            </div>
         </ErrorBox>
     );
 }
@@ -60,6 +62,7 @@ function Response({ data, type }: { data: unknown; type: string }) {
     if (type === "songs") {
         return (
             <SongList
+                className="top-14"
                 items={(data as SearchResultFor<MediaSong>).results}
                 addToSearch={{
                     query: params.slug?.[0]!,

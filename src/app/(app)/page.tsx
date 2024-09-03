@@ -1,10 +1,5 @@
-import React from "react";
-
-import call from "@/lib/call";
-import ErrorBox from "@/components/layout/error";
+import { redirect } from "next/navigation";
 
 export default async function Page() {
-    const response = await call("GET", "/feed");
-
-    return <ErrorBox data={response}></ErrorBox>;
+    return redirect("/search");
 }

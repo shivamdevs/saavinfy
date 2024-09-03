@@ -15,11 +15,15 @@ export type ContextType = {
     // eslint-disable-next-line no-unused-vars
     removeSearch: (id: string) => void;
 
-    favorites: LibraryFavorite[];
+    favorites: LibraryFavorite;
     // eslint-disable-next-line no-unused-vars
-    addFavorite: (id: string) => void;
+    addFavorite: (ids: string | string[]) => void;
     // eslint-disable-next-line no-unused-vars
-    removeFavorite: (id: string) => void;
+    removeFavorite: (ids: string | string[]) => void;
+    // eslint-disable-next-line no-unused-vars
+    toggleFavorite: (id: string) => void;
+    // eslint-disable-next-line no-unused-vars
+    isFavorite: (id: string) => boolean;
 
     playlists: LibraryPlaylist[];
     // eslint-disable-next-line no-unused-vars
@@ -30,12 +34,17 @@ export type ContextType = {
     renamePlaylist: (id: string, name: string) => void;
     // eslint-disable-next-line no-unused-vars
     addSongsToPlaylist: (id: string, songs: string[] | string) => void;
+    // eslint-disable-next-line no-unused-vars
+    removeSongsFromPlaylist: (id: string, songs: string | string) => void;
 };
 
 export const contextDefaultValue: ContextType = {
     log: {
         searches: [],
-        favorites: [],
+        favorites: {
+            date: Date.now(),
+            songs: [],
+        },
         playlists: [],
     },
 
@@ -43,15 +52,21 @@ export const contextDefaultValue: ContextType = {
     addSearch: () => {},
     removeSearch: () => {},
 
-    favorites: [],
+    favorites: {
+        date: Date.now(),
+        songs: [],
+    },
     addFavorite: () => {},
     removeFavorite: () => {},
+    toggleFavorite: () => {},
+    isFavorite: () => false,
 
     playlists: [],
     createPlaylist: () => {},
     removePlaylist: () => {},
     renamePlaylist: () => {},
     addSongsToPlaylist: () => {},
+    removeSongsFromPlaylist: () => {},
 };
 
 export const ContextElement =
