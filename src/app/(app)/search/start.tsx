@@ -16,49 +16,51 @@ function StartSearch() {
     const library = useLibrary();
 
     return (
-        <div className="flex h-full w-full">
+        <div className="h-full w-full">
             <Search />
-            <div className="flex-[3] flex-center flex-col gap-5">
-                <Heading
-                    level={2}
-                    className="text-4xl font-semibold text-primary"
-                >
-                    Start Searching
-                </Heading>
-                <Heading level={3} className="text-lg font-medium">
-                    Search for a song, artist, album, or playlist
-                </Heading>
-                <LucideSearch
-                    size={320}
-                    className="text-secondary-foreground"
-                />
-            </div>
-            {library.searches.length > 0 && (
-                <div className="flex-[2] pt-3 flex flex-col">
+            <div className="flex h-full w-full">
+                <div className="flex-[3] flex-center flex-col gap-5">
                     <Heading
-                        level={3}
-                        className="text-2xl font-semibold pb-3 text-secondary-foreground"
+                        level={2}
+                        className="text-4xl font-semibold text-primary"
                     >
-                        Search history
+                        Start Searching
                     </Heading>
-                    <div className="flex-1 relative">
-                        <div className="absolute inset-0 overflow-auto pr-2">
-                            {library.searches
-                                .sort((a, b) => b.date - a.date)
-                                .map((search, index) => (
-                                    <HistoryTab
-                                        key={search.id}
-                                        index={index}
-                                        {...search}
-                                        query={decodeURIComponent(
-                                            search.query
-                                        ).replace(/\+/g, " ")}
-                                    />
-                                ))}
+                    <Heading level={3} className="text-lg font-medium">
+                        Search for a song, artist, album, or playlist
+                    </Heading>
+                    <LucideSearch
+                        size={320}
+                        className="text-secondary-foreground"
+                    />
+                </div>
+                {library.searches.length > 0 && (
+                    <div className="flex-[2] pt-3 flex flex-col">
+                        <Heading
+                            level={3}
+                            className="text-2xl font-semibold pb-3 text-secondary-foreground"
+                        >
+                            Search history
+                        </Heading>
+                        <div className="flex-1 relative">
+                            <div className="absolute inset-0 overflow-auto pr-2">
+                                {library.searches
+                                    .sort((a, b) => b.date - a.date)
+                                    .map((search, index) => (
+                                        <HistoryTab
+                                            key={search.id}
+                                            index={index}
+                                            {...search}
+                                            query={decodeURIComponent(
+                                                search.query
+                                            ).replace(/\+/g, " ")}
+                                        />
+                                    ))}
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 }
