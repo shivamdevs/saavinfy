@@ -5,8 +5,9 @@ import { Card } from "@/components/ui/card";
 import { SearchResult } from "@/types/search";
 import Link from "next/link";
 import React from "react";
-import PullPlay from "./play";
 import { cn } from "@/lib/utils";
+import Parser from "@/helpers/parser";
+import PullPlay from "@/components/blocks/play";
 
 export default function TopResult({
     top,
@@ -75,19 +76,18 @@ function Song({ item }: { item: SearchResult["songs"]["results"][0] }) {
                 className="p-2 flex flex-1 gap-4 items-center"
             >
                 <BlockImage src={item.image} alt={item.title} size={48}>
-                    <PullPlay
-                        item={item}
-                        className={cn(
-                            "size-9 absolute right-1/2 bottom-1/2",
-                            "transform translate-x-1/2 translate-y-1/2",
-                            "hover:rounded-none hover:size-full hover:duration-75"
-                        )}
-                    />
+                    <PullPlay item={item} inset />
                 </BlockImage>
                 <div className="flex flex-col flex-1 justify-center">
                     <BlockTitle item={item} className="text-base" />
                     <BlockDescription item={item} className="text-sm" />
                 </div>
+                <BlockDescription
+                    className="flex-1 capitalize text-sm"
+                    item={item}
+                >
+                    {Parser.entity(item.language)} • {Parser.entity(item.album)}
+                </BlockDescription>
             </Link>
         </Card>
     );

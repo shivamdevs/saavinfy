@@ -8,21 +8,25 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { SearchResultType } from "@/types/search";
 import Link from "next/link";
-import PullPlay from "./play";
-import ScreenReader from "./screen-reader";
+import ScreenReader from "../../../../components/blocks/screen-reader";
 import BlockMenu from "@/components/blocks/menu";
+import IconSleeping from "@/components/icons/sleeping";
+import PullPlay from "@/components/blocks/play";
 
 export type GridListProps = {
-    title: string;
+    title?: string;
     items: SearchResultType[];
 };
 
 export default function GridList({ title, items }: GridListProps) {
     return (
         <div className="my-10">
-            <h3 className="capitalize text-2xl my-5 px-4 font-semibold">
-                {title}
-            </h3>
+            {title && (
+                <h3 className="capitalize text-2xl my-5 px-4 font-semibold">
+                    {title}
+                </h3>
+            )}
+            {items.length === 0 && <IconSleeping className="mx-auto" />}
             <div className="w-full flex flex-wrap justify-start items-stretch">
                 {items.map((item) => (
                     <GridItem key={item.id} item={item} />

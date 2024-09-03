@@ -125,4 +125,18 @@ export default class Parser {
 
         return doc.documentElement.textContent || html;
     }
+
+    public static int(value?: string, fallback: number = 0) {
+        if (typeof value === "undefined") {
+            return fallback;
+        }
+
+        const parsed = parseInt(value);
+
+        if (isNaN(parsed)) {
+            return fallback;
+        }
+
+        return parsed;
+    }
 }

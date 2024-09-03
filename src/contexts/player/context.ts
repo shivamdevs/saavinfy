@@ -36,6 +36,12 @@ export type ContextType = {
     ) => Promise<void>;
     playingSong: (song?: MediaSong | string) => boolean;
 
+    /**
+     * Clear the queue.
+     * @returns void
+     */
+    clearQueue: () => void;
+
     ended: boolean;
     playing: boolean;
 
@@ -76,6 +82,7 @@ export const contextDefaultValue: ContextType = {
     addSongs: async () => {},
     removeSong: () => {},
     playingSong: () => false,
+    clearQueue: () => {},
 
     ended: false,
     playing: false,

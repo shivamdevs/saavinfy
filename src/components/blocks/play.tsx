@@ -3,23 +3,25 @@
 import { Button } from "@/components/ui/button";
 import { SearchResultType } from "@/types/search";
 import React from "react";
-import ScreenReader from "./screen-reader";
 import { cn } from "@/lib/utils";
 import useFetchAndPlay from "@/contexts/hooks/use-play";
 import { MediaSong } from "@/types/media";
 import usePlayer from "@/contexts/player";
 import Lucide from "@/components/lucide";
+import ScreenReader from "./screen-reader";
 
 export type PullPlayProps = {
     item: SearchResultType | MediaSong;
     className?: string;
     noPull?: boolean;
     inQueue?: boolean;
+    inset?: boolean;
 };
 export default function PullPlay({
     item,
     className,
     noPull,
+    inset,
     inQueue,
 }: PullPlayProps) {
     const player = usePlayer();
@@ -36,6 +38,12 @@ export default function PullPlay({
                 {
                     "absolute bottom-2 right-2 -mb-4 ": !noPull,
                     "group-hover:mb-0 group-focus-within:mb-0": !noPull,
+                },
+                {
+                    "size-9 absolute right-1/2 bottom-1/2": inset,
+                    "transform translate-x-1/2 translate-y-1/2": inset,
+                    "hover:rounded-none hover:size-full hover:duration-75":
+                        inset,
                 },
                 className
             )}

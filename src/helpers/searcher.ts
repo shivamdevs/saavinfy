@@ -12,4 +12,8 @@ export default class Searcher {
 
         return value;
     }
+
+    public static recode(value: string): string {
+        return Searcher.encode(Searcher.decode(value));
+    }
 }

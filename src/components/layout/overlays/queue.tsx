@@ -16,6 +16,8 @@ import useLibrary from "@/contexts/library";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Lucide from "@/components/lucide";
+import Tippy from "@/components/ui/tooltip";
+import IconNotePad from "@/components/icons/notepad";
 
 export default function OverlayQueue() {
     const player = usePlayer();
@@ -36,26 +38,55 @@ export default function OverlayQueue() {
     if (!options.panel) {
         return null;
     }
-    if (!song) {
-        return null;
-    }
 
     return (
         <>
-            <OverlayHeader title="Queue"></OverlayHeader>
-            <OverlayContent>
-                <h4 className="font-medium my-4 px-4">Playing now</h4>
-                <List className="px-2" mode="wait">
-                    <QueueItem key={song.id} item={song} />
-                </List>
-                {upcoming.length > 0 && (
-                    <h4 className="font-medium mt-8 mb-4 px-4">Up next</h4>
+            <OverlayHeader title="Queue">
+                {song && (
+                    <Tippy content="Clear queue">
+                        <Button
+                            size="icon"
+                            variant="ghost"
+                            onClick={() => {
+                                player.clearQueue();
+                                options.update({ panel: undefined });
+                            }}
+                        >
+                            <Lucide.ListX size={18} />
+                        </Button>
+                    </Tippy>
                 )}
-                <List className="px-2" mode="wait">
-                    {upcoming.map((item) => (
-                        <QueueItem key={item.id} item={item} />
-                    ))}
-                </List>
+            </OverlayHeader>
+            <OverlayContent>
+                {song ? (
+                    <>
+                        <h4 className="font-medium my-4 px-4">Playing now</h4>
+                        <List className="px-2" mode="wait">
+                            <QueueItem key={song.id} item={song} />
+                        </List>
+                        {upcoming.length > 0 && (
+                            <h4 className="font-medium mt-8 mb-4 px-4">
+                                Up next
+                            </h4>
+                        )}
+                        <List className="px-2" mode="wait">
+                            {upcoming.map((item) => (
+                                <QueueItem key={item.id} item={item} />
+                            ))}
+                        </List>
+                    </>
+                ) : (
+                    <>
+                        <h4 className="text-center mt-32 text-secondary-foreground">
+                            The queue is empty
+                        </h4>
+                        <IconNotePad
+                            className="mx-auto mt-32"
+                            width={200}
+                            height={200}
+                        />
+                    </>
+                )}
             </OverlayContent>
         </>
     );
@@ -68,18 +99,22 @@ function QueueItem({ item }: { item: MediaSong }) {
 
     const menuItems = React.useMemo<BlockMenuContent[]>(
         () => [
-            player.currentSong?.id !== item.id && {
-                name: "Play now",
-                icon: Lucide.Play,
-                onClick: () => player.play(item),
-            },
-            player.currentSong?.id !== item.id,
-            {
-                name: "Remove from queue",
-                icon: Lucide.X,
-                onClick: () => player.removeSong(item),
-            },
-            true,
+            ...(player.currentSong?.id !== item.id
+                ? [
+                      {
+                          name: "Play now",
+                          icon: Lucide.Play,
+                          onClick: () => player.play(item),
+                      },
+                      true,
+                      {
+                          name: "Remove from queue",
+                          icon: Lucide.X,
+                          onClick: () => player.removeSong(item),
+                      },
+                      true,
+                  ]
+                : []),
             {
                 name: library.isFavorite(item.id)
                     ? "Remove from favorites"
@@ -133,7 +168,8 @@ function QueueItem({ item }: { item: MediaSong }) {
                             : acc,
                     {}
                 )}
-                className="flex-1 group relative border-0 flex items-center p-2 gap-4"
+                title={`Play ${item.title ?? item.name}`}
+                className="flex-1 group relative border-0 flex items-center p-2 gap-4 cursor-pointer"
                 asLink
                 onClick={() => player.play(item)}
             >

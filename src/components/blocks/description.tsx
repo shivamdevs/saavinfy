@@ -1,17 +1,17 @@
 import Parser from "@/helpers/parser";
 import { cn } from "@/lib/utils";
-import { MediaItem } from "@/types/media";
+import { MediaItem, MediaSong } from "@/types/media";
 import React from "react";
+import Block from "./_blocks";
 
-export type BlockDescriptionProps = Omit<
+export type BlockDescriptionProps =
     React.HTMLAttributes<HTMLParagraphElement> & {
-        item: MediaItem;
-    },
-    "children"
->;
+        item: MediaItem | MediaSong;
+    };
 export default function BlockDescription({
     item,
     className,
+    children,
     ...props
 }: BlockDescriptionProps) {
     return (
@@ -22,7 +22,11 @@ export default function BlockDescription({
             )}
             {...props}
         >
-            {Parser.entity(item.description ?? item.name ?? "")}
+            {children
+                ? children
+                : item.type === "song" && (item as MediaSong).downloadUrl
+                  ? Block.songArtists((item as MediaSong).artists?.primary)
+                  : Parser.entity(item.description ?? item.name ?? "")}
         </p>
     );
 }

@@ -305,12 +305,28 @@ function useOps(data: PlayerCache) {
     );
 
     // Remove a song from the queue
-    const removeSong = React.useCallback((song: MediaSong | string) => {
-        setQueue((prev) =>
-            prev.filter(
-                (s) => s.id !== (typeof song === "string" ? song : song.id)
-            )
-        );
+    const removeSong = React.useCallback(
+        (song: MediaSong | string) => {
+            // if the song is currently playing, do not remove it
+            if (current === (typeof song === "string" ? song : song.id)) {
+                return;
+            }
+            setQueue((prev) =>
+                prev.filter(
+                    (s) => s.id !== (typeof song === "string" ? song : song.id)
+                )
+            );
+        },
+        [current]
+    );
+
+    // Clear the queue
+    const clearQueue = React.useCallback(() => {
+        setQueue([]);
+
+        // pause the audio element and remove src
+        element.current?.pause();
+        element.current!.src = "";
     }, []);
 
     // Check if a song is currently playing
@@ -407,6 +423,7 @@ function useOps(data: PlayerCache) {
         addSongs,
         removeSong,
         playingSong,
+        clearQueue,
 
         ended,
         playing,

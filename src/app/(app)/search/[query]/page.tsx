@@ -5,6 +5,7 @@ import React from "react";
 import TopResult from "../_components/top";
 import { SearchResult } from "@/types/search";
 import GridList from "../_components/grid";
+import Log from "@/components/log";
 
 export default async function Page({ params }: PageProps<{ query?: string }>) {
     const result = await Saavn.searchAll(params.query || "");
@@ -22,6 +23,8 @@ function Result({ data }: { data: SearchResult }) {
     return (
         <>
             <TopResult top={topQuery} songs={data.songs.results} />
+
+            <Log log={data} />
 
             {Object.entries(data)
                 .filter(

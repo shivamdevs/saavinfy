@@ -5,6 +5,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Lucide from "@/components/lucide";
+import Tippy from "@/components/ui/tooltip";
 
 export type OverlayHeaderProps = React.PropsWithChildren<{
     title: React.ReactNode;
@@ -25,14 +26,16 @@ export default function OverlayHeader({ children, title }: OverlayHeaderProps) {
                     </h3>
                     {children}
                 </div>
-                <Button
-                    size="icon"
-                    variant="ghost"
-                    className="justify-self-end rounded-full"
-                    onClick={() => options.update({ panel: undefined })}
-                >
-                    <Lucide.X size={16} />
-                </Button>
+                <Tippy content="Close">
+                    <Button
+                        size="icon"
+                        variant="ghost"
+                        className="justify-self-end rounded-full"
+                        onClick={() => options.update({ panel: undefined })}
+                    >
+                        <Lucide.X size={16} />
+                    </Button>
+                </Tippy>
             </header>
             <div className="px-2">
                 <Separator />

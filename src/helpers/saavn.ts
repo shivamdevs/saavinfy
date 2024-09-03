@@ -1,6 +1,13 @@
 import { ServerError, ServerResponse } from "@/modules/server";
 import { MediaSong } from "@/types/media";
-import { SearchArtistFilters, SearchResult } from "@/types/search";
+import {
+    SearchAlbum,
+    SearchArtist,
+    SearchArtistFilters,
+    SearchPlaylist,
+    SearchResult,
+    SearchResultFor,
+} from "@/types/search";
 import { ServerMethods } from "@/types/server";
 import axios, { AxiosRequestConfig } from "axios";
 
@@ -121,10 +128,50 @@ export default class Saavn {
     public static searchAll(
         query: string,
         page: number = 1,
-        limit: number = 10
+        limit: number = 30
     ) {
         return this.get<SearchResult>(
             SaavnEndpoints.search(query, "", page, limit)
+        );
+    }
+
+    public static searchSongs(
+        query: string,
+        page: number = 1,
+        limit: number = 30
+    ) {
+        return this.get<SearchResultFor<MediaSong>>(
+            SaavnEndpoints.search(query, "/songs", page, limit)
+        );
+    }
+
+    public static searchAlbums(
+        query: string,
+        page: number = 1,
+        limit: number = 30
+    ) {
+        return this.get<SearchResultFor<SearchAlbum>>(
+            SaavnEndpoints.search(query, "/albums", page, limit)
+        );
+    }
+
+    public static searchArtists(
+        query: string,
+        page: number = 1,
+        limit: number = 30
+    ) {
+        return this.get<SearchResultFor<SearchArtist>>(
+            SaavnEndpoints.search(query, "/artists", page, limit)
+        );
+    }
+
+    public static searchPlaylists(
+        query: string,
+        page: number = 1,
+        limit: number = 30
+    ) {
+        return this.get<SearchResultFor<SearchPlaylist>>(
+            SaavnEndpoints.search(query, "/playlists", page, limit)
         );
     }
 }
