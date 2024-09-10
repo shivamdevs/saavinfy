@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { MediaSong } from "@/types/media";
-import { PlayerOptions } from "@/types/opts";
+import { SavedPlayerOptions } from "@/types/saves";
 import React from "react";
 
 export type ContextType = {
@@ -52,11 +52,11 @@ export type ContextType = {
     volume: number;
     setVolume: React.Dispatch<React.SetStateAction<number>>;
 
-    options: PlayerOptions;
+    options: SavedPlayerOptions;
     updateOptions: (
         opts:
-            | Partial<PlayerOptions>
-            | ((prev: PlayerOptions) => Partial<PlayerOptions>)
+            | Partial<SavedPlayerOptions>
+            | ((prev: SavedPlayerOptions) => Partial<SavedPlayerOptions>)
     ) => void;
 
     fullScreen: boolean;

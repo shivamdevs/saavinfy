@@ -1,7 +1,7 @@
-import { PlayerPanel } from "@/types/opts";
 import usePlayer from "..";
 import React from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { SavedPlayerPanel } from "@/types/saves";
 
 export default function usePlayerOptions() {
     const player = usePlayer();
@@ -9,7 +9,7 @@ export default function usePlayerOptions() {
     const router = useRouter();
 
     const togglePanel = React.useCallback(
-        (key: PlayerPanel) => {
+        (key: SavedPlayerPanel) => {
             player.updateOptions({
                 panel: player.options.panel === key ? undefined : key,
             });
@@ -18,7 +18,7 @@ export default function usePlayerOptions() {
     );
 
     const isPanel = React.useCallback(
-        <T>(key: PlayerPanel, ifTrue?: T, ifFalse?: T) => {
+        <T>(key: SavedPlayerPanel, ifTrue?: T, ifFalse?: T) => {
             return player.options.panel === key
                 ? (ifTrue ?? true)
                 : (ifFalse ?? false);

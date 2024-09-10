@@ -3,12 +3,12 @@
 import React, { useEffect } from "react";
 import PlayerContext, { ContextType, useHook as usePlayer } from "./context";
 import usePlayerOps from "./operations";
-import { PlayerCache } from "@/types/opts";
+import { SavedPlayer } from "@/types/saves";
 
 export default usePlayer;
 
 export type PlayerProviderProps = React.PropsWithChildren<{
-    data: PlayerCache;
+    data: SavedPlayer;
 }>;
 
 export function PlayerProvider({ children, data }: PlayerProviderProps) {

@@ -1,14 +1,14 @@
 import {
-    LibraryCache,
     LibraryFavorite,
     LibraryPlaylist,
     LibraryPlaylistEditor,
     LibrarySearchHistory,
 } from "@/types/library";
+import { SavedLibrary } from "@/types/saves";
 import React from "react";
 
 export type ContextType = {
-    log: LibraryCache;
+    log: SavedLibrary;
 
     searches: LibrarySearchHistory[];
     // eslint-disable-next-line no-unused-vars
