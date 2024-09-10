@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Searcher from "@/helpers/searcher";
 import { useDebounce } from "react-unique-hooks";
@@ -23,10 +22,18 @@ export default function PartSearch() {
         Searcher.decode(params.query ?? "")
     );
 
+    useEffect(() => {
+        if (!params.query) {
+            setValue("");
+        }
+    }, [params.query]);
+
     useDebounce(
         () => {
             if (value.length === 0) {
-                router.replace("/search");
+                if (isSearchPage) {
+                    router.replace("/search");
+                }
             } else {
                 const [, , , type] = pathname.split("/");
                 router.replace(
@@ -51,8 +58,12 @@ export default function PartSearch() {
                 ref={inputRef}
                 className={cn("py-3 px-12 rounded-full", " w-full min-w-full")}
                 autoFocus={isSearchPage}
-                disabled={!isSearchPage}
                 value={value}
+                onFocus={() => {
+                    if (!isSearchPage) {
+                        router.push("/search");
+                    }
+                }}
                 onChange={(e) => setValue(e.target.value)}
             />
             <Lucide.Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-secondary-foreground/40 pointer-events-none" />
@@ -69,19 +80,6 @@ export default function PartSearch() {
                 >
                     <Lucide.X />
                 </Button>
-            )}
-            {!isSearchPage && (
-                <Link
-                    href="/search"
-                    type="button"
-                    className="absolute inset-0 rounded-full hover:bg-primary-foreground/5 transition-colors"
-                    aria-label="Search"
-                    onClick={() => {
-                        setTimeout(() => {
-                            inputRef.current?.focus();
-                        }, 1);
-                    }}
-                />
             )}
         </form>
     );

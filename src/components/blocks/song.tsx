@@ -9,7 +9,6 @@ import BlockTitle from "./title";
 import BlockDescription from "./description";
 import Block from "./_blocks";
 import IconSleeping from "../icons/sleeping";
-import { TimeSpan } from "../tokens/typography";
 import { Button } from "../ui/button";
 import Lucide from "../lucide";
 import Tippy from "../ui/tooltip";
@@ -19,6 +18,7 @@ import { cn } from "@/lib/utils";
 import PullPlay from "./play";
 import BlockMenu, { BlockMenuContent } from "./menu";
 import { useRouter } from "next/navigation";
+import BlockTime from "./time";
 
 export default function Song({ item }: { item: MediaSong }) {
     const library = useLibrary();
@@ -108,9 +108,9 @@ export default function Song({ item }: { item: MediaSong }) {
                     className="flex-1 capitalize text-sm"
                     item={item}
                 >
-                    {Block.songAlbum(item)}
+                    {Block.songAlbum(item.album)}
                 </BlockDescription>
-                <TimeSpan time={item.duration} className="text-sm" />
+                <BlockTime time={item.duration} className="text-sm" />
                 <Tippy
                     content={
                         library.isFavorite(item.id)

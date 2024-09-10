@@ -3,16 +3,16 @@ import { MediaSong } from "@/types/media";
 import { setCookie } from "cookies-next";
 import React from "react";
 import { ContextType } from "./context";
-import { PlayerCache, PlayerCachePush, PlayerOptions } from "@/types/opts";
 import { shuffleArray } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import { playerCacheLimiter } from "@/lib/short";
 import { Config } from "@/config";
+import Limiter from "@/helpers/limiter";
+import { SavedPlayer, SavedPlayerOptions } from "@/types/saves";
 
-function useOps(data: PlayerCache) {
+function useOps(data: SavedPlayer) {
     const pathname = usePathname();
 
-    const [options, setOptions] = React.useState<PlayerOptions>(() => {
+    const [options, setOptions] = React.useState<SavedPlayerOptions>(() => {
         const opts = data.options ?? {};
 
         return {
@@ -60,15 +60,15 @@ function useOps(data: PlayerCache) {
     const updateOptions = React.useCallback(
         (
             opts:
-                | Partial<PlayerOptions>
+                | Partial<SavedPlayerOptions>
                 // eslint-disable-next-line no-unused-vars
-                | ((prev: PlayerOptions) => Partial<PlayerOptions>)
+                | ((prev: SavedPlayerOptions) => Partial<SavedPlayerOptions>)
         ) => {
             setOptions((prev) => ({
                 ...prev,
                 ...(typeof opts === "function"
                     ? opts(prev)
-                    : (opts as Partial<PlayerOptions>)),
+                    : (opts as Partial<SavedPlayerOptions>)),
             }));
         },
         []
@@ -133,13 +133,22 @@ function useOps(data: PlayerCache) {
 
     // Update the cookies whenever the player state changes
     const updateStorage = React.useCallback(() => {
-        const data = playerCacheLimiter.limit({
-            queue: Array.from(queue).map((song) => song.id),
+        const playerData = {
+            queue: queue,
             current: current,
             time: currentTime,
             volume: volume,
             options,
-        } as PlayerCachePush);
+        };
+        const data = Limiter.limitPlayer(playerData);
+
+        // eslint-disable-next-line no-console
+        console.log(
+            "Player data updated",
+            playerData,
+            data,
+            Limiter.parsePlayer(data)
+        );
 
         setCookie(Config.cookies.keys.player, crypt.encrypt(data), {
             maxAge: Config.cookies.maxAge,
@@ -331,12 +340,15 @@ function useOps(data: PlayerCache) {
 
     // Check if a song is currently playing
     const playingSong = React.useCallback(
-        (song?: MediaSong | string) => {
+        (song?: MediaSong | string, audioPlaying: boolean = true) => {
             if (!song) return false;
 
-            return current === (typeof song === "string" ? song : song.id);
+            return (
+                current === (typeof song === "string" ? song : song.id) &&
+                (audioPlaying ? playing : true)
+            );
         },
-        [current]
+        [current, playing]
     );
 
     const autoPlayNext = React.useCallback(() => {

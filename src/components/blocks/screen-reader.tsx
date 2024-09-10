@@ -1,10 +1,10 @@
-import { MediaSong } from "@/types/media";
+import { Media } from "@/types/media";
 import { SearchResultType } from "@/types/search";
 import React from "react";
 
 export type ScreenReaderProps = {
-    play?: SearchResultType | MediaSong;
-    view?: SearchResultType | MediaSong;
+    play?: SearchResultType | Media;
+    view?: SearchResultType | Media;
 };
 
 export default function ScreenReader({ play, view }: ScreenReaderProps) {
@@ -17,7 +17,7 @@ export default function ScreenReader({ play, view }: ScreenReaderProps) {
     return (
         <span className="sr-only">
             {play ? "Play" : view ? "View" : "Listen"} {item.type} -{" "}
-            {item.title}
+            {item?.title || item?.name}
         </span>
     );
 }

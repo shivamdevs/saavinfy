@@ -2,6 +2,7 @@ import {
     LibraryCache,
     LibraryFavorite,
     LibraryPlaylist,
+    LibraryPlaylistEditor,
     LibrarySearchHistory,
 } from "@/types/library";
 import React from "react";
@@ -37,6 +38,12 @@ export type ContextType = {
     addSongsToPlaylist: (id: string, songs: string[] | string) => void;
     // eslint-disable-next-line no-unused-vars
     removeSongsFromPlaylist: (id: string, songs: string | string) => void;
+    // eslint-disable-next-line no-unused-vars
+    playlistEditor: LibraryPlaylistEditor;
+    // eslint-disable-next-line no-unused-vars
+    setPlaylistEditor: React.Dispatch<
+        React.SetStateAction<LibraryPlaylistEditor>
+    >;
 };
 
 export const contextDefaultValue: ContextType = {
@@ -69,6 +76,9 @@ export const contextDefaultValue: ContextType = {
     renamePlaylist: () => {},
     addSongsToPlaylist: () => {},
     removeSongsFromPlaylist: () => {},
+
+    playlistEditor: null,
+    setPlaylistEditor: () => {},
 };
 
 export const ContextElement =

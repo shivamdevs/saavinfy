@@ -1,24 +1,25 @@
 import React from "react";
 import { ContextType } from "./context";
-import { LibraryCache } from "@/types/library";
 import crypt from "@/lib/crypt";
 import { setCookie } from "cookies-next";
 import { uuid } from "@/lib/utils";
-import { libraryCacheLimiter } from "@/lib/short";
 import { Config } from "@/config";
+import Limiter from "@/helpers/limiter";
+import { SavedLibrary } from "@/types/saves";
+import { LibraryPlaylistEditor } from "@/types/library";
 
-function useOps(data: LibraryCache) {
-    const [libraryData, setLibraryData] = React.useState<LibraryCache>(data);
+function useOps(data: SavedLibrary) {
+    const [libraryData, setLibraryData] = React.useState<SavedLibrary>(data);
 
     React.useLayoutEffect(() => {
-        const data = libraryCacheLimiter.limit(libraryData);
+        const data = Limiter.limitLibrary(libraryData);
 
         // eslint-disable-next-line no-console
         console.log(
             "Library data updated",
             libraryData,
             data,
-            libraryCacheLimiter.parse(data)
+            Limiter.parseLibrary(data)
         );
 
         setCookie(Config.cookies.keys.library, crypt.encrypt(data), {
@@ -210,6 +211,9 @@ function useOps(data: LibraryCache) {
         []
     );
 
+    const [playlistEditor, setPlaylistEditor] =
+        React.useState<LibraryPlaylistEditor>(null);
+
     return {
         log: libraryData,
 
@@ -230,6 +234,9 @@ function useOps(data: LibraryCache) {
         renamePlaylist,
         addSongsToPlaylist,
         removeSongsFromPlaylist,
+
+        playlistEditor,
+        setPlaylistEditor,
     } as ContextType;
 }
 

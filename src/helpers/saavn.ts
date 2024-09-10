@@ -1,7 +1,10 @@
 import { ServerError, ServerResponse } from "@/modules/server";
 import {
     MediaAlbum,
+    MediaArtist,
+    MediaArtistAlbums,
     MediaArtistSongs,
+    MediaLyrics,
     MediaPlaylist,
     MediaSong,
 } from "@/types/media";
@@ -84,13 +87,14 @@ export class SaavnEndpoints {
 
         return url.toString();
     };
-    public static artistSongs = (
+    public static artist = (
         id: string,
+        type: "" | "/songs" | "/albums",
         page: number = 1,
         limit: number = 10,
         sorts?: SearchArtistFilters
     ) => {
-        const url = new URL(`/api/artists/${id}/songs`, this.baseUrl);
+        const url = new URL(`/api/artists/${id}${type}`, this.baseUrl);
 
         url.searchParams.append("page", page.toString());
         url.searchParams.append("limit", limit.toString());
@@ -99,6 +103,7 @@ export class SaavnEndpoints {
 
         return url.toString();
     };
+
     public static album = (id: string) => {
         const url = new URL("/api/albums", this.baseUrl);
 
@@ -116,6 +121,10 @@ export class SaavnEndpoints {
 export default class Saavn {
     public static get<T>(slug: string, options?: AxiosRequestConfig) {
         return fetch<T>("GET", slug, options);
+    }
+
+    public static lyrics(id: string) {
+        return this.get<MediaLyrics>(SaavnEndpoints.lyrics(id));
     }
 
     public static getSongs(ids: string[] | string) {
@@ -186,14 +195,64 @@ export default class Saavn {
         );
     }
 
-    public static artistSongs(
+    public static artist(id: string) {
+        return this.get<MediaArtist>(SaavnEndpoints.artist(id, ""));
+    }
+    public static async artistAlbums(
         id: string,
         page: number = 1,
         limit: number = 10
     ) {
-        return this.get<MediaArtistSongs>(
-            SaavnEndpoints.artistSongs(id, page, limit)
-        );
+        const results: MediaArtistAlbums = {
+            total: limit,
+            albums: [],
+        };
+
+        page = (page - 1) * Math.floor(limit / 10);
+
+        for (let i = 0; i < Math.floor(limit / 10); i++) {
+            const result = await this.get<MediaArtistAlbums>(
+                SaavnEndpoints.artist(id, "/albums", page + i + 1)
+            );
+
+            if (!result.success) {
+                return result;
+            }
+
+            results.total = result.data.total;
+            results.albums.push(...result.data.albums);
+        }
+        results.albums = results.albums.slice(0, limit);
+
+        return new ServerResponse<MediaArtistAlbums>(results);
+    }
+    public static async artistSongs(
+        id: string,
+        page: number = 1,
+        limit: number = 10
+    ) {
+        const results: MediaArtistSongs = {
+            total: limit,
+            songs: [],
+        };
+
+        page = (page - 1) * Math.floor(limit / 10);
+
+        for (let i = 0; i < Math.floor(limit / 10); i++) {
+            const result = await this.get<MediaArtistSongs>(
+                SaavnEndpoints.artist(id, "/songs", page + i + 1)
+            );
+
+            if (!result.success) {
+                return result;
+            }
+
+            results.total = result.data.total;
+            results.songs.push(...result.data.songs);
+        }
+        results.songs = results.songs.slice(0, limit);
+
+        return new ServerResponse<MediaArtistSongs>(results);
     }
 
     public static album(id: string) {

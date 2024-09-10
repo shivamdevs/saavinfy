@@ -6,6 +6,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { cn } from "@/lib/utils";
 import Player from "./player";
 import Overlays from "./overlays";
+import ModelPlaylist from "./models/playlist";
 
 export type AppLayoutProps = React.PropsWithChildren;
 
@@ -23,11 +24,12 @@ function AppLayout({ children }: AppLayoutProps) {
                         "player:h-[calc(100vh-5rem-1px-5rem)]"
                     )}
                 >
-                    <main className="p-4">{children}</main>
+                    <main>{children}</main>
                 </ScrollArea>
                 <Overlays />
             </section>
             <Player />
+            <ModelPlaylist />
         </section>
     );
 }

@@ -1,5 +1,5 @@
+import BlockTime from "@/components/blocks/time";
 import InputRange from "./input";
-import { TimeSpan } from "@/components/tokens/typography";
 import usePlayer from "@/contexts/player";
 import { usePlayerBuffer, usePlayerTiming } from "@/contexts/player/hooks";
 import React from "react";
@@ -12,7 +12,7 @@ export default function TrackSeeker() {
 
     return (
         <div className="flex flex-nowrap w-full items-center text-secondary-foreground group-[.exp]:text-white font-black text-sm tracking-widest min-h-[16px]">
-            <TimeSpan className="min-w-[60px]" time={currentTime} />
+            <BlockTime className="min-w-[60px]" time={currentTime} />
             <div className="range-box">
                 <div
                     className="buffer"
@@ -27,7 +27,7 @@ export default function TrackSeeker() {
                     }}
                 />
             </div>
-            <TimeSpan
+            <BlockTime
                 className="min-w-[60px] text-right"
                 time={totalDuration}
             />

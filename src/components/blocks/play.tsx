@@ -5,16 +5,15 @@ import { SearchResultType } from "@/types/search";
 import React from "react";
 import { cn } from "@/lib/utils";
 import useFetchAndPlay from "@/contexts/hooks/use-play";
-import { MediaSong } from "@/types/media";
+import { Media, MediaSong } from "@/types/media";
 import usePlayer from "@/contexts/player";
 import Lucide from "@/components/lucide";
 import ScreenReader from "./screen-reader";
 
 export type PullPlayProps = {
-    item: SearchResultType | MediaSong;
+    item: SearchResultType | Media;
     className?: string;
     noPull?: boolean;
-    inQueue?: boolean;
     inset?: boolean;
 
     onClick?: () => void;
@@ -24,11 +23,12 @@ export default function PullPlay({
     className,
     noPull,
     inset,
-    inQueue,
     onClick,
 }: PullPlayProps) {
     const player = usePlayer();
     const fetchPlay = useFetchAndPlay();
+
+    const Icon = player.playingSong(item.id) ? Lucide.Pause : Lucide.Play;
 
     return (
         <Button
@@ -36,10 +36,10 @@ export default function PullPlay({
             type="button"
             className={cn(
                 "rounded-full size-14 shadow p-2",
-                "opacity-0 transition-all z-20",
+                "transition-all z-20",
                 "group-hover:opacity-100 group-focus-within:opacity-100",
                 {
-                    "absolute bottom-2 right-2 -mb-4 ": !noPull,
+                    "opacity-0 absolute bottom-2 right-2 -mb-4 ": !noPull,
                     "group-hover:mb-0 group-focus-within:mb-0": !noPull,
                 },
                 {
@@ -61,18 +61,28 @@ export default function PullPlay({
                 if (item.type === "song") {
                     const song = item as MediaSong;
                     if (song.downloadUrl) {
-                        if (inQueue) {
-                            player.play(song);
+                        if (player.playingSong(song.id)) {
+                            if (player.playing) {
+                                player.pause();
+                            } else {
+                                player.play();
+                            }
                         } else {
-                            player.addSong(song);
+                            player.play(song);
                         }
                     } else {
-                        fetchPlay.song(song.id, true);
+                        fetchPlay.song(song.id);
                     }
+                } else if (item.type === "playlist") {
+                    fetchPlay.playlist(item);
+                } else if (item.type === "album") {
+                    fetchPlay.album(item);
+                } else if (item.type === "artist") {
+                    fetchPlay.artistSongs(item);
                 }
             }}
         >
-            <Lucide.Play fill="currentColor" />
+            <Icon fill="currentColor" />
             <ScreenReader play={item} />
         </Button>
     );

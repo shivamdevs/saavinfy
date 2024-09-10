@@ -34,7 +34,7 @@ export type ContextType = {
 
         clear?: boolean
     ) => Promise<void>;
-    playingSong: (song?: MediaSong | string) => boolean;
+    playingSong: (song?: MediaSong | string, audioPlaying?: boolean) => boolean;
 
     /**
      * Clear the queue.

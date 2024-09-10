@@ -132,6 +132,10 @@ function QueueItem({ item }: { item: MediaSong }) {
                     {
                         name: "New playlist",
                         icon: Lucide.Plus,
+                        onClick: () =>
+                            library.setPlaylistEditor({
+                                new: item.id,
+                            }),
                     },
                     (library.playlists || []).length > 0 && true,
                     ...library.playlists.map((playlist) => ({
@@ -172,13 +176,24 @@ function QueueItem({ item }: { item: MediaSong }) {
                 title={`Play ${item.title ?? item.name}`}
                 className="flex-1 group relative border-0 flex items-center p-2 gap-4 cursor-pointer"
                 asLink
-                onClick={() => player.play(item)}
             >
+                <Button
+                    variant="ghost"
+                    className="absolute inset-0 h-auto"
+                    aria-label={`Play ${item.title ?? item.name}`}
+                    onClick={() => {
+                        if (player.currentSong?.id === item.id) {
+                            player.toggle();
+                        } else {
+                            player.play(item);
+                        }
+                    }}
+                />
                 <BlockImage src={item.image} alt={item.title} size={40} />
                 <div className="flex flex-col flex-1">
                     <BlockTitle
                         item={item}
-                        className="text-base line-clamp-1"
+                        className="text-base line-clamp-1 z-10 pointer-events-none"
                     />
                     <BlockDescription
                         item={item}
@@ -189,7 +204,7 @@ function QueueItem({ item }: { item: MediaSong }) {
                     <Button
                         size="icon"
                         variant="ghost"
-                        className="rounded-full"
+                        className="rounded-full z-10"
                     >
                         <Lucide.Ellipsis size={16} />
                     </Button>

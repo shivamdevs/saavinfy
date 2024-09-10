@@ -1,14 +1,14 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
-import { v4 as uuidV4 } from "uuid";
+import { v4 } from "uuid";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
 export const uuid = (length?: number, replaceHyphens?: boolean) => {
-    let res = uuidV4();
+    let res = v4();
     if (!length) return res;
 
     if (replaceHyphens) {
@@ -25,6 +25,8 @@ export const uuid = (length?: number, replaceHyphens?: boolean) => {
 
     return res.slice(0, length);
 };
+
+export const uuidV4 = uuid;
 
 export function getServerPathname(head: ReadonlyHeaders) {
     const url = new URL(

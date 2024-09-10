@@ -24,7 +24,8 @@ const mono = Sono({
     style: ["normal"],
     preload: true,
     display: "swap",
-    fallback: ["monospace"],
+
+    // fallback: ["monospace"],
 });
 
 const Fonts = {

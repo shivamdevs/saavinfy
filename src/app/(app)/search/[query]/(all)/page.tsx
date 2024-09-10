@@ -1,19 +1,19 @@
-import ErrorBox from "@/components/layout/error";
+import ServerBox from "@/components/layout/server";
 import Saavn from "@/helpers/saavn";
 import { PageProps } from "@/types/args";
 import React from "react";
 import TopResult from "../../_components/top";
 import { SearchResult } from "@/types/search";
-import GridList from "../../_components/grid";
 import Log from "@/components/log";
+import BlockGridList from "@/components/blocks/grid";
 
 export default async function Page({ params }: PageProps<{ query?: string }>) {
     const result = await Saavn.searchAll(params.query || "");
 
     return (
-        <ErrorBox data={result}>
+        <ServerBox data={result}>
             {result.success && <Result data={result.data} />}
-        </ErrorBox>
+        </ServerBox>
     );
 }
 
@@ -35,7 +35,11 @@ function Result({ data }: { data: SearchResult }) {
                 )
                 .sort(([, a], [, b]) => a.position - b.position)
                 .map(([key, value]) => (
-                    <GridList key={key} title={key} items={value.results} />
+                    <BlockGridList
+                        key={key}
+                        title={key}
+                        items={value.results}
+                    />
                 ))}
         </>
     );

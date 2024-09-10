@@ -1,9 +1,14 @@
 import LucideAudioLines from "./audio-lines";
+import LucideCake from "./cake";
 import LucideCirclePlus from "./circle-plus";
 import LucideClock from "./clock";
 import LucideDisc3 from "./disc-3";
 import LucideDownload from "./download";
 import LucideEllipsis from "./ellipsis";
+import LucideEyeOff from "./eye-off";
+import LucideEye from "./eye";
+import LucideFacebook from "./facebook";
+import LucideGlobe from "./globe";
 import LucideHash from "./hash";
 import LucideHeartOff from "./heart-off";
 import LucideHeart from "./heart";
@@ -30,6 +35,7 @@ import LucideSettings from "./settings";
 import LucideShuffle from "./shuffle";
 import LucideSkipBack from "./skip-back";
 import LucideSkipForward from "./skip-forward";
+import LucideTwitter from "./twitter";
 import LucideVolume1 from "./volume-1";
 import LucideVolume2 from "./volume-2";
 import LucideVolumeX from "./volume-x";
@@ -38,11 +44,16 @@ import LucideX from "./x";
 
 const Lucide = {
     AudioLines: LucideAudioLines,
+    Cake: LucideCake,
     CirclePlus: LucideCirclePlus,
     Clock: LucideClock,
     Disc3: LucideDisc3,
     Download: LucideDownload,
     Ellipsis: LucideEllipsis,
+    EyeOff: LucideEyeOff,
+    Eye: LucideEye,
+    Facebook: LucideFacebook,
+    Globe: LucideGlobe,
     Hash: LucideHash,
     HeartOff: LucideHeartOff,
     Heart: LucideHeart,
@@ -69,6 +80,7 @@ const Lucide = {
     Shuffle: LucideShuffle,
     SkipBack: LucideSkipBack,
     SkipForward: LucideSkipForward,
+    Twitter: LucideTwitter,
     Volume1: LucideVolume1,
     Volume2: LucideVolume2,
     VolumeX: LucideVolumeX,
@@ -80,11 +92,16 @@ export default Lucide;
 
 export {
     LucideAudioLines,
+    LucideCake,
     LucideCirclePlus,
     LucideClock,
     LucideDisc3,
     LucideDownload,
     LucideEllipsis,
+    LucideEyeOff,
+    LucideEye,
+    LucideFacebook,
+    LucideGlobe,
     LucideHash,
     LucideHeartOff,
     LucideHeart,
@@ -111,6 +128,7 @@ export {
     LucideShuffle,
     LucideSkipBack,
     LucideSkipForward,
+    LucideTwitter,
     LucideVolume1,
     LucideVolume2,
     LucideVolumeX,

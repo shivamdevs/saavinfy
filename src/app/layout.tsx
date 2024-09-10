@@ -1,9 +1,10 @@
-import "./globals.css";
 import React from "react";
 import type { Metadata } from "next";
 import { Meta } from "@/config/meta";
 import { cn } from "@/lib/utils";
 import Fonts from "@/fonts";
+
+import "./globals.css";
 
 export const metadata: Metadata = {
     title: Meta.title,

@@ -1,4 +1,4 @@
-import ErrorBox from "@/components/layout/error";
+import ServerBox from "@/components/layout/server";
 import Saavn from "@/helpers/saavn";
 import { PageProps } from "@/types/args";
 import React from "react";
@@ -19,11 +19,11 @@ export default async function Page({
     );
 
     return (
-        <ErrorBox data={result}>
+        <ServerBox data={result}>
             {result.success && (
                 <Result data={result.data} query={params.query!} />
             )}
-        </ErrorBox>
+        </ServerBox>
     );
 }
 

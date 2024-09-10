@@ -14,6 +14,8 @@ export type MediaItem = {
 
 export type MediaImageQuality = "50x50" | "150x150" | "500x500";
 
+export type MediaType = "song" | "album" | "artist" | "playlist";
+
 export type MediaDownloadURL = {
     quality: MediaDownloadURLQuality;
     url: string;
@@ -75,6 +77,7 @@ export type MediaInlineArtist = {
 export type MediaPlaylist = {
     id: string;
     name: string;
+    title?: string;
     description: string;
     type: string;
     year: number | null;
@@ -93,9 +96,15 @@ export type MediaArtistSongs = {
     total: number;
 };
 
+export type MediaArtistAlbums = {
+    albums: MediaAlbum[];
+    total: number;
+};
+
 export type MediaAlbum = {
     id: string;
     name: string;
+    title?: string;
     description: string;
     type: string;
     year: number;
@@ -114,3 +123,36 @@ export type MediaLyrics = {
     copyright: string;
     snippet: string;
 };
+
+export type MediaArtist = {
+    id: string;
+    name: string;
+    title?: string;
+    url: string;
+    type: "artist";
+    followerCount: number;
+    fanCount: string;
+    isVerified: boolean;
+    dominantLanguage: string;
+    dominantType: string;
+    bio: MediaArtistBio[];
+    dob: string | null;
+    fb: string | null;
+    twitter: string | null;
+    wiki: string | null;
+    availableLanguages: string[];
+    isRadioPresent: boolean;
+    image: MediaImage[];
+    topSongs: MediaSong[];
+    topAlbums: MediaAlbum[];
+    singles: MediaAlbum[];
+    similarArtists: MediaInlineArtist[];
+};
+
+export type MediaArtistBio = {
+    text: string;
+    title: string;
+    sequence: number;
+};
+
+export type Media = MediaSong | MediaAlbum | MediaPlaylist | MediaArtist;

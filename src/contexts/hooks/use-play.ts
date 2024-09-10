@@ -2,6 +2,7 @@ import { SearchAlbum, SearchArtist, SearchPlaylist } from "@/types/search";
 import usePlayer from "../player";
 import React from "react";
 import Saavn from "@/helpers/saavn";
+import { Media, MediaInlineArtist } from "@/types/media";
 
 export default function useFetchAndPlay() {
     const player = usePlayer();
@@ -22,7 +23,10 @@ export default function useFetchAndPlay() {
     );
 
     const playlist = React.useCallback(
-        async (playlist: SearchPlaylist, addToQueue: boolean = false) => {
+        async (
+            playlist: SearchPlaylist | Media,
+            addToQueue: boolean = false
+        ) => {
             const res = await Saavn.playlist(playlist.id);
 
             if (!res.success || !res.data.songs.length) {
@@ -35,7 +39,10 @@ export default function useFetchAndPlay() {
     );
 
     const artistSongs = React.useCallback(
-        async (artist: SearchArtist, addToQueue: boolean = false) => {
+        async (
+            artist: SearchArtist | MediaInlineArtist | Media,
+            addToQueue: boolean = false
+        ) => {
             const res = await Saavn.artistSongs(artist.id);
 
             if (!res.success || !res.data.songs.length) {
@@ -48,7 +55,7 @@ export default function useFetchAndPlay() {
     );
 
     const album = React.useCallback(
-        async (album: SearchAlbum, addToQueue: boolean = false) => {
+        async (album: SearchAlbum | Media, addToQueue: boolean = false) => {
             const res = await Saavn.album(album.id);
 
             if (!res.success || !res.data.songs.length) {

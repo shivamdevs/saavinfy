@@ -35,20 +35,20 @@ export default function usePlayerOptions() {
 
     const lyrics = React.useMemo(() => {
         return {
-            is: pathname === "/lyrics",
+            is: pathname.startsWith("/lyrics/"),
             toggle: () => {
-                if (pathname === "/lyrics") {
+                if (pathname.startsWith("/lyrics/")) {
                     if (window.history && window.history.length > 1) {
                         router.back();
                     } else {
                         router.push("/");
                     }
                 } else {
-                    router.push("/lyrics");
+                    router.push(`/lyrics/${player.currentSong?.id}`);
                 }
             },
         };
-    }, [pathname, router]);
+    }, [pathname, player.currentSong?.id, router]);
 
     return {
         ...player.options,

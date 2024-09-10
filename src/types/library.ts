@@ -1,15 +1,3 @@
-export type LibraryCache = {
-    searches: LibrarySearchHistory[];
-    favorites: LibraryFavorite;
-    playlists: LibraryPlaylist[];
-};
-
-export type LibraryCacheLimited = {
-    s: string;
-    f: string;
-    p: string;
-};
-
 export type LibrarySearchHistory = {
     id: string;
     query: string;
@@ -33,3 +21,8 @@ export type LibrarySong = {
     id: string;
     date: number;
 };
+
+export type LibraryPlaylistEditor = {
+    edit?: Omit<LibraryPlaylist, "songs">;
+    new?: string | string[] | true;
+} | null;

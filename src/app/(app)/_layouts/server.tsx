@@ -3,7 +3,7 @@
 import React from "react";
 import { cookies } from "next/headers";
 
-import ErrorBox from "@/components/layout/error";
+import ServerBox from "@/components/layout/server";
 
 import { PlayerProvider } from "@/contexts/player";
 import { LibraryProvider } from "@/contexts/library";
@@ -26,10 +26,10 @@ export default async function ServerLayout({
     }
 
     return (
-        <ErrorBox data={songs}>
+        <ServerBox data={songs}>
             <PlayerProvider data={playerSave}>
                 <LibraryProvider data={librarySave}>{children}</LibraryProvider>
             </PlayerProvider>
-        </ErrorBox>
+        </ServerBox>
     );
 }

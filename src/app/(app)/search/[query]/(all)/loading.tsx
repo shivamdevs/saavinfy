@@ -4,9 +4,17 @@ import React from "react";
 export default function Loading() {
     return (
         <div className="absolute inset-0 pt-[4.25rem] m-4">
-            <div className="flex flex-row gap-10 mt-24">
+            <div className="flex flex-row gap-10 mt-10">
+                <div className="flex-1">
+                    <Skeleton className="h-8 w-40 ml-3" />
+                </div>
+                <div className="flex-[2]">
+                    <Skeleton className="h-8 w-24 ml-3" />
+                </div>
+            </div>
+            <div className="flex flex-row gap-10 mt-4">
                 <div className="flex-1 h-64 relative">
-                    <Skeleton className="top-4 left-5 absolute size-[121px]" />
+                    <Skeleton className="top-4 left-5 absolute size-[121px] mt-1" />
                     <Skeleton className="top-40 -mt-1 left-5 absolute h-8 w-4/5 rounded-sm" />
                     <Skeleton className="top-52 mt-1.5 left-5 absolute h-4 w-4/5 rounded-sm" />
                 </div>

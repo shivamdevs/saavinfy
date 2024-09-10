@@ -6,11 +6,15 @@ import {
 } from "@/types/media";
 import Link from "next/link";
 import Parser from "@/helpers/parser";
-import { SearchAlbum, SearchPlaylist, SearchResultType } from "@/types/search";
+import { SearchAlbum, SearchPlaylist } from "@/types/search";
 
 export default class Block {
     public static songArtists(
-        artists?: MediaInlineArtists | MediaInlineArtist[] | string,
+        artists?:
+            | MediaInlineArtists
+            | MediaInlineArtist[]
+            | MediaInlineArtist
+            | string,
         artist?: string
     ) {
         if (typeof artists === "string" || !artists) {
@@ -18,19 +22,23 @@ export default class Block {
         }
 
         return (
-            ((Array.isArray(artists) ? artists : artists?.all) ?? []).map(
-                (artist, index) => (
-                    <React.Fragment key={artist.id}>
-                        {index !== 0 && ", "}
-                        <Link
-                            href={`/artist/${artist.id}`}
-                            className="hover:underline relative z-10"
-                        >
-                            {Parser.entity(artist.name)}
-                        </Link>
-                    </React.Fragment>
-                )
-            ) ??
+            (
+                (Array.isArray(artists)
+                    ? artists
+                    : ((artists as MediaInlineArtists)?.primary ?? [
+                          artists as MediaInlineArtist,
+                      ])) ?? []
+            ).map((artist, index) => (
+                <React.Fragment key={artist.id}>
+                    {index !== 0 && ", "}
+                    <Link
+                        href={`/artist/${artist.id}`}
+                        className="hover:underline relative z-10"
+                    >
+                        {Parser.entity(artist.name)}
+                    </Link>
+                </React.Fragment>
+            )) ??
             artist ??
             ""
         );
@@ -44,16 +52,18 @@ export default class Block {
         }
 
         return (
-            <Link
-                href={`/album/${album.id}`}
-                className="hover:underline relative z-10 line-clamp-2 inline-block"
-            >
-                {Parser.entity(album.name)}
-            </Link>
+            <span className="inline-flex">
+                <Link
+                    href={`/album/${album.id}`}
+                    className="hover:underline relative z-10 line-clamp-2"
+                >
+                    {Parser.entity(album.name)}
+                </Link>
+            </span>
         );
     }
 
-    public static playlist(item: SearchResultType) {
+    public static playlist(item: unknown) {
         const playlist = item as SearchPlaylist;
 
         const count = playlist.songCount ?? 0;
@@ -68,7 +78,7 @@ export default class Block {
         );
     }
 
-    public static album(item: SearchResultType) {
+    public static album(item: unknown) {
         const album = item as SearchAlbum;
 
         const count = album.playCount ?? 0;

@@ -1,13 +1,13 @@
-import ErrorBox from "@/components/layout/error";
+import ServerBox from "@/components/layout/server";
 import Saavn from "@/helpers/saavn";
 import { PageProps } from "@/types/args";
 import React from "react";
 import { SearchPlaylist, SearchResultFor } from "@/types/search";
 import Log from "@/components/log";
-import GridList from "../../../_components/grid";
 import Parser from "@/helpers/parser";
 import Paged from "@/components/ui/pagination";
 import Searcher from "@/helpers/searcher";
+import BlockGridList from "@/components/blocks/grid";
 
 export default async function Page({
     params,
@@ -18,11 +18,11 @@ export default async function Page({
     );
 
     return (
-        <ErrorBox data={result}>
+        <ServerBox data={result}>
             {result.success && (
                 <Result data={result.data} query={params.query!} />
             )}
-        </ErrorBox>
+        </ServerBox>
     );
 }
 
@@ -37,7 +37,7 @@ function Result({
         <>
             <Log log={data} />
 
-            <GridList items={data.results} />
+            <BlockGridList items={data.results} />
 
             <Paged
                 page={data.start}

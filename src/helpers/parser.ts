@@ -1,3 +1,5 @@
+import { ServerError, ServerResponse } from "@/modules/server";
+
 export default class Parser {
     public static plural(
         count: number,
@@ -5,6 +7,24 @@ export default class Parser {
         plural: string = `${singular}s`
     ) {
         return count === 1 ? singular : plural;
+    }
+
+    public static server<T>(response: ServerResponse<T> | ServerError) {
+        if (response instanceof ServerError) {
+            return {
+                status: response.status,
+                success: false,
+                message: response.message,
+                data: response.data,
+            };
+        }
+
+        return {
+            status: 200,
+            success: true,
+            message: response.message,
+            data: response.data,
+        };
     }
 
     public static moment(date: number, noNumber: boolean = true) {
@@ -72,6 +92,15 @@ export default class Parser {
         })} ${d.getDate()}, ${d.getFullYear()} ${formattedHours}:${minutes
             .toString()
             .padStart(2, "0")} ${ampm}`;
+    }
+
+    public static numeric(value: number | string = 0, indian: boolean = false) {
+        value = typeof value === "string" ? parseInt(value) : value;
+        if (isNaN(value)) {
+            return "0";
+        }
+
+        return value.toLocaleString(indian ? "en-IN" : "en-US");
     }
 
     public static mediaSize(duration: number, kbps: number | string) {
