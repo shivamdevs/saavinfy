@@ -196,7 +196,9 @@ export function formatDateAndTime(date: number, noNumber: boolean = true) {
         .padStart(2, "0")} ${ampm}`;
 }
 
-export function validateEmail(email: string): boolean {
+export function validateEmail(email?: string): boolean {
+    if (!email) return false;
+
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 

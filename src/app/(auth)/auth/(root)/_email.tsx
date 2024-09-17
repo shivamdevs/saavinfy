@@ -9,10 +9,9 @@ import { Button } from "@/components/ui/button";
 import ErrorBox from "@/components/ui/error";
 import { AuthState } from "../_server/states";
 import AuthLoader from "../_components/_loader";
-import { useSearchParams } from "next/navigation";
 import { validateEmail } from "@/lib/utils";
 
-export default function EmailPage() {
+export default function EmailPage({ email }: { email?: string }) {
     const [state, formAction] = useAuth();
 
     return (
@@ -24,17 +23,21 @@ export default function EmailPage() {
             </CardHeader>
             <Separator />
             <form action={formAction} className="mx-auto mt-3 max-w-96 py-3">
-                {state && <FormContent state={state} />}
+                {state && <FormContent state={state} email={email} />}
                 <AuthLoader />
             </form>
         </>
     );
 }
 
-export function FormContent({ state }: { state: AuthState }) {
+export function FormContent({
+    state,
+    email,
+}: {
+    state: AuthState;
+    email?: string;
+}) {
     const status = useAuthStatus();
-    const searchParams = useSearchParams();
-    const email = searchParams.get("email") as string;
 
     return (
         <>

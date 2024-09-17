@@ -20,7 +20,7 @@ export default async function Page({ searchParams }: PageProps) {
     return (
         <>
             <AuthUserCheck searchParams={searchParams} />
-            <AuthWorker />
+            <AuthWorker searchParams={searchParams} />
             <CardHeader>
                 <h2 className="text-2xl font-bold text-center">
                     Verify your email

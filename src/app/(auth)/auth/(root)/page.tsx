@@ -7,7 +7,7 @@ export default async function Page({ searchParams }: PageProps) {
     return (
         <>
             <AuthUserCheck searchParams={searchParams} />
-            <EmailPage />
+            <EmailPage email={searchParams?.email as string} />
         </>
     );
 }

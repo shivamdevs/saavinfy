@@ -1,15 +1,17 @@
 "use client";
 
 import SupabaseBrowserClient from "@/supabase/client";
-import { useSearchParams } from "next/navigation";
+import { SearchParams } from "@/types/args";
 import { useInterval } from "react-unique-hooks";
 
-export default function AuthWorker() {
-    const searchParams = useSearchParams();
-
+export default function AuthWorker({
+    searchParams,
+}: {
+    searchParams?: SearchParams;
+}) {
     const { stop } = useInterval(() => {
         const supabase = SupabaseBrowserClient();
-        const next = (searchParams.get("continue") as string) || "/";
+        const next = (searchParams?.continue as string) || "/";
 
         supabase.auth.getUser().then(({ data, error }) => {
             if (!error && data.user) {
