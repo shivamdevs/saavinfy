@@ -7,7 +7,10 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "format": "yarn run lint --fix & prettier --write \"./**/*.{js,jsx,json,tsx,ts}\""
+        "format": "yarn run lint --fix & prettier --write \"./**/*.{js,jsx,json,tsx,ts}\"",
+        "drizzle:generate": "drizzle-kit generate",
+        "drizzle:migrate": "drizzle-kit migrate",
+        "drizzle": "npm run drizzle:generate && npm run drizzle:migrate"
     },
     "dependencies": {
         "@radix-ui/react-aspect-ratio": "^1.1.0",
@@ -28,6 +31,7 @@
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
         "cookies-next": "^4.2.1",
+        "dotenv": "^16.4.5",
         "drizzle-orm": "^0.33.0",
         "embla-carousel-react": "^8.2.1",
         "fast-average-color": "^9.4.0",

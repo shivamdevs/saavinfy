@@ -32,7 +32,7 @@ function ServerBox({
         }
 
         return (
-            <div className="relative flex-1 flex flex-col items-stretch justify-center">
+            <div className="relative flex-1 flex flex-col items-stretch justify-center min-h-[75vh]">
                 <div className="relative w-full h-40">
                     <Image
                         src="/images/broken.png"

@@ -39,10 +39,7 @@ export default async function PartHeader() {
                     </>
                 ) : (
                     <>
-                        <ContinueButton variant="outline" href="/signup">
-                            Sign up
-                        </ContinueButton>
-                        <ContinueButton variant="default" href="/login">
+                        <ContinueButton variant="default" href="/auth">
                             Login
                         </ContinueButton>
                     </>

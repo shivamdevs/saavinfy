@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import Lucide from "@/components/lucide";
+import PartPlaylist from "./sub/playlist";
 
 export default function PartSheet() {
     return (
@@ -34,7 +35,9 @@ export default function PartSheet() {
                     "pb-4"
                 )}
             >
-                <div className="px-4"></div>
+                <div className="px-4">
+                    <PartPlaylist />
+                </div>
             </ScrollArea>
         </aside>
     );

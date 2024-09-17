@@ -5,24 +5,25 @@ export type LibrarySearchHistory = {
     date: number;
 };
 
-export type LibraryFavorite = {
-    date: number;
-    songs: LibrarySong[];
-};
-
-export type LibraryPlaylist = {
-    id: string;
-    name: string;
-    date: number;
-    songs: LibrarySong[];
-};
-
 export type LibrarySong = {
     id: string;
-    date: number;
+    song: string;
+    createdAt: Date;
+    playlistId: string;
 };
 
 export type LibraryPlaylistEditor = {
     edit?: Omit<LibraryPlaylist, "songs">;
     new?: string | string[] | true;
 } | null;
+
+export type LibraryPlaylist = {
+    id: string;
+    name: string;
+    createdAt: Date;
+    modifiedAt: Date;
+    isFavorite: boolean;
+    isPublic: boolean;
+
+    songs: LibrarySong[];
+};

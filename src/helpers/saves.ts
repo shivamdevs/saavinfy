@@ -68,35 +68,3 @@ export default class Saves {
         });
     }
 }
-
-// export function getSavesdPlayer() {
-//     const bucket = getCookie(Config.cookies.keys.player, { cookies });
-
-//     if (!bucket) {
-//         return playerCacheLimiter.fallback;
-//     }
-
-//     const decrypted = crypt.decrypt(bucket);
-
-//     if (!decrypted) {
-//         return playerCacheLimiter.fallback;
-//     }
-
-//     return playerCacheLimiter.parse(decrypted) as PlayerCachePush;
-// }
-
-// export function getLibraryData() {
-//     const bucket = getCookie(Config.cookies.keys.library, { cookies });
-
-//     if (!bucket) {
-//         return libraryCacheLimiter.fallback;
-//     }
-
-//     const decrypted = crypt.decrypt(bucket);
-
-//     if (!decrypted) {
-//         return libraryCacheLimiter.fallback;
-//     }
-
-//     return libraryCacheLimiter.parse(decrypted) as LibraryCache;
-// }

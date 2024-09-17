@@ -1,16 +1,18 @@
-import React from "react";
-import LoginPage from "./_login";
-import { PageProps } from "@/types/args";
 import { SupabaseServerUser } from "@/supabase/server";
+import { SearchParams } from "@/types/args";
 import { redirect } from "next/navigation";
 
-export default async function Page({ searchParams }: PageProps) {
+export default async function AuthUserCheck({
+    searchParams,
+}: {
+    searchParams?: SearchParams;
+}) {
     const user = await SupabaseServerUser();
     const continuePath = (searchParams?.continue as string) || "/";
 
     if (user) {
-        return redirect(continuePath);
+        redirect(continuePath);
     }
 
-    return <LoginPage />;
+    return null;
 }

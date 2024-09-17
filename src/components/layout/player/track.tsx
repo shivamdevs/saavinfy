@@ -12,9 +12,9 @@ export default function PlayerTrack({ className }: { className?: string }) {
     const bufferPercent = usePlayerBuffer();
 
     return (
-        <div className={cn("absolute inset-0 bottom-auto h-1", className)}>
+        <div className={cn("absolute inset-0 bottom-auto h-4", className)}>
             <span
-                className="absolute inset-0 h-1 bg-primary/20 transition-all"
+                className="absolute inset-0 top-1.5 h-1 bg-primary/20 transition-all"
                 style={{
                     right: `${100 - bufferPercent}%`,
                 }}

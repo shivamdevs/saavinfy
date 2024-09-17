@@ -19,7 +19,7 @@ import {
 import { ServerMethods } from "@/types/server";
 import axios, { AxiosRequestConfig } from "axios";
 
-const fetch = async <T>(
+export const fetch = async <T>(
     method: ServerMethods,
     slug: string,
     options?: AxiosRequestConfig
@@ -48,7 +48,10 @@ const fetch = async <T>(
 };
 
 export class SaavnEndpoints {
-    public static baseUrl = "https://saavn.dev";
+    public static baseUrl =
+        process.env.API_URL ||
+        process.env.NEXT_PUBLIC_API_URL ||
+        "https://saavn.dev";
 
     public static search = (
         query: string,

@@ -5,11 +5,13 @@ import { setCookie } from "cookies-next";
 import { uuid } from "@/lib/utils";
 import { Config } from "@/config";
 import Limiter from "@/helpers/limiter";
-import { SavedLibrary } from "@/types/saves";
-import { LibraryPlaylistEditor } from "@/types/library";
+import { LibraryData } from "@/types/saves";
+import { LibraryPlaylistEditor, LibrarySong } from "@/types/library";
+import toast from "react-hot-toast";
+import { LibRar } from "@/helpers/librar";
 
-function useOps(data: SavedLibrary) {
-    const [libraryData, setLibraryData] = React.useState<SavedLibrary>(data);
+function useOps(data: LibraryData) {
+    const [libraryData, setLibraryData] = React.useState<LibraryData>(data);
 
     React.useLayoutEffect(() => {
         const data = Limiter.limitLibrary(libraryData);
@@ -79,42 +81,107 @@ function useOps(data: SavedLibrary) {
         }));
     }, []);
 
-    const addFavorite = React.useCallback((ids: string | string[]) => {
-        if (typeof ids === "string") {
-            ids = [ids];
-        }
+    const addFavorite = React.useCallback(
+        (ids: string | string[]) => {
+            if (typeof ids === "string") {
+                ids = [ids];
+            }
 
-        setLibraryData((prev) => ({
-            ...prev,
-            favorites: {
-                date: Date.now(),
-                songs: [
-                    ...prev.favorites.songs,
-                    ...ids.map((id) => ({ id, date: Date.now() })),
-                ],
-            },
-        }));
-    }, []);
+            if (!libraryData.favorites) {
+                return toast.error("You need to login to add favorites");
+            }
 
-    const removeFavorite = React.useCallback((ids: string | string[]) => {
-        if (typeof ids === "string") {
-            ids = [ids];
-        }
+            setLibraryData((prev) => ({
+                ...prev,
 
-        setLibraryData((prev) => ({
-            ...prev,
-            favorites: {
-                date: Date.now(),
-                songs: prev.favorites.songs.filter(
-                    (song) => !ids.includes(song.id)
-                ),
-            },
-        }));
-    }, []);
+                favorites: {
+                    ...prev.favorites!,
+                    modifiedAt: new Date(),
+                    songs: [
+                        ...prev.favorites!.songs,
+                        ...ids.map(
+                            (id): LibrarySong => ({
+                                id,
+                                song: id,
+                                createdAt: new Date(),
+                                playlistId: prev.favorites!.id,
+                            })
+                        ),
+                    ],
+                },
+            }));
+
+            LibRar.playlistSongs(libraryData.favorites.id, ids, "PUT").then(
+                (res) => {
+                    if (!res.success) {
+                        return toast.error(res.message);
+                    }
+
+                    setLibraryData((prev) => ({
+                        ...prev,
+                        favorites: {
+                            ...prev.favorites!,
+                            modifiedAt: new Date(res.data.modifiedAt),
+                            songs: res.data.songs,
+                        },
+                    }));
+
+                    toast.success("Added to favorites");
+                }
+            );
+        },
+        [libraryData.favorites]
+    );
+
+    const removeFavorite = React.useCallback(
+        (ids: string | string[]) => {
+            if (typeof ids === "string") {
+                ids = [ids];
+            }
+
+            if (!libraryData.favorites) {
+                return;
+            }
+
+            setLibraryData((prev) => ({
+                ...prev,
+
+                favorites: {
+                    ...prev.favorites!,
+                    modifiedAt: new Date(),
+                    songs: prev.favorites!.songs.filter(
+                        (song) => !ids.includes(song.song)
+                    ),
+                },
+            }));
+
+            LibRar.playlistSongs(libraryData.favorites.id, ids, "DELETE").then(
+                (res) => {
+                    if (!res.success) {
+                        return toast.error(res.message);
+                    }
+
+                    setLibraryData((prev) => ({
+                        ...prev,
+                        favorites: {
+                            ...prev.favorites!,
+                            modifiedAt: new Date(res.data.modifiedAt),
+                            songs: res.data.songs,
+                        },
+                    }));
+
+                    toast.success("Removed from favorites");
+                }
+            );
+        },
+        [libraryData.favorites]
+    );
 
     const isFavorite = React.useCallback(
         (id: string) => {
-            return libraryData.favorites.songs.some((song) => song.id === id);
+            return libraryData.favorites?.songs.some(
+                (song) => song.song === id
+            );
         },
         [libraryData.favorites]
     );
@@ -130,20 +197,23 @@ function useOps(data: SavedLibrary) {
         [isFavorite, addFavorite, removeFavorite]
     );
 
-    const createPlaylist = React.useCallback((name: string) => {
-        setLibraryData((prev) => ({
-            ...prev,
-            playlists: [
-                ...prev.playlists,
-                {
-                    id: uuid(6),
-                    name,
-                    date: Date.now(),
-                    songs: [],
-                },
-            ],
-        }));
-    }, []);
+    const createPlaylist = React.useCallback(() =>
+        // name: string
+        {
+            setLibraryData((prev) => ({
+                ...prev,
+
+                // playlists: [
+                //     ...prev.playlists,
+                //     {
+                //         id: uuid(6),
+                //         name,
+                //         date: Date.now(),
+                //         songs: [],
+                //     },
+                // ],
+            }));
+        }, []);
 
     const removePlaylist = React.useCallback((id: string) => {
         setLibraryData((prev) => ({
@@ -169,20 +239,21 @@ function useOps(data: SavedLibrary) {
 
             setLibraryData((prev) => ({
                 ...prev,
-                playlists: prev.playlists.map((playlist) =>
-                    playlist.id === id
-                        ? {
-                              ...playlist,
-                              songs: [
-                                  ...playlist.songs,
-                                  ...songs.map((song) => ({
-                                      id: song,
-                                      date: Date.now(),
-                                  })),
-                              ],
-                          }
-                        : playlist
-                ),
+
+                // playlists: prev.playlists.map((playlist) =>
+                //     playlist.id === id
+                //         ? {
+                //               ...playlist,
+                //               songs: [
+                //                   ...playlist.songs,
+                //                   ...songs.map((song) => ({
+                //                       id: song,
+                //                       date: Date.now(),
+                //                   })),
+                //               ],
+                //           }
+                //         : playlist
+                // ),
             }));
         },
         []

@@ -71,6 +71,11 @@
         @apply bg-background text-foreground h-screen flex flex-col;
     }
 
+    a[target="_blank"],
+    a.link {
+        @apply text-primary-foreground underline;
+    }
+
     body.dark {
         color-scheme: dark;
     }

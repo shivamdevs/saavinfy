@@ -23,9 +23,15 @@ export default function Player() {
             className={cn("relative", {
                 "flex-1 flex flex-col": player.fullScreen,
             })}
-            style={{
-                backgroundColor: player.fullScreen ? colors?.background : "",
-            }}
+            style={
+                {
+                    backgroundColor: player.fullScreen
+                        ? colors?.background
+                        : "",
+                    "--cover": colors.background,
+                    "--cover-rgb": colors.result?.value.slice(0, 3).join(" "),
+                } as React.CSSProperties
+            }
             id="fullscreen"
         >
             {player.fullScreen && <PlayerFullScreen />}

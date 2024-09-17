@@ -21,11 +21,6 @@ export default class Limiter {
 
     public static fallbackLibrary: SavedLibrary = {
         searches: [],
-        favorites: {
-            date: Date.now(),
-            songs: [],
-        },
-        playlists: [],
     };
 
     get fallbackPlayer(): SavedPlayer {
@@ -49,11 +44,7 @@ export default class Limiter {
     }
 
     private validateLibrary(data: SavedLimitedLibrary): boolean {
-        return (
-            typeof data.s === "string" &&
-            typeof data.f === "string" &&
-            typeof data.p === "string"
-        );
+        return typeof data.s === "string";
     }
 
     public static parsePlayer(data?: SavedLimitedPlayer): SavedPlayer {
@@ -110,8 +101,6 @@ export default class Limiter {
             return l.fallbackLibrary;
         }
 
-        const [fD, fS] = data.f.split(",");
-
         return {
             searches: data.s
                 .split(",")
@@ -133,37 +122,6 @@ export default class Limiter {
                                     : type === "p"
                                       ? "playlists"
                                       : "",
-                    };
-                }),
-            favorites: {
-                date: fD ? Number(fD) * 1000 : Date.now(),
-                songs:
-                    ((fS ?? "").split(";") ?? [])
-                        .filter((s) => s.length > 0)
-                        .map((s) => {
-                            const [id, date] = s.split(":");
-
-                            return { id, date: Number(date) * 1000 };
-                        }) ?? [],
-            },
-            playlists: data.p
-                .split(",")
-                .filter((p) => p.length > 0)
-                .map((p) => {
-                    const [id, name, date, songs] = p.split("~");
-
-                    return {
-                        id,
-                        name: decodeURIComponent(name),
-                        date: Number(date) * 1000,
-                        songs: songs
-                            .split(";")
-                            .filter((s) => s.length > 0)
-                            .map((s) => {
-                                const [id, date] = s.split(":");
-
-                                return { id, date: Number(date) * 1000 };
-                            }),
                     };
                 }),
         };
@@ -204,32 +162,6 @@ export default class Limiter {
                                   ? "p"
                                   : undefined,
                     ].join(":")
-                )
-                .join(","),
-            f: [
-                Math.floor(data.favorites.date / 1000).toString(),
-                data.favorites.songs
-                    .map((song) =>
-                        [song.id, Math.floor(song.date / 1000)].join(":")
-                    )
-                    .join(";"),
-            ]
-                .filter((f) => typeof f === "string" && f.length > 0)
-                .join(","),
-            p: data.playlists
-                .map((playlist) =>
-                    [
-                        playlist.id,
-                        encodeURIComponent(playlist.name),
-                        Math.floor(playlist.date / 1000),
-                        playlist.songs
-                            .map((song) =>
-                                [song.id, Math.floor(song.date / 1000)].join(
-                                    ":"
-                                )
-                            )
-                            .join(";"),
-                    ].join("~")
                 )
                 .join(","),
         };

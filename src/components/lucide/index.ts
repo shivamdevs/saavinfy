@@ -23,6 +23,7 @@ import LucideLoaderCircle from "./loader-circle";
 import LucideMaximize2 from "./maximize-2";
 import LucideMicVocal from "./mic-vocal";
 import LucideMinimize2 from "./minimize-2";
+import LucideMusic2 from "./music-2";
 import LucidePause from "./pause";
 import LucidePlay from "./play";
 import LucidePlus from "./plus";
@@ -68,6 +69,7 @@ const Lucide = {
     Maximize2: LucideMaximize2,
     MicVocal: LucideMicVocal,
     Minimize2: LucideMinimize2,
+    Music2: LucideMusic2,
     Pause: LucidePause,
     Play: LucidePlay,
     Plus: LucidePlus,
@@ -116,6 +118,7 @@ export {
     LucideMaximize2,
     LucideMicVocal,
     LucideMinimize2,
+    LucideMusic2,
     LucidePause,
     LucidePlay,
     LucidePlus,

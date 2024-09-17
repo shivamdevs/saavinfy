@@ -10,6 +10,7 @@ export type ContinueButtonProps = LinkProps & {
     variant?: ButtonProps["variant"];
     size?: ButtonProps["size"];
     strict?: boolean;
+    noContinue?: boolean;
 };
 
 export default function ContinueButton({
@@ -17,6 +18,7 @@ export default function ContinueButton({
     size,
     href,
     strict,
+    noContinue,
     ...props
 }: ContinueButtonProps) {
     const pathname = usePathname();
@@ -32,12 +34,16 @@ export default function ContinueButton({
 
     try {
         const urlHref = new URL(href);
-        urlHref.searchParams.set("continue", continuePath);
+        if (!noContinue) {
+            urlHref.searchParams.set("continue", continuePath);
+        }
         href = urlHref.toString();
     } catch (error) {
-        href = `${href}${href.includes("?") ? "&" : "?"}continue=${encodeURIComponent(
-            continuePath
-        )}`;
+        href = `${href}${
+            !noContinue
+                ? `${href.includes("?") ? "&" : "?"}continue=${encodeURIComponent(continuePath)}`
+                : ""
+        }`;
     }
 
     return (

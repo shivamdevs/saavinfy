@@ -19,7 +19,15 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={cn(Fonts.text.className, "dark")}>
+            <body
+                className={cn(
+                    Fonts.text.className,
+                    Fonts.text.variable,
+                    Fonts.brand.variable,
+                    Fonts.mono.variable,
+                    "dark"
+                )}
+            >
                 {children}
                 <div id="portal"></div>
             </body>

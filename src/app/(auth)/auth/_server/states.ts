@@ -4,7 +4,6 @@ export type AuthState = {
     continue: string;
     success: boolean;
     error: string;
-
     _error?: AuthError;
 };
 

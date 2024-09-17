@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useAuthStatus } from "./hooks";
+import { useAuthStatus } from "../_server/hooks";
 import Lucide from "@/components/lucide";
 
 export default function AuthLoader() {

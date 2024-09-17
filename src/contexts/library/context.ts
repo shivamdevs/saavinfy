@@ -1,5 +1,4 @@
 import {
-    LibraryFavorite,
     LibraryPlaylist,
     LibraryPlaylistEditor,
     LibrarySearchHistory,
@@ -8,7 +7,7 @@ import { SavedLibrary } from "@/types/saves";
 import React from "react";
 
 export type ContextType = {
-    log: SavedLibrary;
+    log: SavedLibrary | null;
 
     searches: LibrarySearchHistory[];
     // eslint-disable-next-line no-unused-vars
@@ -17,7 +16,7 @@ export type ContextType = {
     removeSearch: (id: string) => void;
     clearSearches: () => void;
 
-    favorites: LibraryFavorite;
+    favorites: LibraryPlaylist | null;
     // eslint-disable-next-line no-unused-vars
     addFavorite: (ids: string | string[]) => void;
     // eslint-disable-next-line no-unused-vars
@@ -47,24 +46,14 @@ export type ContextType = {
 };
 
 export const contextDefaultValue: ContextType = {
-    log: {
-        searches: [],
-        favorites: {
-            date: Date.now(),
-            songs: [],
-        },
-        playlists: [],
-    },
+    log: null,
 
     searches: [],
     addSearch: () => {},
     removeSearch: () => {},
     clearSearches: () => {},
 
-    favorites: {
-        date: Date.now(),
-        songs: [],
-    },
+    favorites: null,
     addFavorite: () => {},
     removeFavorite: () => {},
     toggleFavorite: () => {},

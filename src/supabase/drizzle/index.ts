@@ -12,3 +12,5 @@ const client = postgres(connectionString, {
 const db = drizzle(client, { schema: Schema.$raw });
 
 export default db;
+
+export const dbs = Schema;

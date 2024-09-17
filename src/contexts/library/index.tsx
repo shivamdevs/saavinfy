@@ -3,12 +3,12 @@
 import React, { useEffect } from "react";
 import LibraryContext, { ContextType, useHook as useLibrary } from "./context";
 import useLibraryOps from "./operations";
-import { SavedLibrary } from "@/types/saves";
+import { LibraryData } from "@/types/saves";
 
 export default useLibrary;
 
 export type LibraryProviderProps = React.PropsWithChildren<{
-    data: SavedLibrary;
+    data: LibraryData;
 }>;
 
 export function LibraryProvider({ children, data }: LibraryProviderProps) {

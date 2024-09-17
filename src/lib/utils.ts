@@ -28,6 +28,12 @@ export const uuid = (length?: number, replaceHyphens?: boolean) => {
 
 export const uuidV4 = uuid;
 
+export function validateUuid(uuid: string) {
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+        uuid
+    );
+}
+
 export function getServerPathname(head: ReadonlyHeaders) {
     const url = new URL(
         head.get("referer") ?? "",
@@ -188,4 +194,29 @@ export function formatDateAndTime(date: number, noNumber: boolean = true) {
     })} ${d.getDate()}, ${d.getFullYear()} ${formattedHours}:${minutes
         .toString()
         .padStart(2, "0")} ${ampm}`;
+}
+
+export function validateEmail(email: string): boolean {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+export function getBase64Image(img: HTMLImageElement) {
+    // Create an empty canvas element
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    // Copy the image contents to the canvas
+    var ctx = canvas.getContext("2d");
+    if (ctx) {
+        ctx.drawImage(img, 0, 0);
+    }
+
+    // Get the data-URL formatted image
+    // Firefox supports PNG and JPEG. You could check img.src to
+    // guess the original format, but be aware the using "image/jpg"
+    // will re-encode the image.
+    var dataURL = canvas.toDataURL("image/png");
+
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
