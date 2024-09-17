@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import ContinueButton from "@/components/blocks/continue";
+import Link from "next/link";
 
 export default async function Page() {
     return (
@@ -29,9 +30,13 @@ export default async function Page() {
                 />
             </CardContent>
             <CardFooter className="flex-col gap-3 items-stretch">
-                <ContinueButton href={`/auth`} noContinue>
-                    Update / resend email
-                </ContinueButton>
+                <Suspense
+                    fallback={<Link href="/auth">Update / resend email</Link>}
+                >
+                    <ContinueButton href={`/auth`} noContinue>
+                        Update / resend email
+                    </ContinueButton>
+                </Suspense>
                 <p className="text-secondary-foreground text-sm text-center">
                     If you continue to have problems, please contact{" "}
                     <a
