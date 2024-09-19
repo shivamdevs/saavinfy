@@ -1,5 +1,5 @@
 import usePlayer from "@/contexts/player";
-import { useDebounce, useInterval } from "react-unique-hooks";
+import { useDebounce } from "react-unique-hooks";
 import useLibrary from "..";
 import React from "react";
 
@@ -18,16 +18,16 @@ export default function useLibraryHistory() {
     // after 100ms of no changes to the current song
     useDebounce(addToHistory, 100, [player.currentSong]);
 
-    // every 30 seconds
-    const { start, stop } = useInterval(addToHistory, 30000);
+    // // every 30 seconds
+    // const { start, stop } = useInterval(addToHistory, 30000);
 
-    React.useEffect(() => {
-        if (player.playing) {
-            start();
-        } else {
-            stop();
-        }
-    }, [player.playing, start, stop]);
+    // React.useEffect(() => {
+    //     if (player.playing) {
+    //         start();
+    //     } else {
+    //         stop();
+    //     }
+    // }, [player.playing, start, stop]);
 
     return null;
 }
