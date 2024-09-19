@@ -6,7 +6,7 @@ import { usePlayerOptions } from "@/contexts/player/hooks";
 import useStack from "@/contexts/stack";
 import { cn } from "@/lib/utils";
 import React from "react";
-import { useDebounce, useUpdateEffect } from "react-unique-hooks";
+import { useUpdateEffect } from "react-unique-hooks";
 
 export default function PartStackView() {
     const { stack } = useStack();
