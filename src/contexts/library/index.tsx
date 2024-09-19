@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import LibraryContext, { ContextType, useHook as useLibrary } from "./context";
 import useLibraryOps from "./operations";
 import { LibraryData } from "@/types/saves";
+import useLibraryHistory from "./hooks/use-history";
 
 export default useLibrary;
 
@@ -28,9 +29,16 @@ export function LibraryProvider({ children, data }: LibraryProviderProps) {
 
     return (
         <LibraryContext.Provider value={operations}>
+            <Hooker />
             {children}
         </LibraryContext.Provider>
     );
 }
 
 export { LibraryContext, useLibrary };
+
+function Hooker() {
+    useLibraryHistory();
+
+    return null;
+}

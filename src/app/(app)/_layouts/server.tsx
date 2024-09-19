@@ -13,6 +13,7 @@ import Saavn from "@/helpers/saavn";
 import SupabaseServerClient from "@/supabase/server";
 import db from "@/supabase/drizzle";
 import { LibraryData } from "@/types/saves";
+import { StackProvider } from "@/contexts/stack";
 
 export default async function ServerLayout({
     children,
@@ -24,6 +25,7 @@ export default async function ServerLayout({
 
     const libData: LibraryData = {
         searches: librarySave.searches,
+        history: librarySave.history,
         favorites: playlists?.favorites ?? null,
         playlists: playlists?.playlists || [],
     };
@@ -38,9 +40,11 @@ export default async function ServerLayout({
 
     return (
         <ServerBox data={songs}>
-            <PlayerProvider data={playerSave}>
-                <LibraryProvider data={libData}>{children}</LibraryProvider>
-            </PlayerProvider>
+            <StackProvider>
+                <PlayerProvider data={playerSave}>
+                    <LibraryProvider data={libData}>{children}</LibraryProvider>
+                </PlayerProvider>
+            </StackProvider>
         </ServerBox>
     );
 }

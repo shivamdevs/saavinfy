@@ -18,8 +18,9 @@ export async function PUT(
         return Response.json(
             new ServerError(
                 "No playlist id provided",
-                "lib/playlists/songs/put/no-id",
-                400
+                { params },
+                400,
+                "lib/playlists/songs/put/no-id"
             ),
             { status: 400 }
         );
@@ -30,17 +31,6 @@ export async function PUT(
 
     if (!user || !songs) {
         return;
-    }
-
-    if (songs.length === 0) {
-        return Response.json(
-            new ServerError(
-                "No songs provided",
-                "lib/playlists/songs/put/no-songs",
-                400
-            ),
-            { status: 400 }
-        );
     }
 
     let res;
@@ -60,8 +50,9 @@ export async function PUT(
                 return {
                     error: new ServerError(
                         "Playlist does not exist",
-                        "lib/playlists/songs/put/not-found",
-                        404
+                        { playlist },
+                        404,
+                        "lib/playlists/songs/put/not-found"
                     ),
                 };
             }
@@ -70,8 +61,9 @@ export async function PUT(
                 return {
                     error: new ServerError(
                         "Playlist does not belong to user",
-                        "lib/playlists/songs/put/not-authorized",
-                        403
+                        { playlist, user },
+                        403,
+                        "lib/playlists/songs/put/not-authorized"
                     ),
                 };
             }
@@ -80,8 +72,9 @@ export async function PUT(
                 return {
                     error: new ServerError(
                         "Playlist has been deleted",
-                        "lib/playlists/songs/put/deleted",
-                        410
+                        { playlist },
+                        410,
+                        "lib/playlists/songs/put/deleted"
                     ),
                 };
             }
@@ -150,9 +143,17 @@ export async function PUT(
     } catch (error) {
         console.error(error);
 
-        return Response.json(new ServerError("Database error", error, 500), {
-            status: 500,
-        });
+        return Response.json(
+            new ServerError(
+                "Database error",
+                { error },
+                500,
+                "lib/playlists/songs/put/db-error"
+            ),
+            {
+                status: 500,
+            }
+        );
     }
 
     if (res.error) {
@@ -172,8 +173,9 @@ export async function DELETE(
         return Response.json(
             new ServerError(
                 "No playlist id provided",
-                "lib/playlists/songs/put/no-id",
-                400
+                { params },
+                400,
+                "lib/playlists/songs/delete/no-id"
             ),
             { status: 400 }
         );
@@ -184,17 +186,6 @@ export async function DELETE(
 
     if (!user || !songs) {
         return;
-    }
-
-    if (songs.length === 0) {
-        return Response.json(
-            new ServerError(
-                "No songs provided",
-                "lib/playlists/songs/delete/no-songs",
-                400
-            ),
-            { status: 400 }
-        );
     }
 
     let res;
@@ -214,8 +205,9 @@ export async function DELETE(
                 return {
                     error: new ServerError(
                         "Playlist does not exist",
-                        "lib/playlists/songs/delete/not-found",
-                        404
+                        { playlist },
+                        404,
+                        "lib/playlists/songs/delete/not-found"
                     ),
                 };
             }
@@ -224,8 +216,9 @@ export async function DELETE(
                 return {
                     error: new ServerError(
                         "Playlist does not belong to user",
-                        "lib/playlists/songs/delete/not-authorized",
-                        403
+                        { playlist, user },
+                        403,
+                        "lib/playlists/songs/delete/not-authorized"
                     ),
                 };
             }
@@ -234,8 +227,9 @@ export async function DELETE(
                 return {
                     error: new ServerError(
                         "Playlist has been deleted",
-                        "lib/playlists/songs/delete/deleted",
-                        410
+                        { playlist },
+                        410,
+                        "lib/playlists/songs/delete/deleted"
                     ),
                 };
             }
@@ -282,9 +276,17 @@ export async function DELETE(
     } catch (error) {
         console.error(error);
 
-        return Response.json(new ServerError("Database error", error, 500), {
-            status: 500,
-        });
+        return Response.json(
+            new ServerError(
+                "Database error",
+                error,
+                500,
+                "lib/playlists/songs/delete/db-error"
+            ),
+            {
+                status: 500,
+            }
+        );
     }
 
     if (res.error) {

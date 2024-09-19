@@ -11,8 +11,9 @@ export async function validateAuth() {
         Response.json(
             new ServerError(
                 "Authentication error",
-                error?.message || "User not found",
-                error?.status || 401
+                { error, data },
+                401,
+                "validate/auth/error"
             ),
             { status: 401 }
         );
@@ -29,9 +30,10 @@ export async function validateSongs(req: NextRequest) {
     if (!data || !data.songs) {
         Response.json(
             new ServerError(
-                "Invalid data",
                 "Data should be an object with a 'songs' array",
-                400
+                { data },
+                400,
+                "validate/songs/no-data"
             ),
             { status: 400 }
         );
@@ -43,15 +45,34 @@ export async function validateSongs(req: NextRequest) {
         if (typeof song !== "string" || song.length !== 8) {
             Response.json(
                 new ServerError(
-                    "Invalid data",
                     "Each song should be a string",
-                    400
+                    {
+                        data,
+                        song,
+                        type: typeof song,
+                    },
+                    400,
+                    "validate/songs/invalid-song"
                 ),
                 { status: 400 }
             );
 
             return;
         }
+    }
+
+    if (data.songs.length === 0) {
+        Response.json(
+            new ServerError(
+                "Data should contain at least one song",
+                { data },
+                400,
+                "validate/songs/no-songs"
+            ),
+            { status: 400 }
+        );
+
+        return;
     }
 
     return data.songs as string[];

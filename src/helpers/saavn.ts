@@ -77,6 +77,17 @@ export class SaavnEndpoints {
 
         return url.toString();
     };
+
+    public static songSuggestions = (id: string, limit: number = 10) => {
+        const url = new URL(this.baseUrl);
+
+        url.pathname = `/api/songs/${id}/suggestions`;
+
+        url.searchParams.append("limit", limit.toString());
+
+        return url.toString();
+    };
+
     public static playlist = (
         id: string,
         page: number = 1,
@@ -140,6 +151,10 @@ export default class Saavn {
         }
 
         return this.get<MediaSong[]>(SaavnEndpoints.songs(ids));
+    }
+
+    public static getSongSuggestion(id: string, limit: number = 10) {
+        return this.get<MediaSong[]>(SaavnEndpoints.songSuggestions(id, limit));
     }
 
     public static searchAll(
@@ -256,6 +271,82 @@ export default class Saavn {
         results.songs = results.songs.slice(0, limit);
 
         return new ServerResponse<MediaArtistSongs>(results);
+    }
+
+    public static async getTrending(ids: string[]) {
+        const results: MediaSong[] = [];
+
+        for (let id of ids) {
+            const result = await this.getSongSuggestion(id);
+
+            if (!result.success) {
+                return result;
+            }
+
+            results.push(...result.data);
+        }
+
+        const albums: MediaAlbum[] = [];
+
+        const albumIds = results
+            .map((song) => song.album.id)
+            .filter((id, index, self) => self.indexOf(id) === index)
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 12);
+
+        for (let id of albumIds) {
+            const result = await this.album(id);
+
+            if (!result.success) {
+                return result;
+            }
+
+            albums.push(result.data);
+        }
+
+        const artists: MediaArtist[] = [];
+
+        // get 10 random artists from both songs and albums
+        const artistIds = [
+            ...results.map((song) =>
+                [
+                    ...song.artists.all,
+                    ...song.artists.featured,
+                    ...song.artists.primary,
+                ].map((artist) => artist.id)
+            ),
+            ...albums.map((album) =>
+                [
+                    ...album.artists.all,
+                    ...album.artists.featured,
+                    ...album.artists.primary,
+                ].map((artist) => artist.id)
+            ),
+        ]
+            .flat()
+            .filter((id, index, self) => self.indexOf(id) === index)
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 15);
+
+        for (let id of artistIds) {
+            const result = await this.artist(id);
+
+            if (!result.success) {
+                return result;
+            }
+
+            artists.push(result.data);
+        }
+
+        return new ServerResponse<{
+            songs: MediaSong[];
+            albums: MediaAlbum[];
+            artists: MediaArtist[];
+        }>({
+            songs: results.sort(() => 0.5 - Math.random()).slice(0, 10),
+            albums: albums.sort(() => 0.5 - Math.random()).slice(0, 10),
+            artists: artists.sort(() => 0.5 - Math.random()).slice(0, 10),
+        });
     }
 
     public static album(id: string) {

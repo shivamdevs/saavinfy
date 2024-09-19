@@ -21,6 +21,7 @@ export default class Limiter {
 
     public static fallbackLibrary: SavedLibrary = {
         searches: [],
+        history: [],
     };
 
     get fallbackPlayer(): SavedPlayer {
@@ -39,12 +40,12 @@ export default class Limiter {
             typeof data.v === "number" &&
             (data._l === undefined || [0, 1, 2].includes(data._l)) &&
             (data._m === undefined || data._m === 1) &&
-            (data._p === undefined || ["q", "s", "i"].includes(data._p))
+            (data._p === undefined || ["q", "s", "i", "n"].includes(data._p))
         );
     }
 
     private validateLibrary(data: SavedLimitedLibrary): boolean {
-        return typeof data.s === "string";
+        return typeof data.s === "string" && typeof data.h === "string";
     }
 
     public static parsePlayer(data?: SavedLimitedPlayer): SavedPlayer {
@@ -84,7 +85,9 @@ export default class Limiter {
                           ? "settings"
                           : data._p === "i"
                             ? "info"
-                            : undefined
+                            : data._p === "n"
+                              ? "notifications"
+                              : undefined
                     : undefined,
             },
         };
@@ -124,6 +127,17 @@ export default class Limiter {
                                       : "",
                     };
                 }),
+            history: data.h
+                .split(",")
+                .filter((s) => s.length > 0)
+                .map((s) => {
+                    const [song, date] = s.split(":");
+
+                    return {
+                        song,
+                        date: Number(date) * 1000,
+                    };
+                }),
         };
     }
 
@@ -139,7 +153,7 @@ export default class Limiter {
             _l: data.options.loop || undefined,
             _m: data.options.muted ? 1 : undefined,
             _p: data.options.panel
-                ? (data.options.panel.charAt(0) as "q" | "s" | "i")
+                ? (data.options.panel.charAt(0) as "q" | "s" | "i" | "n")
                 : undefined,
         };
     }
@@ -162,6 +176,11 @@ export default class Limiter {
                                   ? "p"
                                   : undefined,
                     ].join(":")
+                )
+                .join(","),
+            h: data.history
+                .map((history) =>
+                    [history.song, Math.floor(history.date / 1000)].join(":")
                 )
                 .join(","),
         };

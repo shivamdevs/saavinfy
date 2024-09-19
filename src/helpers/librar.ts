@@ -51,4 +51,19 @@ export class LibRar {
             data: { songs },
         });
     }
+
+    public static historySongs(
+        songs: string[],
+        type: "PUT" | "DELETE",
+        all: boolean = false
+    ) {
+        const deleteAll = type === "DELETE" && all ? "/all" : "";
+
+        return fetch<{
+            modifiedAt: Date;
+            songs: LibrarySong[];
+        }>(type, `/history${deleteAll}`, {
+            data: { songs },
+        });
+    }
 }

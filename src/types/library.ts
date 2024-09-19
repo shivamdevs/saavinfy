@@ -27,3 +27,8 @@ export type LibraryPlaylist = {
 
     songs: LibrarySong[];
 };
+
+export type LibraryHistory = {
+    song: string;
+    date: number;
+};

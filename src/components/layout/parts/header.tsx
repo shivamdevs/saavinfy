@@ -6,6 +6,7 @@ import Link from "next/link";
 import PartSearch from "./sub/search";
 import ContinueButton from "@/components/blocks/continue";
 import { SupabaseServerUser } from "@/supabase/server";
+import PartStackView from "./sub/stack-view";
 
 export default async function PartHeader() {
     const user = await SupabaseServerUser();
@@ -26,20 +27,22 @@ export default async function PartHeader() {
                 </Link>
             </div>
             <PartSearch />
-            <div className="ml-auto flex gap-2">
+            <div className="ml-auto flex gap-4">
                 {user ? (
                     <>
+                        <PartStackView />
                         <ContinueButton
                             variant="secondary"
                             href="/logout"
                             replace
+                            asAnchor
                         >
                             Logout
                         </ContinueButton>
                     </>
                 ) : (
                     <>
-                        <ContinueButton variant="default" href="/auth">
+                        <ContinueButton variant="default" href="/auth" asAnchor>
                             Login
                         </ContinueButton>
                     </>

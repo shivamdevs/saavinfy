@@ -1,4 +1,5 @@
 import {
+    LibraryHistory,
     LibraryPlaylist,
     LibraryPlaylistEditor,
     LibrarySearchHistory,
@@ -37,6 +38,14 @@ export type ContextType = {
     addSongsToPlaylist: (id: string, songs: string[] | string) => void;
     // eslint-disable-next-line no-unused-vars
     removeSongsFromPlaylist: (id: string, songs: string | string) => void;
+
+    history: LibraryHistory[];
+    // eslint-disable-next-line no-unused-vars
+    addHistory: (ids: string | string[]) => void;
+    // eslint-disable-next-line no-unused-vars
+    removeHistory: (ids: string | string[]) => void;
+    clearHistory: () => void;
+
     // eslint-disable-next-line no-unused-vars
     playlistEditor: LibraryPlaylistEditor;
     // eslint-disable-next-line no-unused-vars
@@ -65,6 +74,11 @@ export const contextDefaultValue: ContextType = {
     renamePlaylist: () => {},
     addSongsToPlaylist: () => {},
     removeSongsFromPlaylist: () => {},
+
+    history: [],
+    addHistory: () => {},
+    removeHistory: () => {},
+    clearHistory: () => {},
 
     playlistEditor: null,
     setPlaylistEditor: () => {},

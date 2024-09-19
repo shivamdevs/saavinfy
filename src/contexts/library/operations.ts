@@ -2,16 +2,23 @@ import React from "react";
 import { ContextType } from "./context";
 import crypt from "@/lib/crypt";
 import { setCookie } from "cookies-next";
-import { uuid } from "@/lib/utils";
+import { formatPlural, uuid } from "@/lib/utils";
 import { Config } from "@/config";
 import Limiter from "@/helpers/limiter";
 import { LibraryData } from "@/types/saves";
-import { LibraryPlaylistEditor, LibrarySong } from "@/types/library";
+import {
+    LibraryHistory,
+    LibraryPlaylistEditor,
+    LibrarySong,
+} from "@/types/library";
 import toast from "react-hot-toast";
 import { LibRar } from "@/helpers/librar";
+import useStack from "../stack";
 
 function useOps(data: LibraryData) {
     const [libraryData, setLibraryData] = React.useState<LibraryData>(data);
+
+    const { newStack } = useStack();
 
     React.useLayoutEffect(() => {
         const data = Limiter.limitLibrary(libraryData);
@@ -35,9 +42,6 @@ function useOps(data: LibraryData) {
 
     const addSearch = React.useCallback(
         (query: string, type: string) => {
-            // Check if the search already exists
-            // If it does, update the timestamp
-
             const search = libraryData.searches.find(
                 (search) => search.query === query && search.type === type
             );
@@ -60,7 +64,9 @@ function useOps(data: LibraryData) {
                             type,
                             date: Date.now(),
                         },
-                    ],
+                    ]
+                        .sort((a, b) => b.date - a.date)
+                        .slice(0, 20),
                 }));
             }
         },
@@ -282,6 +288,119 @@ function useOps(data: LibraryData) {
         []
     );
 
+    const addHistory = React.useCallback(
+        (ids: string | string[]) => {
+            if (typeof ids === "string") {
+                ids = [ids];
+            }
+
+            setLibraryData((prev) => ({
+                ...prev,
+                history: [
+                    ...prev.history,
+                    ...ids.map(
+                        (id): LibraryHistory => ({
+                            song: id,
+                            date: Date.now(),
+                        })
+                    ),
+                ]
+                    .filter(
+                        (h, i, a) =>
+                            a.findIndex((h2) => h2.song === h.song) === i
+                    )
+                    .sort((a, b) => b.date - a.date)
+                    .slice(0, 20),
+            }));
+
+            if (!libraryData.favorites) {
+                return;
+            }
+
+            const stack = newStack(`history/update`, `Updating history.`, {
+                type: "loading",
+                mergeWithPrevious: true,
+            });
+
+            LibRar.historySongs(ids, "PUT").then((res) => {
+                if (!res.success) {
+                    stack.error(`Failed to update history.`, res.message);
+
+                    return toast.error(res.message);
+                }
+
+                stack.success(`Updated history.`);
+            });
+        },
+        [libraryData.favorites, newStack]
+    );
+
+    const removeHistory = React.useCallback(
+        (ids: string | string[]) => {
+            if (typeof ids === "string") {
+                ids = [ids];
+            }
+
+            setLibraryData((prev) => ({
+                ...prev,
+                history: prev.history.filter(
+                    (history) => !ids.includes(history.song)
+                ),
+            }));
+
+            if (!libraryData.favorites) {
+                return;
+            }
+
+            const stack = newStack(
+                `history/remove/${ids.join(",")}`,
+                `Removing ${ids.length} ${formatPlural(ids.length, "song")} from history.`,
+                { type: "loading" }
+            );
+
+            LibRar.historySongs(ids, "DELETE").then((res) => {
+                if (!res.success) {
+                    stack.error(
+                        `Failed to remove ${ids.length} ${formatPlural(
+                            ids.length,
+                            "song"
+                        )} from history.`,
+                        res.message
+                    );
+
+                    return toast.error(res.message);
+                }
+
+                stack.success(
+                    `Removed ${ids.length} ${formatPlural(
+                        ids.length,
+                        "song"
+                    )} from history.`
+                );
+            });
+        },
+        [libraryData.favorites, newStack]
+    );
+
+    const clearHistory = React.useCallback(() => {
+        setLibraryData((prev) => ({
+            ...prev,
+            history: [],
+        }));
+
+        if (!libraryData.favorites) {
+            return;
+        }
+
+        LibRar.historySongs([], "DELETE", true).then((res) => {
+            if (!res.success) {
+                return toast.error(res.message);
+            }
+
+            toast.success("Added to history");
+        });
+    }, [libraryData.favorites]);
+
     const [playlistEditor, setPlaylistEditor] =
         React.useState<LibraryPlaylistEditor>(null);
 
@@ -305,6 +424,11 @@ function useOps(data: LibraryData) {
         renamePlaylist,
         addSongsToPlaylist,
         removeSongsFromPlaylist,
+
+        history: libraryData.history,
+        addHistory,
+        removeHistory,
+        clearHistory,
 
         playlistEditor,
         setPlaylistEditor,

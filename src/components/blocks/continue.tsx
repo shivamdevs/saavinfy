@@ -11,6 +11,7 @@ export type ContinueButtonProps = LinkProps & {
     size?: ButtonProps["size"];
     strict?: boolean;
     noContinue?: boolean;
+    asAnchor?: boolean;
 };
 
 export default function ContinueButton({
@@ -19,6 +20,7 @@ export default function ContinueButton({
     href,
     strict,
     noContinue,
+    asAnchor,
     ...props
 }: ContinueButtonProps) {
     const pathname = usePathname();
@@ -46,9 +48,11 @@ export default function ContinueButton({
         }`;
     }
 
+    const Tag = asAnchor ? `a` : Link;
+
     return (
         <Button variant={variant} size={size} asChild>
-            <Link href={href} {...props} />
+            <Tag href={href} {...props} />
         </Button>
     );
 }

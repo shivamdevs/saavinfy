@@ -1,4 +1,8 @@
-import { LibraryPlaylist, LibrarySearchHistory } from "./library";
+import {
+    LibraryHistory,
+    LibraryPlaylist,
+    LibrarySearchHistory,
+} from "./library";
 import { MediaSong } from "./media";
 
 export type SavedLimitedPlayer = {
@@ -8,7 +12,7 @@ export type SavedLimitedPlayer = {
     v: number;
     _l?: 1 | 2;
     _m?: 1;
-    _p?: "q" | "s" | "i";
+    _p?: "q" | "s" | "i" | "n";
 };
 
 export type SavedPlayer<Q = MediaSong> = {
@@ -26,18 +30,26 @@ export type SavedPlayerOptions = {
     panel: SavedPlayerPanel;
 };
 
-export type SavedPlayerPanel = "queue" | "settings" | "info" | undefined;
+export type SavedPlayerPanel =
+    | "queue"
+    | "settings"
+    | "info"
+    | "notifications"
+    | undefined;
 
 export type SavedLimitedLibrary = {
     s: string;
+    h: string;
 };
 
 export type SavedLibrary = {
     searches: LibrarySearchHistory[];
+    history: LibraryHistory[];
 };
 
 export type LibraryData = {
     searches: LibrarySearchHistory[];
     favorites: LibraryPlaylist | null;
     playlists: LibraryPlaylist[];
+    history: LibraryHistory[];
 };

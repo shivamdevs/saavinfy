@@ -10,14 +10,30 @@ export class ServerResponse<T = unknown> {
 }
 
 export class ServerError {
+    code?: string;
     status: number;
     success: false = false;
     message: string;
     data: unknown;
 
-    constructor(message: string, data: unknown, status: number = 404) {
+    constructor(
+        message: string,
+        data: unknown,
+        status: number = 404,
+        code?: string
+    ) {
         this.status = status;
         this.message = message;
         this.data = data;
+
+        if (code) {
+            this.code = code;
+        }
+    }
+
+    with(code: string) {
+        this.code = code;
+
+        return this;
     }
 }

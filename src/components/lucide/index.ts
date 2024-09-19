@@ -1,6 +1,9 @@
 import LucideAudioLines from "./audio-lines";
+import LucideBadgeCheck from "./badge-check";
+import LucideBell from "./bell";
 import LucideCake from "./cake";
 import LucideCirclePlus from "./circle-plus";
+import LucideCircleX from "./circle-x";
 import LucideClock from "./clock";
 import LucideDisc3 from "./disc-3";
 import LucideDownload from "./download";
@@ -36,6 +39,7 @@ import LucideSettings from "./settings";
 import LucideShuffle from "./shuffle";
 import LucideSkipBack from "./skip-back";
 import LucideSkipForward from "./skip-forward";
+import LucideTriangleAlert from "./triangle-alert";
 import LucideTwitter from "./twitter";
 import LucideVolume1 from "./volume-1";
 import LucideVolume2 from "./volume-2";
@@ -45,8 +49,11 @@ import LucideX from "./x";
 
 const Lucide = {
     AudioLines: LucideAudioLines,
+    BadgeCheck: LucideBadgeCheck,
+    Bell: LucideBell,
     Cake: LucideCake,
     CirclePlus: LucideCirclePlus,
+    CircleX: LucideCircleX,
     Clock: LucideClock,
     Disc3: LucideDisc3,
     Download: LucideDownload,
@@ -82,6 +89,7 @@ const Lucide = {
     Shuffle: LucideShuffle,
     SkipBack: LucideSkipBack,
     SkipForward: LucideSkipForward,
+    TriangleAlert: LucideTriangleAlert,
     Twitter: LucideTwitter,
     Volume1: LucideVolume1,
     Volume2: LucideVolume2,
@@ -94,8 +102,11 @@ export default Lucide;
 
 export {
     LucideAudioLines,
+    LucideBadgeCheck,
+    LucideBell,
     LucideCake,
     LucideCirclePlus,
+    LucideCircleX,
     LucideClock,
     LucideDisc3,
     LucideDownload,
@@ -131,6 +142,7 @@ export {
     LucideShuffle,
     LucideSkipBack,
     LucideSkipForward,
+    LucideTriangleAlert,
     LucideTwitter,
     LucideVolume1,
     LucideVolume2,
