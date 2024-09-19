@@ -16,7 +16,7 @@ export default function useLibraryHistory() {
     }, [player.currentSong, library]);
 
     // after 100ms of no changes to the current song
-    useDebounce(addToHistory, 100, [player.currentSong]);
+    useDebounce(addToHistory, 3000, [player.currentSong]);
 
     // // every 30 seconds
     // const { start, stop } = useInterval(addToHistory, 30000);
