@@ -111,7 +111,7 @@ export default function Song({ item }: { item: MediaSong }) {
                 onClick: () => router.push(`/album/${item.album.id}`),
             },
         ],
-        [item, library, player, router]
+        [item, library, player, router, newStack]
     );
 
     return (
