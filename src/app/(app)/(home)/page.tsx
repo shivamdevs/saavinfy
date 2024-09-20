@@ -9,7 +9,7 @@ import { SongList } from "@/components/blocks/song";
 import BlockGridList from "@/components/blocks/grid";
 import historyTrending from "@/app/api/_history";
 
-import { MediaAlbum, MediaArtist, MediaSong } from "@/types/media";
+// import { MediaAlbum, MediaArtist, MediaSong } from "@/types/media";
 // import { ServerError, ServerResponse } from "@/modules/server";
 
 export default async function Page() {
