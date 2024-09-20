@@ -10,12 +10,20 @@ import { GradientColors } from "@/lib/colors";
 import Lucide from "@/components/lucide";
 import { Card } from "@/components/ui/card";
 import useAgo from "@/contexts/hooks/use-ago";
+import IconWalking from "@/components/icons/walking";
 
 export default function PartPlaylist() {
     const { favorites, playlists } = useLibrary();
 
     if (!favorites) {
-        return null;
+        return (
+            <div className="pt-20 flex-center flex-col">
+                <IconWalking width={200} height={200} />
+                <h4 className="text-sm font-font-semibold text-secondary-foreground">
+                    You need to login to see your playlists.
+                </h4>
+            </div>
+        );
     }
 
     return (
@@ -25,6 +33,14 @@ export default function PartPlaylist() {
             {playlists.map((playlist) => (
                 <Playlist key={playlist.id} {...playlist} />
             ))}
+            {playlists.length === 0 && (
+                <div className="pt-20 flex-center flex-col">
+                    <IconWalking width={200} height={200} />
+                    <h4 className="text-sm font-font-semibold text-secondary-foreground">
+                        You don&apos;t have any playlists yet.
+                    </h4>
+                </div>
+            )}
         </>
     );
 }
@@ -47,7 +63,7 @@ function Playlist({
     return (
         <Card asLink className="border-0">
             <Link
-                href={`/playlist/${id}`}
+                href={`/library/${id}`}
                 className="flex p-2 gap-4 items-center"
             >
                 <span

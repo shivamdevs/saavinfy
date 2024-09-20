@@ -44,6 +44,8 @@ export default function BlockImage({
             style={{
                 width: size,
                 height: size,
+                minWidth: size,
+                minHeight: size,
             }}
         >
             <span
@@ -68,6 +70,8 @@ export default function BlockImage({
                         className
                     )}
                     draggable={false}
+                    unoptimized
+                    unselectable="on"
                 />
             </BlurFade>
             {children}

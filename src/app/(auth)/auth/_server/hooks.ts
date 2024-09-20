@@ -15,6 +15,7 @@ export function useAuth() {
     const [state, formAction] = useFormState(authAction, {
         ...authState,
         continue: searchParams.get("continue") || "/",
+        origin: window.location.origin,
     });
     React.useEffect(() => {
         if (state.success) {

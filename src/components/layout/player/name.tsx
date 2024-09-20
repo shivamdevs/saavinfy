@@ -43,7 +43,12 @@ export default function PlayerName() {
                         className={cn("rounded-full", {
                             "!text-primary": library.isFavorite(item.id),
                         })}
-                        onClick={() => library.toggleFavorite(item.id)}
+                        onClick={() =>
+                            library.toggleFavorite(
+                                item.id,
+                                item.title ?? item.name
+                            )
+                        }
                     >
                         <Lucide.Heart
                             size={18}

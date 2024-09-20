@@ -111,6 +111,7 @@ export async function PUT(
                 await tx
                     .update(dbs.PlaylistSong)
                     .set({
+                        createdAt: new Date(),
                         removedAt: null,
                     })
                     .where(

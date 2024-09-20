@@ -125,7 +125,12 @@ export default function BlockCard({
                                         item.id
                                     ),
                                 })}
-                                onClick={() => library.toggleFavorite(item.id)}
+                                onClick={() =>
+                                    library.toggleFavorite(
+                                        item.id,
+                                        item.title ?? item.name
+                                    )
+                                }
                             >
                                 <Lucide.Heart
                                     fill={

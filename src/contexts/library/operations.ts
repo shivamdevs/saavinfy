@@ -14,6 +14,7 @@ import {
 import toast from "react-hot-toast";
 import { LibRar } from "@/helpers/librar";
 import useStack from "../stack";
+import Parser from "@/helpers/parser";
 
 function useOps(data: LibraryData) {
     const [libraryData, setLibraryData] = React.useState<LibraryData>(data);
@@ -88,7 +89,7 @@ function useOps(data: LibraryData) {
     }, []);
 
     const addFavorite = React.useCallback(
-        (ids: string | string[]) => {
+        (ids: string | string[], name?: string) => {
             if (typeof ids === "string") {
                 ids = [ids];
             }
@@ -96,6 +97,12 @@ function useOps(data: LibraryData) {
             if (!libraryData.favorites) {
                 return toast.error("You need to login to add favorites");
             }
+
+            const stack = newStack(
+                `favorites/add/${ids.join(",")}`,
+                `Adding ${name ?? ""} to favorites.`,
+                { type: "loading", mergeWithPrevious: true }
+            );
 
             setLibraryData((prev) => ({
                 ...prev,
@@ -120,6 +127,8 @@ function useOps(data: LibraryData) {
             LibRar.playlistSongs(libraryData.favorites.id, ids, "PUT").then(
                 (res) => {
                     if (!res.success) {
+                        stack.error(`Failed to add to favorites.`, res.message);
+
                         return toast.error(res.message);
                     }
 
@@ -132,15 +141,15 @@ function useOps(data: LibraryData) {
                         },
                     }));
 
-                    toast.success("Added to favorites");
+                    stack.success(`Added ${name ?? ""} to favorites.`);
                 }
             );
         },
-        [libraryData.favorites]
+        [libraryData.favorites, newStack]
     );
 
     const removeFavorite = React.useCallback(
-        (ids: string | string[]) => {
+        (ids: string | string[], name?: string) => {
             if (typeof ids === "string") {
                 ids = [ids];
             }
@@ -161,9 +170,20 @@ function useOps(data: LibraryData) {
                 },
             }));
 
+            const stack = newStack(
+                `favorites/remove/${ids.join(",")}`,
+                `Removing ${name ?? ""} from favorites.`,
+                { type: "loading", mergeWithPrevious: true }
+            );
+
             LibRar.playlistSongs(libraryData.favorites.id, ids, "DELETE").then(
                 (res) => {
                     if (!res.success) {
+                        stack.error(
+                            `Failed to remove from favorites.`,
+                            res.message
+                        );
+
                         return toast.error(res.message);
                     }
 
@@ -176,11 +196,11 @@ function useOps(data: LibraryData) {
                         },
                     }));
 
-                    toast.success("Removed from favorites");
+                    stack.success(`Removed ${name ?? ""} from favorites.`);
                 }
             );
         },
-        [libraryData.favorites]
+        [libraryData.favorites, newStack]
     );
 
     const isFavorite = React.useCallback(
@@ -193,11 +213,11 @@ function useOps(data: LibraryData) {
     );
 
     const toggleFavorite = React.useCallback(
-        (id: string) => {
+        (id: string, name?: string) => {
             if (isFavorite(id)) {
-                removeFavorite(id);
+                removeFavorite(id, name ? Parser.entity(name) : undefined);
             } else {
-                addFavorite(id);
+                addFavorite(id, name ? Parser.entity(name) : undefined);
             }
         },
         [isFavorite, addFavorite, removeFavorite]

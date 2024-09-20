@@ -16,6 +16,10 @@ export default class Stack {
         this.setStack = setStack;
     }
 
+    get() {
+        return this.stack.find((i) => i.id === this.id);
+    }
+
     update(item: StackUpdateOptions) {
         if (Object.keys(item).length === 0) {
             return this;

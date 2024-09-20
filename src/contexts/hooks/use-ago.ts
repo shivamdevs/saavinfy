@@ -8,8 +8,8 @@ export default function useAgo() {
     const [timeStamp, setTimeStamp] = React.useState<number>(Date.now());
 
     const callback = React.useCallback(
-        (time: number) => {
-            return Parser.moment(time);
+        (time: number, noNumber?: boolean) => {
+            return Parser.moment(time, noNumber);
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [timeStamp]

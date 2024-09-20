@@ -19,11 +19,11 @@ export type ContextType = {
 
     favorites: LibraryPlaylist | null;
     // eslint-disable-next-line no-unused-vars
-    addFavorite: (ids: string | string[]) => void;
+    addFavorite: (ids: string | string[], name?: string) => void;
     // eslint-disable-next-line no-unused-vars
-    removeFavorite: (ids: string | string[]) => void;
+    removeFavorite: (ids: string | string[], name?: string) => void;
     // eslint-disable-next-line no-unused-vars
-    toggleFavorite: (id: string) => void;
+    toggleFavorite: (id: string, name?: string) => void;
     // eslint-disable-next-line no-unused-vars
     isFavorite: (id: string) => boolean;
 

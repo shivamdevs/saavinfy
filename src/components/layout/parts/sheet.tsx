@@ -5,6 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import Lucide from "@/components/lucide";
 import PartPlaylist from "./sub/playlist";
+import { Button } from "@/components/ui/button";
 
 export default function PartSheet() {
     return (
@@ -27,11 +28,18 @@ export default function PartSheet() {
                 <p className="text-lg font-semibold text-secondary-foreground">
                     Your Library
                 </p>
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="ml-auto rounded-full"
+                >
+                    <Lucide.Plus size={20} />
+                </Button>
             </div>
             <ScrollArea
                 className={cn(
-                    "h-[calc(100vh-5rem-1px-7.5rem-1px-3.75rem)]",
-                    "player:h-[calc(100vh-5rem-1px-7.5rem-1px-3.75rem-5rem)]",
+                    "h-[calc(100vh-5rem-1px-7.5rem-1px-4rem)]",
+                    "player:h-[calc(100vh-5rem-1px-7.5rem-1px-4rem-5rem)]",
                     "pb-4"
                 )}
             >

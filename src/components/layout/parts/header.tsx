@@ -27,10 +27,10 @@ export default async function PartHeader() {
                 </Link>
             </div>
             <PartSearch />
-            <div className="ml-auto flex gap-4">
+            <div className="ml-auto flex gap-4 pl-4">
+                <PartStackView />
                 {user ? (
                     <>
-                        <PartStackView />
                         <ContinueButton
                             variant="secondary"
                             href="/logout"

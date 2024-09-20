@@ -7,22 +7,29 @@ import { cookies } from "next/headers";
 import React from "react";
 import { SongList } from "@/components/blocks/song";
 import BlockGridList from "@/components/blocks/grid";
-import historyTrending from "../api/lib/history/_history";
+import historyTrending from "@/app/api/_history";
+import { ServerError, ServerResponse } from "@/modules/server";
+import { MediaAlbum, MediaArtist, MediaSong } from "@/types/media";
 
 export default async function Page() {
     const { history } = Saves.getLibrary(cookies);
 
-    if (!history.length) {
-        const songs = await historyTrending();
-        history.push(...songs.map((s) => ({ song: s, date: Date.now() })));
-    }
+    // if (!history.length) {
+    //     const songs = await historyTrending();
+    //     history.push(...songs.map((s) => ({ song: s, date: Date.now() })));
+    // }
 
-    const result = await Saavn.getTrending(
-        history
-            .sort((a, b) => b.date - a.date)
-            .slice(0, 3)
-            .map((h) => h.song)
+    const result = new ServerError(
+        "No trending songs found",
+        "No trending songs found"
     );
+
+    // const result = await Saavn.getTrending(
+    //     history
+    //         .sort((a, b) => b.date - a.date)
+    //         .slice(0, 3)
+    //         .map((h) => h.song)
+    // );
 
     const songs = result.success && result.data.songs;
     const albums = result.success && result.data.albums;

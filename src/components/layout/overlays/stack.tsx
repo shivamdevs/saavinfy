@@ -13,6 +13,7 @@ import useAgo from "@/contexts/hooks/use-ago";
 import { StackItem } from "@/types/stack";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 
 export default function OverlayStack() {
     const stack = useStack();
@@ -69,6 +70,8 @@ function StackCard({
     time,
     history,
     index,
+    progress,
+    count,
 }: StackItem & { _key: string; index: number }) {
     const ago = useAgo();
 
@@ -101,11 +104,8 @@ function StackCard({
                     />
                 </span>
                 <div className="flex flex-col flex-1 gap-1">
-                    <div className="w-full">
-                        <span className="text-xs text-gray-500 float-right ml-2 my-2">
-                            {ago(time)}
-                        </span>
-                        <span className="text-sm inline-flex items-center">
+                    <div className="w-full flex items-baseline gap-4">
+                        <span className="text-sm inline-flex items-center flex-1">
                             {history.length > 0 && (
                                 <Badge
                                     variant="secondary"
@@ -116,7 +116,17 @@ function StackCard({
                             )}
                             {message}
                         </span>
+                        <span className="text-xs text-gray-500">
+                            {ago(time, true)}
+                        </span>
                     </div>
+                    {type === "loading" && count !== 0 && (
+                        <Progress
+                            value={progress}
+                            max={count}
+                            className="h-1"
+                        />
+                    )}
                     <div className="text-xs">{details}</div>
                 </div>
             </div>

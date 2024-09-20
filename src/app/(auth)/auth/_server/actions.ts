@@ -228,6 +228,7 @@ export async function authAction(
         email,
         options: {
             shouldCreateUser: true,
+            emailRedirectTo: state.origin,
         },
     });
 

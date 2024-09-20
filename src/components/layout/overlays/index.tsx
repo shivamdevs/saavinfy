@@ -5,6 +5,7 @@ import { usePlayerOptions } from "@/contexts/player/hooks";
 import React from "react";
 import OverlayQueue from "./queue";
 import OverlayStack from "./stack";
+import OverlayInfo from "./info";
 
 export default function Overlays() {
     const options = usePlayerOptions();
@@ -19,6 +20,7 @@ export default function Overlays() {
             <aside className="flex-1 max-w-96">
                 {options.panels.is("queue") && <OverlayQueue />}
                 {options.panels.is("notifications") && <OverlayStack />}
+                {options.panels.is("info") && <OverlayInfo />}
             </aside>
         </>
     );

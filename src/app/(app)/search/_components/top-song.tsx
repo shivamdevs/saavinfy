@@ -56,7 +56,8 @@ export default function TopSong({
                 icon: library.isFavorite(item.id)
                     ? Lucide.HeartOff
                     : Lucide.Heart,
-                onClick: () => library.toggleFavorite(item.id),
+                onClick: () =>
+                    library.toggleFavorite(item.id, item.title ?? item.name),
             },
             {
                 name: "Add to playlist",

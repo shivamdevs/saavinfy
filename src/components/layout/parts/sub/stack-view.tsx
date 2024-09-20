@@ -15,7 +15,9 @@ export default function PartStackView() {
     const [ping, setPing] = React.useState(false);
 
     useUpdateEffect(() => {
-        setPing(true);
+        if (stack.length) {
+            setPing(true);
+        }
     }, [stack]);
 
     useUpdateEffect(() => {

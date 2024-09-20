@@ -19,11 +19,15 @@ import PullPlay from "./play";
 import BlockMenu, { BlockMenuContent } from "./menu";
 import { useRouter } from "next/navigation";
 import BlockTime from "./time";
+import downloadFromLink from "@/lib/download";
+import useStack from "@/contexts/stack";
 
 export default function Song({ item }: { item: MediaSong }) {
     const library = useLibrary();
     const player = usePlayer();
     const router = useRouter();
+
+    const { newStack } = useStack();
 
     const menuItems = useMemo<BlockMenuContent[]>(
         () => [
@@ -44,7 +48,8 @@ export default function Song({ item }: { item: MediaSong }) {
                 icon: library.isFavorite(item.id)
                     ? Lucide.HeartOff
                     : Lucide.Heart,
-                onClick: () => library.toggleFavorite(item.id),
+                onClick: () =>
+                    library.toggleFavorite(item.id, item.title ?? item.name),
             },
             {
                 name: "Add to playlist",
@@ -61,6 +66,38 @@ export default function Song({ item }: { item: MediaSong }) {
                             library.addSongsToPlaylist(playlist.id, item.id),
                     })),
                 ],
+            },
+            true,
+            {
+                name: "Download",
+                icon: Lucide.Download,
+                onClick: () => {
+                    const ddl = item.downloadUrl.at(-1);
+
+                    const stack = newStack(
+                        `download/${item.id}/${ddl?.quality}`,
+                        `Downloading ${item.title ?? item.name}.`,
+                        {
+                            type: "loading",
+                            progress: 0,
+                            count: item.duration,
+                        }
+                    );
+
+                    if (ddl) {
+                        downloadFromLink(
+                            ddl.url,
+                            item.title ?? item.name ?? "",
+                            ddl.quality,
+                            stack
+                        );
+                    } else {
+                        stack.error(
+                            `Failed to download ${item.title ?? item.name}.`,
+                            "No download links found."
+                        );
+                    }
+                },
             },
             true,
             {
@@ -127,7 +164,10 @@ export default function Song({ item }: { item: MediaSong }) {
                         onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            library.toggleFavorite(item.id);
+                            library.toggleFavorite(
+                                item.id,
+                                item.title ?? item.name
+                            );
                         }}
                     >
                         <Lucide.Heart

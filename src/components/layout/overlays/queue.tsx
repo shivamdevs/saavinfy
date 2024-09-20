@@ -18,6 +18,8 @@ import { useRouter } from "next/navigation";
 import Lucide from "@/components/lucide";
 import Tippy from "@/components/ui/tooltip";
 import IconNotePad from "@/components/icons/notepad";
+import downloadFromLink from "@/lib/download";
+import useStack from "@/contexts/stack";
 
 export default function OverlayQueue() {
     const player = usePlayer();
@@ -98,6 +100,8 @@ function QueueItem({ item }: { item: MediaSong }) {
     const library = useLibrary();
     const router = useRouter();
 
+    const { newStack } = useStack();
+
     const menuItems = React.useMemo<BlockMenuContent[]>(
         () => [
             ...(player.currentSong?.id !== item.id
@@ -123,7 +127,8 @@ function QueueItem({ item }: { item: MediaSong }) {
                 icon: library.isFavorite(item.id)
                     ? Lucide.HeartOff
                     : Lucide.Heart,
-                onClick: () => library.toggleFavorite(item.id),
+                onClick: () =>
+                    library.toggleFavorite(item.id, item.title ?? item.name),
             },
             {
                 name: "Add to playlist",
@@ -144,6 +149,38 @@ function QueueItem({ item }: { item: MediaSong }) {
                             library.addSongsToPlaylist(playlist.id, item.id),
                     })),
                 ],
+            },
+            true,
+            {
+                name: "Download",
+                icon: Lucide.Download,
+                onClick: () => {
+                    const ddl = item.downloadUrl.at(-1);
+
+                    const stack = newStack(
+                        `download/${item.id}/${ddl?.quality}`,
+                        `Downloading ${item.title ?? item.name}.`,
+                        {
+                            type: "loading",
+                            progress: 0,
+                            count: item.duration,
+                        }
+                    );
+
+                    if (ddl) {
+                        downloadFromLink(
+                            ddl.url,
+                            item.title ?? item.name ?? "",
+                            ddl.quality,
+                            stack
+                        );
+                    } else {
+                        stack.error(
+                            `Failed to download ${item.title ?? item.name}.`,
+                            "No download links found."
+                        );
+                    }
+                },
             },
             true,
             {

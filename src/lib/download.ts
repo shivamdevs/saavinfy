@@ -1,15 +1,15 @@
 import { Meta } from "@/config/meta";
+import Stack from "@/contexts/stack/stack";
 import { saveAs } from "file-saver";
 import { toast } from "react-hot-toast";
 
 export default function downloadFromLink(
     link: string,
     name: string,
-    quality: string
+    quality: string,
+    stack: Stack
 ) {
-    let cached = toast.loading("Downloading your song...", {
-        position: "top-right",
-    });
+    const originalName = name;
 
     name = name
         .toLowerCase()
@@ -22,22 +22,26 @@ export default function downloadFromLink(
     fetch(link)
         .then((response) => {
             if (!response.ok || !response.body) {
+                stack.error(
+                    `Failed to download ${originalName}.`,
+                    "Unable to download the song. Please try again."
+                );
+
                 return toast.error(
-                    "Failed to download this song. Please try again.",
-                    { id: cached }
+                    "Failed to download this song. Please try again."
                 );
             }
 
             const totalBytes = Number(response.headers.get("Content-Length"));
+
+            stack.update({ progress: 10, count: totalBytes + 10 });
+
             let downloadedBytes = 0;
 
             const progressCallback = (chunk: Uint8Array) => {
                 downloadedBytes += chunk.length;
                 const progress = (downloadedBytes / totalBytes) * 100;
-                cached = toast.loading(
-                    `Download progress: ${progress.toFixed(0)}%`,
-                    { id: cached }
-                );
+                stack.update({ progress });
             };
 
             const reader = response.body.getReader();
@@ -65,12 +69,15 @@ export default function downloadFromLink(
         .then((response) => response.blob())
         .then((blob) => saveAs(blob, fileName))
         .then(() => {
-            toast.success("Song downloaded successfully.", { id: cached });
+            stack.success(`Downloaded ${originalName} in ${quality}.`);
         })
         .catch((error) => {
-            toast.error("Failed to download this song. Please try again.", {
-                id: cached,
-            });
+            stack.error(
+                `Failed to download ${originalName}.`,
+                "Unable to download the song. Please try again."
+            );
+
+            toast.error("Failed to download this song. Please try again.");
             console.error(error);
         });
 }

@@ -52,7 +52,11 @@ export default function ContinueButton({
 
     return (
         <Button variant={variant} size={size} asChild>
-            <Tag href={href} {...props} />
+            <Tag
+                href={href}
+                {...props}
+                replace={asAnchor ? undefined : props.replace}
+            />
         </Button>
     );
 }
