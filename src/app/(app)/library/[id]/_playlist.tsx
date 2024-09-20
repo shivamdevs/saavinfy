@@ -19,6 +19,7 @@ export default function LibraryPlaylist({
     playlist: {
         id: string;
         name: string;
+        userId: string;
         createdAt: Date;
         modifiedAt: Date;
         isFavorite: boolean;
@@ -55,16 +56,22 @@ export default function LibraryPlaylist({
                     </h2>
                     <h3 className="text-5xl font-semibold">{playlist.name}</h3>
                     <h4 className="">
-                        A playlist by
-                        <Button variant="link" asChild className="p-0">
-                            <Link
-                                href={`/profile/${user.id}`}
-                                className="text-primary-foreground underline font-semibold ml-1"
-                            >
-                                {user.user_metadata.full_name ??
-                                    "Anonymous User"}
-                            </Link>
-                        </Button>
+                        {user.id === playlist.userId ? (
+                            "You"
+                        ) : (
+                            <>
+                                A playlist by
+                                <Button variant="link" asChild className="p-0">
+                                    <Link
+                                        href={`/profile/${user.id}`}
+                                        className="text-primary-foreground underline font-semibold ml-1"
+                                    >
+                                        {user.user_metadata.full_name ??
+                                            "Anonymous User"}
+                                    </Link>
+                                </Button>
+                            </>
+                        )}
                         {" • "}
                         {songs.length} {formatPlural(songs.length, "song")}
                     </h4>

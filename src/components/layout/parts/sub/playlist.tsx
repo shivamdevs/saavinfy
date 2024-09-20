@@ -4,13 +4,14 @@ import React from "react";
 import { LibraryPlaylist } from "@/types/library";
 import useLibrary from "@/contexts/library";
 import Link from "next/link";
-import { formatPlural } from "@/lib/utils";
+import { cn, formatPlural } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { GradientColors } from "@/lib/colors";
 import Lucide from "@/components/lucide";
 import { Card } from "@/components/ui/card";
 import useAgo from "@/contexts/hooks/use-ago";
 import IconWalking from "@/components/icons/walking";
+import { usePathname } from "next/navigation";
 
 export default function PartPlaylist() {
     const { favorites, playlists } = useLibrary();
@@ -59,9 +60,15 @@ function Playlist({
     const Icon = isFavorite ? Lucide.Heart : Lucide.Music2;
 
     const ago = useAgo();
+    const pathname = usePathname();
 
     return (
-        <Card asLink className="border-0">
+        <Card
+            asLink
+            className={cn("border-0", {
+                "bg-secondary": pathname.includes(`/library/${id}`),
+            })}
+        >
             <Link
                 href={`/library/${id}`}
                 className="flex p-2 gap-4 items-center"
