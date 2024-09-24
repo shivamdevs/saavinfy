@@ -14,7 +14,8 @@ export default function usePlayerNavigation() {
         );
 
         return currentIndex < player.queue.length - 1;
-    }, [player]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [player.queue, player.current]);
 
     const getPrevious = React.useCallback(() => {
         if (!player.queue.length) return false;
@@ -24,7 +25,8 @@ export default function usePlayerNavigation() {
         );
 
         return currentIndex > 0;
-    }, [player]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [player.queue, player.current]);
 
     const next = React.useCallback(() => {
         if (!hasNext) return;
@@ -34,7 +36,8 @@ export default function usePlayerNavigation() {
         );
 
         player.play(player.queue[currentIndex + 1]);
-    }, [hasNext, player]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [hasNext, player.queue, player.play, player.current]);
 
     const previous = React.useCallback(() => {
         if (!hasPrevious) return;
@@ -44,7 +47,8 @@ export default function usePlayerNavigation() {
         );
 
         player.play(player.queue[currentIndex - 1]);
-    }, [hasPrevious, player]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [hasPrevious, player.queue, player.play, player.current]);
 
     React.useLayoutEffect(() => {
         const hasPrevious = getPrevious();

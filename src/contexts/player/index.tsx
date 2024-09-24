@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import PlayerContext, { ContextType, useHook as usePlayer } from "./context";
 import usePlayerOps from "./operations";
 import { SavedPlayer } from "@/types/saves";
+import MediaSessionHook from "./media-session";
 
 export default usePlayer;
 
@@ -29,6 +30,7 @@ export function PlayerProvider({ children, data }: PlayerProviderProps) {
     return (
         <PlayerContext.Provider value={operations}>
             {children}
+            <MediaSessionHook />
         </PlayerContext.Provider>
     );
 }
