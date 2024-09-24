@@ -1,0 +1,10 @@
+{
+  "name": "Lucide CLI",
+  "aliases": "lucide-cli",
+  "version": "0.0.11",
+  "framework": "React",
+  "typescript": true,
+  "iconsDirectory": "src/components/lucide",
+  "defaultSize": 20,
+  "defaultStrokeWidth": 2.25
+}

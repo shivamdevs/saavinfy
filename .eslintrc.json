@@ -1,0 +1,83 @@
+{
+    "env": {
+        "node": true,
+        "browser": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "next/core-web-vitals",
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": ["react", "import", "@typescript-eslint"],
+    "settings": {
+        "import/parsers": {
+            "@typescript-eslint/parser": [".ts", ".tsx"]
+        },
+        "import/resolver": {
+            "typescript": {
+                "alwaysTryTypes": true,
+                "project": ["./tsconfig.json"]
+            }
+        }
+    },
+    "rules": {
+        "no-alert": "error",
+        "no-console": [
+            "warn",
+            {
+                "allow": ["info", "warn", "error"]
+            }
+        ],
+        "camelcase": "error",
+        "id-length": [
+            "error",
+            {
+                "min": 1,
+                "max": 64
+            }
+        ],
+        "jsx-quotes": ["error", "prefer-double"],
+        "max-lines": ["error", 1000],
+        "no-duplicate-imports": "error",
+        "prefer-arrow-callback": "error",
+        "prefer-template": "error",
+        "prefer-destructuring": "error",
+        "lines-around-comment": [
+            "error",
+            {
+                "beforeLineComment": true,
+                "beforeBlockComment": true,
+                "allowBlockStart": true,
+                "allowClassStart": true,
+                "allowObjectStart": true,
+                "allowArrayStart": true
+            }
+        ],
+        "newline-before-return": "error",
+        "import/newline-after-import": [
+            "error",
+            {
+                "count": 1
+            }
+        ],
+        "@typescript-eslint/ban-types": [
+            "error",
+            {
+                "extendDefaults": true,
+                "types": {
+                    "{}": false
+                }
+            }
+        ]
+    }
+}
