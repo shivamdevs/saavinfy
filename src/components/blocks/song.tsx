@@ -142,12 +142,15 @@ export default function Song({ item }: { item: MediaSong }) {
                     </BlockDescription>
                 </div>
                 <BlockDescription
-                    className="flex-1 capitalize text-sm"
+                    className="flex-1 capitalize text-sm sm:inline-block hidden"
                     item={item}
                 >
                     {Block.songAlbum(item.album)}
                 </BlockDescription>
-                <BlockTime time={item.duration} className="text-sm" />
+                <BlockTime
+                    time={item.duration}
+                    className="text-sm sm:inline-block hidden"
+                />
                 <Tippy
                     content={
                         library.isFavorite(item.id)
@@ -184,7 +187,7 @@ export default function Song({ item }: { item: MediaSong }) {
                     <Button
                         size="icon"
                         variant="ghost"
-                        className="rounded-full z-10"
+                        className="rounded-full z-10 sm:flex hidden"
                         title="More options"
                     >
                         <Lucide.Ellipsis size={16} />

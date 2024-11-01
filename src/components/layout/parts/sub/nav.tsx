@@ -2,6 +2,7 @@
 
 import Lucide from "@/components/lucide";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -9,6 +10,7 @@ import React from "react";
 const Icons = {
     house: Lucide.House,
     search: Lucide.Search,
+    library: Lucide.Library,
 };
 
 export type PartNavProps = {
@@ -17,6 +19,7 @@ export type PartNavProps = {
     title: string;
     match?: RegExp | string;
     focusOnSearch?: boolean;
+    hidden?: boolean;
 };
 
 export default function PartNav({
@@ -25,6 +28,7 @@ export default function PartNav({
     focusOnSearch,
     match,
     title,
+    hidden,
 }: PartNavProps) {
     const pathname = usePathname();
 
@@ -38,7 +42,12 @@ export default function PartNav({
                     ? "secondary"
                     : "link"
             }
-            className="justify-start gap-5 py-5 text-white"
+            className={cn(
+                "justify-start sm:gap-5 gap-1 sm:py-2.5 py-0 text-white sm:flex-0 flex-1",
+                {
+                    "sm:hidden": hidden,
+                }
+            )}
         >
             <Link
                 href={href}
@@ -53,6 +62,9 @@ export default function PartNav({
                         }, 1);
                     }
                 }}
+                className={cn(
+                    "sm:flex-row flex-col sm:h-9 h-auto sm:text-sm text-xs"
+                )}
             >
                 <Icon size={18} />
                 {title}

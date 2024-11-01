@@ -61,7 +61,7 @@ export default function ArtistPage({ artist }: { artist: MediaArtist }) {
                     <BlockGridList items={artist.singles} small />
                 </>
             )}
-            <div className="bg-secondary shadow-sm w-4/5 min-h-96 mb-10 rounded-2xl hover:scale-[1.01] transition-all p-5 flex gap-5 items-center">
+            <div className="bg-secondary shadow-sm sm:w-4/5 min-h-96 mb-10 rounded-2xl hover:scale-[1.01] transition-all p-5 flex gap-5 items-center sm:flex-row flex-col">
                 <BlockImage
                     src={artist.image}
                     alt={artist.name}

@@ -17,14 +17,14 @@ function AppLayout({ children }: AppLayoutProps) {
             <Separator />
             <section className="flex-1 layout-row h-[calc(100vh-5rem-1px)]">
                 <PartSheet />
-                <Separator orientation="vertical" />
+                <Separator orientation="vertical" className="sm:block hidden" />
                 <ScrollArea
                     className={cn(
                         "h-[calc(100vh-5rem-1px)] flex-1 w-full",
                         "player:h-[calc(100vh-5rem-1px-5rem)]"
                     )}
                 >
-                    <main>{children}</main>
+                    <main className="max-w-[100dvw]">{children}</main>
                 </ScrollArea>
                 <Overlays />
             </section>

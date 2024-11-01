@@ -35,7 +35,7 @@ export default function BlockGridList({ title, items, small }: GridListProps) {
                 </h3>
             )}
             {items.length === 0 && <IconSleeping className="mx-auto" />}
-            <div className="w-full flex flex-wrap justify-start items-stretch">
+            <div className="w-full flex flex-wrap sm:justify-start justify-around items-stretch">
                 {items.map((item) => (
                     <GridItem key={item.id} item={item} small={!!small} />
                 ))}
